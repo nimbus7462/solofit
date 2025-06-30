@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startingPage">
+
+    <fragment
+        android:id="@+id/startingPage"
+        android:name="com.example.solofit.StartingPage"
+        android:label="starting_page"
+        tools:layout="@layout/starting_page">
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/mainMenu"
+        android:name="com.example.solofit.MainMenu"
+        android:label="MainMenu"
+        tools:layout="@layout/main_menu"/>
+    <action
+    android:id="@+id/action_startingPage_to_mainMenu"
+    app:destination="@id/mainMenu" />
+
+
+</navigation>
