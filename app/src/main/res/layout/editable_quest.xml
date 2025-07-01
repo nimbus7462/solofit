@@ -47,10 +47,11 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/ibDelete"
         android:layout_width="54dp"
         android:layout_height="49dp"
         android:layout_marginTop="4dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="6dp"
         android:backgroundTint="#00FFFFFF"
         android:contentDescription="delete"
