@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.solofit"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -60,4 +60,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
+    implementation("androidx.wear.compose:compose-material:1.5.0-beta03")
+    implementation("androidx.activity:activity-compose:1.8.2") // or latest
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
 }

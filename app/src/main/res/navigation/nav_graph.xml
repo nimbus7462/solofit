@@ -18,10 +18,19 @@
         android:id="@+id/mainMenu"
         android:name="com.example.solofit.MainMenu"
         android:label="MainMenu"
-        tools:layout="@layout/main_menu"/>
+        tools:layout="@layout/main_menu">
+        <action
+            android:id="@+id/action_mainMenu_to_manage_quest"
+            app:destination="@id/manage_quest" />
+    </fragment>
     <action
     android:id="@+id/action_startingPage_to_mainMenu"
     app:destination="@id/mainMenu" />
+    <fragment
+        android:id="@+id/manage_quest"
+        android:name="com.example.solofit.ManageQuest"
+        android:label="fragment_manage_quest"
+        tools:layout="@layout/fragment_manage_quest" />
 
 
 </navigation>
