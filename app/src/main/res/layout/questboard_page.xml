@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/questboard_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <LinearLayout
+        android:id="@+id/lloQuestboard"
+        android:layout_width="350dp"
+        android:layout_height="650dp"
+        android:background="@drawable/frame1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txvQuestsTitle"
+            android:layout_width="315dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_page_title"
+            android:backgroundTintMode="add"
+            android:fontFamily="@font/schibsted_grotesk"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="@string/quests"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/white"
+            android:textSize="34sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recView_quests"
+            android:layout_width="315dp"
+            android:layout_height="500dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_quest_recycler_view"
+            android:padding="15dp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

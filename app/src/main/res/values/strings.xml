@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">solofit</string>
+    <string name="quests">QUESTS</string>
+    <string name="welcome">Welcome to SoloFit</string>
+    <string name="welcome_subtitle">Start your improvement journey now,\nMonarch</string>
+    <string name="continue_button">Continue</string>
 </resources>
