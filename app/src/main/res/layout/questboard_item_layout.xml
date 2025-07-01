@@ -28,7 +28,7 @@
             android:layout_height="27dp"
             android:layout_gravity="center"
             android:layout_margin="15dp"
-            app:srcCompat="@drawable/icon_strength" />
+            app:srcCompat="@drawable/icon_str" />
 
         <TextView
             android:id="@+id/txvQuest_name"
