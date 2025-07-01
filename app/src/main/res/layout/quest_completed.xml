@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <!-- Centered CardView for Quest Info -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/questCardCompleted"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        app:cardElevation="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="619dp"
+            android:background="@drawable/frame1"
+            android:padding="24dp">
+
+            <ImageView
+                android:id="@+id/titleImageCompleted"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/quest_finished"
+                android:background="@drawable/white_border"
+                android:padding="4dp"
+                android:contentDescription="Quest Info Title"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/questTitleCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3 x 10 Push-Ups"
+                android:textColor="@android:color/white"
+                android:textSize="28sp"
+                app:layout_constraintTop_toBottomOf="@id/titleImageCompleted"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp" />
+
+            <LinearLayout
+                android:id="@+id/expRowCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/questTitleCompleted"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/icon_arrow_up" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="+10 EXP"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+            <!-- Bookmark + Text Layout -->
+            <LinearLayout
+                android:id="@+id/bookmarkTextWrapperCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/white_border"
+                app:layout_constraintTop_toBottomOf="@id/expRowCompleted"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <ImageButton
+                        android:id="@+id/bookmarkBtnCompleted"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="Bookmark"
+                        android:src="@drawable/icon_bookmark"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/questInstructionsCompleted"
+                    android:layout_width="251dp"
+                    android:layout_height="95dp"
+                    android:padding="12dp"
+                    android:text="Begin in a plank with hands slightly wider than shoulders..."
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Stat Block -->
+            <LinearLayout
+                android:id="@+id/statBlockCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/bookmarkTextWrapperCompleted"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- STR Row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/icon_strength"
+                        android:contentDescription="Strength" />
+
+                    <TextView
+                        android:id="@+id/strValueCompleted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="STR: 38"
+                        android:textColor="@android:color/white"
+                        android:textSize="20dp"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <!-- END Row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/icon_shoe"
+                        android:contentDescription="Endurance" />
+
+                    <TextView
+                        android:id="@+id/endValueCompleted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="END: 50"
+                        android:textColor="@android:color/white"
+                        android:textSize="20dp"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <!-- VIT Row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/icon_vit"
+                        android:contentDescription="Vitality" />
+
+                    <TextView
+                        android:id="@+id/vitValueCompleted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="VIT: 30"
+                        android:textColor="@android:color/white"
+                        android:textSize="20dp"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Button Row -->
+            <LinearLayout
+                android:id="@+id/buttonRowCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <Button
+                    android:id="@+id/btnLogCompleted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Log Thoughts"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#0D47A1" />
+
+                <Button
+                    android:id="@+id/btnReturnCompleted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Return"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#444444" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
