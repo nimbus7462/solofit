@@ -136,7 +136,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/icon_strength"
+                        android:src="@drawable/icon_str"
                         android:contentDescription="Strength" />
 
                     <TextView

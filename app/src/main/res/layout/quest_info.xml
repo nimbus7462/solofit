@@ -62,7 +62,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/icon_strength" />
+                    android:src="@drawable/icon_str" />
 
                 <TextView
                     android:id="@+id/textStrengthGain"
