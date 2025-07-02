@@ -23,7 +23,7 @@ class StartingPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.titlePageBtn.setOnClickListener {
+        binding.btnContinue.setOnClickListener {
             findNavController().navigate(R.id.action_startingPage_to_mainMenu)
         }
     }

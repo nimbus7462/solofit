@@ -8,7 +8,7 @@
     android:background="@drawable/bg">
 
     <LinearLayout
-        android:id="@+id/lloQuestboard"
+        android:id="@+id/lloAddQuest"
         android:layout_width="350dp"
         android:layout_height="650dp"
         android:background="@drawable/frame1"

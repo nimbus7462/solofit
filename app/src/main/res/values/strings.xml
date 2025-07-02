@@ -1,7 +1,22 @@
 <resources>
     <string name="app_name">solofit</string>
-    <string name="continue_button">Continue</string>
     <string name="quests">QUESTS</string>
+    <string name="add_quest">ADD QUEST</string>
+    <string name="edit_quest">EDIT QUEST</string>
+    <string name="continue_button">Continue</string>
     <string name="welcome">Welcome to SoloFit</string>
     <string name="welcome_subtitle">Start your improvement journey now,\nMonarch</string>
+    <string name="hint_questName">Insert Quest Name Here</string>
+    <string name="questtype">Quest Type:</string>
+    <string name="difficulty">Difficulty:</string>
+    <string name="additional_tags">Additional Tags:</string>
+    <string name="hint_extraTags">(Enter custom user \ntags here)</string>
+    <string name="exp_reward">EXP Reward:</string>
+    <string name="hint_expReward">(Numerical Vals. Only)</string>
+    <string name="stat_reward">Stat Reward:</string>
+    <string name="add_Desc">Add Description:</string>
+    <string name="edit_Desc">Edit Description:</string>
+    <string name="hint_addDesc">(Add Quest Desc. Here)</string>
+    <string name="save_quest">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
