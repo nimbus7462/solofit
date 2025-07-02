@@ -40,6 +40,11 @@
             android:exported="true"
             android:theme="@style/Theme.Solofit">
         </activity>
+        <activity
+            android:name=".DailySummaryActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Solofit">
+        </activity>
 
         <activity
             android:name=".StartingPage"

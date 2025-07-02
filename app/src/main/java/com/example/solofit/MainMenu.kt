@@ -36,6 +36,11 @@ class MainMenu : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnDailySummary.setOnClickListener{
+            val intent = Intent(this, DailySummaryActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 }

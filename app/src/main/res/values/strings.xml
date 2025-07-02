@@ -25,6 +25,7 @@
     <string name="daily_summary">DAILY SUMMARY</string>
     <string name="quotes">QUOTES</string>
     <string name="quest_history_button">View Quest History</string>
+    <string name="quest_summary_button">View Quest Summary</string>
     <string name="level">LEVEL</string>
     <string name="exp">EXP</string>
     <string name="title">TITLE:</string>
@@ -34,5 +35,8 @@
     <string name="str">STR:</string>
     <string name="end">END:</string>
     <string name="vit">VIT:</string>
+    <string name="completed_quests">COMPLETED QUESTS:</string>
+    <string name="cancelled_quests">CANCELLED QUESTS:</string>
+    <string name="exp_gained">EXP GAINED:</string>
 
 </resources>
