@@ -1,37 +1,36 @@
 package com.example.solofit
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.solofit.databinding.MainMenuBinding
 
-class MainMenu : Fragment() {
+class MainMenu : AppCompatActivity() {
 
-    private var _binding: MainMenuBinding? = null
-    private val binding get() = _binding!!  // Safe access
+    private lateinit var binding: MainMenuBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = MainMenuBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        // Inflate the ViewBinding
+        binding = MainMenuBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Safe to access binding here!
+        // Button click now starts a new Activity instead of navigating fragments
         binding.manageQuestBtnImg.setOnClickListener {
-            findNavController().navigate(R.id.action_mainMenu_to_manage_quest)
-        }
-    }
+            val intent = Intent(this, MainActivity::class.java)
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+            startActivity(intent)
+        }
+
+        binding.questBoard.setOnClickListener{
+            val intent = Intent(this, QuestBoardActivity::class.java)
+
+            startActivity(intent)
+        }
+
+
     }
 }

@@ -17,6 +17,34 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Solofit">
+        </activity>
+
+        <activity
+            android:name=".MainMenu"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Solofit">
+        </activity>
+
+        <activity
+            android:name=".QuestBoardActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Solofit">
+        </activity>
+
+        <activity
+            android:name=".QuestInfoActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Solofit">
+        </activity>
+
+        <activity
+            android:name=".StartingPage"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Solofit">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
