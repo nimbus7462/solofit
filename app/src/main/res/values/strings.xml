@@ -19,4 +19,20 @@
     <string name="hint_addDesc">(Add Quest Desc. Here)</string>
     <string name="save_quest">Save</string>
     <string name="cancel">Cancel</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+        <!-- Existing strings... -->
+
+        <string-array name="quest_difficulties">
+            <item>Easy</item>
+            <item>Medium</item>
+            <item>Endurance</item>
+        </string-array>
+
+        <string-array name="quest_types">
+            <item>Strength</item>
+            <item>Vitality</item>
+            <item>Endurance</item>
+        </string-array>
+
 </resources>
