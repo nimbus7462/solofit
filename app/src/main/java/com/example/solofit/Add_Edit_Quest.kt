@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -54,7 +56,9 @@ class Add_Edit_Quest : Fragment() {
         val edtExpReward = view.findViewById<EditText>(R.id.edtExpRewards)
         val edtStatReward = view.findViewById<EditText>(R.id.etdStatExpRewards)
         val edtQuestDesc = view.findViewById<EditText>(R.id.edtDescription)
-
+        val btnYes = view.findViewById<Button>(R.id.btnYes)
+        val btnGoBack = view.findViewById<Button>(R.id.btnGoBack)
+        val confirmationPanel = view.findViewById<ConstraintLayout>(R.id.clConfirmation)
         // ✅ Set values from passed arguments
         edtQuestHeader.setText(args.questTitle)
         edtQuestName.setText(args.questName)
@@ -89,9 +93,15 @@ class Add_Edit_Quest : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    handleBackPress()
+                    handleCancelButton()
                 }
             })
+        btnYes.setOnClickListener {
+            findNavController().popBackStack() // Go back to the ManageQuest screen
+        }
+        btnGoBack.setOnClickListener {
+            confirmationPanel?.visibility = View.INVISIBLE
+        }
 
 
     }
@@ -120,35 +130,53 @@ class Add_Edit_Quest : Fragment() {
         val type = questTypeSpinner.selectedItem.toString()
         val diff = questDiffSpinner.selectedItem.toString()
 
-        if (name.isEmpty() || tags.isEmpty() || desc.isEmpty() || xp.isEmpty() || stat.isEmpty()) {
-            // You can show a Toast or dialog here
-            edtQuestName.error = if (name.isEmpty()) "Required" else null
-            edtQuestTags.error = if (tags.isEmpty()) "Required" else null
-            edtExpReward.error = if (xp.isEmpty()) "Required" else null
-            edtStatReward.error = if (stat.isEmpty()) "Required" else null
-            edtQuestDesc.error = if (desc.isEmpty()) "Required" else null
-            return
+        when {
+            name.isEmpty() -> {
+                edtQuestName.error = "Required"
+                showToast("Quest name is required")
+                return
+            }
+            tags.isEmpty() -> {
+                edtQuestTags.error = "Required"
+                showToast("Tags are required")
+                return
+            }
+            xp.isEmpty() -> {
+                edtExpReward.error = "Required"
+                showToast("XP reward is required")
+                return
+            }
+            stat.isEmpty() -> {
+                edtStatReward.error = "Required"
+                showToast("Stat reward is required")
+                return
+            }
+            desc.isEmpty() -> {
+                edtQuestDesc.error = "Required"
+                showToast("Description is required")
+                return
+            }
         }
 
         try {
             val exp = xp.toInt()
             val stat = stat.toInt()
+            if (exp == 0 || stat == 0) {
+                showToast("XP and stat rewards cannot be 0")
+                return
+            }
             // ✅ Proceed to save (navigate back, update data, etc.)
             // Example: Log or navigate
             println("Saving Quest: Name=$name, XP=$exp, Stat=$stat")
         } catch (e: NumberFormatException) {
             edtExpReward.error = "Must be a number"
             edtStatReward.error = "Must be a number"
+            showToast("XP and stat must be valid numbers")
         }
-        var temp_icon = R.drawable.dumbell_icon
-        if(type == "Strength")
-        {
-            temp_icon = R.drawable.dumbell_icon
-        }else if(type == "Vitality")
-        {
-            temp_icon = R.drawable.meditate
-        }else{
-            temp_icon = R.drawable.footprint
+        val temp_icon = when (type) {
+            "Strength" -> R.drawable.dumbell_icon
+            "Vitality" -> R.drawable.meditate
+            else -> R.drawable.footprint
         }
         val quest = Quest(
             id = if (args.questId == -1) QuestDataHelper.generateNewId() else args.questId, // Handle ID
@@ -174,13 +202,14 @@ class Add_Edit_Quest : Fragment() {
         }
         findNavController().popBackStack()
     }
+    private fun showToast(message: String) {
+        android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT).show()
+    }
     private fun handleCancelButton() {
         // TODO: Confirm cancel or simply go back
-        println("Cancel button pressed")
+        val confirmationPanel = view?.findViewById<ConstraintLayout>(R.id.clConfirmation)
+        confirmationPanel?.visibility = View.VISIBLE
     }
 
-    private fun handleBackPress() {
-        // TODO: Add logic if needed (e.g., show confirm dialog)
-        println("Android back button pressed")
-    }
+
 }
