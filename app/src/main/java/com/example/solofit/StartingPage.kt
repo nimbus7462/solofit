@@ -1,35 +1,38 @@
 package com.example.solofit
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.example.solofit.databinding.StartingPageBinding
 
-class StartingPage : Fragment() {
-    private var _binding: StartingPageBinding? = null
-    private val binding get() = _binding!!
+class StartingPage : AppCompatActivity() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = StartingPageBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private lateinit var binding: StartingPageBinding
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
-        binding.titlePageBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_startingPage_to_mainMenu)
+
+        // Inflate the binding and set the root view
+        binding = StartingPageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        Log.d("StartingPage", "StartingPage launched")
+
+        // Button click listener
+        binding.btnContinue.setOnClickListener {
+            // If you're navigating to another activity, use Intent
+            val intent = Intent(this, MainMenu::class.java)
+            startActivity(intent)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -3,29 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/startingPage">
-
-    <fragment
-        android:id="@+id/startingPage"
-        android:name="com.example.solofit.StartingPage"
-        android:label="starting_page"
-        tools:layout="@layout/starting_page">
-
-    </fragment>
+    app:startDestination="@id/manage_quest">
 
 
-    <fragment
-        android:id="@+id/mainMenu"
-        android:name="com.example.solofit.MainMenu"
-        android:label="MainMenu"
-        tools:layout="@layout/main_menu">
-        <action
-            android:id="@+id/action_mainMenu_to_manage_quest"
-            app:destination="@id/manage_quest" />
-    </fragment>
-    <action
-    android:id="@+id/action_startingPage_to_mainMenu"
-    app:destination="@id/mainMenu" />
+
+
     <fragment
         android:id="@+id/manage_quest"
         android:name="com.example.solofit.ManageQuest"

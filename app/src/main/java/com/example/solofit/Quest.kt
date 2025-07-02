@@ -4,6 +4,7 @@ data class Quest(
     val title: String,
     val description: String,
     val tag: String,           // Strength, Endurance, Vitality
+    val addOnTags: String,
     val difficulty: String,    // Easy, Medium, Hard
     val xpReward: Int,
     val isCompleted: Boolean,
