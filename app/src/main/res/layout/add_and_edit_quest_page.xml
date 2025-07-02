@@ -5,13 +5,13 @@
     android:id="@+id/questboard_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
+    android:background="@drawable/bg_main">
 
     <LinearLayout
         android:id="@+id/lloAddQuest"
         android:layout_width="350dp"
         android:layout_height="800dp"
-        android:background="@drawable/frame1"
+        android:background="@drawable/bg_main_frame"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
             android:backgroundTintMode="add"
             android:fontFamily="@font/schibsted_grotesk"
             android:gravity="center"
-            android:paddingBottom="5dp"
+            android:paddingBottom="8dp"
             android:shadowColor="@color/cyan"
             android:shadowRadius="10"
             android:text="@string/add_quest"
@@ -231,7 +231,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txvAddDesc"
+                android:id="@+id/txvDescTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/play"
@@ -240,7 +240,7 @@
                 android:paddingEnd="12dp"
                 android:shadowColor="@color/cyan"
                 android:shadowRadius="10"
-                android:text="@string/add_Desc"
+                android:text="@string/add_desc"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
