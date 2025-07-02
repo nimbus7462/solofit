@@ -20,9 +20,11 @@ class StartingPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+
         // Inflate the binding and set the root view
         binding = StartingPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         Log.d("StartingPage", "StartingPage launched")
 

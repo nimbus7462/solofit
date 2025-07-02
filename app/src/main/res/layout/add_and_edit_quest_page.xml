@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/questboard_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <LinearLayout
+        android:id="@+id/lloAddQuest"
+        android:layout_width="350dp"
+        android:layout_height="800dp"
+        android:background="@drawable/frame1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txvQuestsTitle"
+            android:layout_width="315dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/bg_page_title"
+            android:backgroundTintMode="add"
+            android:fontFamily="@font/schibsted_grotesk"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="@string/add_quest"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/white"
+            android:textSize="34sp" />
+
+        <EditText
+            android:id="@+id/edtQuestName"
+            android:layout_width="315dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_page_title"
+            android:backgroundTintMode="add"
+            android:ems="20"
+            android:fontFamily="@font/play"
+            android:gravity="center"
+            android:hint="@string/hint_questName"
+            android:inputType="text"
+            android:paddingBottom="5dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/white"
+            android:textColorHint="#ABADAD"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|end"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txvQuestType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/play"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/questtype"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/spnQuestType"
+                android:layout_width="170dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_dropdown"
+                android:padding="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|end"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txvDifficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/play"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/difficulty"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/spnDifficulty"
+                android:layout_width="170dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_dropdown"
+                android:padding="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txvExtraTags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/play"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/additional_tags"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edtExtraTags"
+                android:layout_width="170dp"
+                android:layout_height="70dp"
+                android:layout_gravity="end"
+                android:background="@drawable/bg_extraTags"
+                android:ems="10"
+                android:fontFamily="@font/play"
+                android:gravity="center_horizontal|top"
+                android:hint="@string/hint_extraTags"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="#ABADAD"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|end"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txvExpRewards"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/play"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/exp_reward"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/edtExpRewards"
+                android:layout_width="170dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:background="@drawable/bg_extraTags"
+                android:ems="10"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:hint="@string/hint_expReward"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="#ABADAD"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|end"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/txvStatRewards"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/play"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/stat_reward"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/StatExpRewards"
+                android:layout_width="170dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:background="@drawable/bg_extraTags"
+                android:ems="10"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:hint="@string/hint_expReward"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="#ABADAD"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txvAddDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/play"
+                android:paddingStart="12dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="12dp"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/add_Desc"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/editTextText3"
+                android:layout_width="300dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_desc"
+                android:ems="10"
+                android:fontFamily="@font/play"
+                android:gravity="top"
+                android:hint="@string/hint_addDesc"
+                android:inputType="text"
+                android:padding="15dp"
+                android:textColor="@color/white"
+                android:textColorHint="#ABADAD" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCancelAdd"
+                android:layout_width="115dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="35dp"
+                android:background="@drawable/bg_addQst_Cancel"
+                android:fontFamily="@font/play"
+                android:shadowColor="#C6C6C6"
+                android:shadowRadius="10"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnSaveAdd"
+                android:layout_width="115dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_addQst_Save"
+                android:fontFamily="@font/play"
+                android:shadowColor="@color/bright_green"
+                android:shadowRadius="10"
+                android:text="@string/save_quest"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
