@@ -19,15 +19,25 @@ class MainMenu : AppCompatActivity() {
         setContentView(binding.root)
 
         // Button click now starts a new Activity instead of navigating fragments
-        binding.manageQuestBtnImg.setOnClickListener {
+        binding.btnManageQuests.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
 
             startActivity(intent)
         }
 
-        binding.questBoard.setOnClickListener{
+        binding.btnQuestboard.setOnClickListener{
             val intent = Intent(this, QuestBoardActivity::class.java)
 
+            startActivity(intent)
+        }
+
+        binding.btnStatus.setOnClickListener{
+            val intent = Intent(this, StatusActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnDailySummary.setOnClickListener{
+            val intent = Intent(this, DailySummaryActivity::class.java)
             startActivity(intent)
         }
 

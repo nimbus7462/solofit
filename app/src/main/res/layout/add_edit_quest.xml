@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="1"
-    android:background="@drawable/bg"
+    android:background="@drawable/bg_main"
     android:contentDescription="discard"
     tools:context=".Add_Edit_Quest">
 
@@ -23,7 +23,7 @@
             android:id="@+id/lloAddQuest"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/frame1"
+            android:background="@drawable/bg_main_frame"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="10dp">
@@ -253,7 +253,7 @@
                     android:paddingEnd="12dp"
                     android:shadowColor="@color/cyan"
                     android:shadowRadius="10"
-                    android:text="@string/add_Desc"
+                    android:text="@string/add_desc"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 

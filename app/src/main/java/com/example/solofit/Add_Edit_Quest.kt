@@ -206,7 +206,6 @@ class Add_Edit_Quest : Fragment() {
         android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT).show()
     }
     private fun handleCancelButton() {
-        // TODO: Confirm cancel or simply go back
         val confirmationPanel = view?.findViewById<ConstraintLayout>(R.id.clConfirmation)
         confirmationPanel?.visibility = View.VISIBLE
     }

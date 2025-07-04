@@ -14,25 +14,39 @@
     <string name="exp_reward">EXP Reward:</string>
     <string name="hint_expReward">(Numerical Vals. Only)</string>
     <string name="stat_reward">Stat Reward:</string>
-    <string name="add_Desc">Add Description:</string>
-    <string name="edit_Desc">Edit Description:</string>
+    <string name="add_desc">Add Description:</string>
+    <string name="edit_desc">Edit Description:</string>
     <string name="hint_addDesc">(Add Quest Desc. Here)</string>
     <string name="save_quest">Save</string>
     <string name="cancel">Cancel</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-        <!-- Existing strings... -->
+    <string name="questboard">QUESTBOARD</string>
+    <string name="manage_quests">MANAGE QUESTS</string>
+    <string name="status">STATUS</string>
+    <string name="daily_summary">DAILY SUMMARY</string>
+    <string name="quotes">QUOTES</string>
+    <string name="quest_history_button">View Quest History</string>
+    <string name="quest_summary_button">View Quest Summary</string>
+    <string name="level">LEVEL</string>
+    <string name="exp">EXP</string>
+    <string name="title">TITLE:</string>
+    <string name="days">DAYS</string>
+    <string name="current_streak">CURRENT\nSTREAK</string>
+    <string name="longest_streak">LONGEST\nSTREAK</string>
+    <string name="str">STR:</string>
+    <string name="end">END:</string>
+    <string name="vit">VIT:</string>
+    <string name="completed_quests">COMPLETED QUESTS:</string>
+    <string name="cancelled_quests">CANCELLED QUESTS:</string>
+    <string name="exp_gained">EXP GAINED:</string>
+    <string-array name="quest_difficulties">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Endurance</item>
+    </string-array>
 
-        <string-array name="quest_difficulties">
-            <item>Easy</item>
-            <item>Medium</item>
-            <item>Endurance</item>
-        </string-array>
-
-        <string-array name="quest_types">
-            <item>Strength</item>
-            <item>Vitality</item>
-            <item>Endurance</item>
-        </string-array>
-
+    <string-array name="quest_types">
+        <item>Strength</item>
+        <item>Vitality</item>
+        <item>Endurance</item>
+    </string-array>
 </resources>
