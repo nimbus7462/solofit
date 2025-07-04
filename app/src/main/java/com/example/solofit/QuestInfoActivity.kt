@@ -36,6 +36,25 @@ class QuestInfoActivity : AppCompatActivity() {
         viewBinding.valueDifficulty.text = difficulty
         viewBinding.textExpGain.text = "+$xpReward EXP"
         // viewBinding.titleImage.setImageResource(iconResId)
+
+
+        viewBinding.btnCancel.setOnClickListener {
+            val intentCancelQuest = Intent(applicationContext, QuestCancelledActivity::class.java)
+
+
+            this.startActivity(intentCancelQuest)
+
+        }
+
+        viewBinding.btnComplete.setOnClickListener {
+            val intentCompletedQuest = Intent(applicationContext, QuestCompletedActivity::class.java)
+
+
+            this.startActivity(intentCompletedQuest)
+
+        }
+
+
     }
 }
 
