@@ -37,7 +37,7 @@ class QuestBoardActivity : AppCompatActivity() {
 
         // Set the LayoutManager. This can be set to different kinds of LayoutManagers but we're
         // keeping things simple with a LinearLayout.
-        this.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        this.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val helper: SnapHelper = LinearSnapHelper()
         helper.attachToRecyclerView(recyclerView)
