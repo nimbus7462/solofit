@@ -12,7 +12,54 @@
         android:id="@+id/manage_quest"
         android:name="com.example.solofit.ManageQuest"
         android:label="fragment_manage_quest"
-        tools:layout="@layout/fragment_manage_quest" />
+        tools:layout="@layout/fragment_manage_quest" >
+        <action
+            android:id="@+id/action_manage_quest_to_add_edit_quest"
+            app:destination="@id/add_edit_quest" />
+    </fragment>
+    <fragment
+        android:id="@+id/add_edit_quest"
+        android:name="com.example.solofit.Add_Edit_Quest"
+        android:label="add_quest"
+        tools:layout="@layout/add_edit_quest">
+        <argument
+            android:name="questId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="questTitle"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="questName"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="questDescription"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="questType"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="questDifficulty"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="questTags"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="questXpReward"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="questStatReward"
+            app:argType="integer"
+            android:defaultValue="0" />
+
+    </fragment>
 
 
 </navigation>
