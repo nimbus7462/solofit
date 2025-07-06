@@ -129,78 +129,95 @@ class Add_Edit_Quest : Fragment() {
         val desc = edtQuestDesc.text.toString().trim()
         val type = questTypeSpinner.selectedItem.toString()
         val diff = questDiffSpinner.selectedItem.toString()
-
+        var save: Boolean
+        save = true
         when {
             name.isEmpty() -> {
                 edtQuestName.error = "Required"
                 showToast("Quest name is required")
-                return
+                save = false
             }
             tags.isEmpty() -> {
                 edtQuestTags.error = "Required"
                 showToast("Tags are required")
-                return
+                save = false
             }
             xp.isEmpty() -> {
                 edtExpReward.error = "Required"
                 showToast("XP reward is required")
-                return
+                save = false
             }
             stat.isEmpty() -> {
                 edtStatReward.error = "Required"
                 showToast("Stat reward is required")
-                return
+                save = false
             }
             desc.isEmpty() -> {
                 edtQuestDesc.error = "Required"
                 showToast("Description is required")
-                return
+                save = false
             }
         }
+
+        var exp: Int
+        var statVal: Int
 
         try {
-            val exp = xp.toInt()
-            val stat = stat.toInt()
-            if (exp == 0 || stat == 0) {
-                showToast("XP and stat rewards cannot be 0")
-                return
+            exp = xp.toInt()
+            if (exp == 0) {
+                edtExpReward.error = "Cannot be 0"
+                showToast("XP reward cannot be 0")
+                save = false
             }
-            // ✅ Proceed to save (navigate back, update data, etc.)
-            // Example: Log or navigate
-            println("Saving Quest: Name=$name, XP=$exp, Stat=$stat")
         } catch (e: NumberFormatException) {
             edtExpReward.error = "Must be a number"
-            edtStatReward.error = "Must be a number"
-            showToast("XP and stat must be valid numbers")
+            showToast("XP reward must be a valid number")
+            save = false
         }
-        val temp_icon = when (type) {
-            "Strength" -> R.drawable.dumbell_icon
-            "Vitality" -> R.drawable.meditate
-            else -> R.drawable.footprint
-        }
-        val quest = Quest(
-            id = if (args.questId == -1) QuestDataHelper.generateNewId() else args.questId, // Handle ID
-            title = name,
-            description = desc,
-            tag = type,
-            addOnTags = tags,
-            difficulty = diff,
-            xpReward = xp.toInt(),
-            statReward = stat.toInt(),
-            isCompleted = false,
-            isCancelled = false,
-            icon = temp_icon
-        )
 
-        if (args.questId == -1) {
-            QuestDataHelper.addQuest(quest)
-        } else {
-            val index = QuestDataHelper.findQuestIndexById(args.questId)
-            if (index != null) {
-                QuestDataHelper.updateQuest(index, quest)
+// Try parsing Stat
+        try {
+            statVal = stat.toInt()
+            if (statVal == 0) {
+                edtStatReward.error = "Cannot be 0"
+                showToast("Stat reward cannot be 0")
+                save = false
             }
+        } catch (e: NumberFormatException) {
+            edtStatReward.error = "Must be a number"
+            showToast("Stat reward must be a valid number")
+            save = false
         }
-        findNavController().popBackStack()
+        if(save){
+            val temp_icon = when (type) {
+                "Strength" -> R.drawable.dumbell_icon
+                "Vitality" -> R.drawable.meditate
+                else -> R.drawable.footprint
+            }
+            val quest = Quest(
+                id = if (args.questId == -1) QuestDataHelper.generateNewId() else args.questId, // Handle ID
+                title = name,
+                description = desc,
+                tag = type,
+                addOnTags = tags,
+                difficulty = diff,
+                xpReward = xp.toInt(),
+                statReward = stat.toInt(),
+                isCompleted = false,
+                isCancelled = false,
+                icon = temp_icon
+            )
+
+            if (args.questId == -1) {
+                QuestDataHelper.addQuest(quest)
+            } else {
+                val index = QuestDataHelper.findQuestIndexById(args.questId)
+                if (index != null) {
+                    QuestDataHelper.updateQuest(index, quest)
+                }
+            }
+            findNavController().popBackStack()
+        }
     }
     private fun showToast(message: String) {
         android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT).show()
