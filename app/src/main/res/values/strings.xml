@@ -40,6 +40,7 @@
     <string name="exp_gained">EXP GAINED:</string>
     <string name="quest_info">QUEST INFO</string>
     <string name="completed">Completed</string>
+    <string name="quest_history">QUEST HISTORY</string>
     <string-array name="quest_difficulties">
         <item>Easy</item>
         <item>Medium</item>
