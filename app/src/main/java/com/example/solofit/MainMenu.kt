@@ -41,6 +41,11 @@ class MainMenu : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnQuotes.setOnClickListener{
+            val intent = Intent(this, QuotesActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 }
