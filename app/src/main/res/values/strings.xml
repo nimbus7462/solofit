@@ -41,6 +41,9 @@
     <string name="quest_info">QUEST INFO</string>
     <string name="completed">Completed</string>
     <string name="quest_history">QUEST HISTORY</string>
+    <string name="logging">LOGGING</string>
+    <string name="edit_log">Edit Log</string>
+    <string name="saved_quotes">SAVED QUOTES</string>
     <string-array name="quest_difficulties">
         <item>Easy</item>
         <item>Medium</item>

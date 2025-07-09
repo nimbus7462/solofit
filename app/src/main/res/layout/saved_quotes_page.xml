@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/txvQuestHistoryTitle"
+            android:id="@+id/txvQuotesTitle"
             android:layout_width="315dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
@@ -28,20 +28,19 @@
             android:paddingBottom="5dp"
             android:shadowColor="@color/cyan"
             android:shadowRadius="10"
-            android:text="@string/quest_history"
+            android:text="@string/saved_quotes"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/white"
             android:textSize="34sp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recView_questHistory"
+            android:id="@+id/recView_savedQuotes"
             android:layout_width="315dp"
             android:layout_height="500dp"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:background="@drawable/bg_inner_panel"
             android:padding="15dp" />
-
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
