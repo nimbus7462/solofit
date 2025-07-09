@@ -38,6 +38,8 @@
     <string name="completed_quests">COMPLETED QUESTS:</string>
     <string name="cancelled_quests">CANCELLED QUESTS:</string>
     <string name="exp_gained">EXP GAINED:</string>
+    <string name="quest_info">QUEST INFO</string>
+    <string name="completed">Completed</string>
     <string-array name="quest_difficulties">
         <item>Easy</item>
         <item>Medium</item>
