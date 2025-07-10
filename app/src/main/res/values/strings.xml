@@ -44,6 +44,7 @@
     <string name="logging">LOGGING</string>
     <string name="edit_log">Edit Log</string>
     <string name="saved_quotes">SAVED QUOTES</string>
+    <string name="quest_summary">QUEST SUMMARY</string>
     <string-array name="quest_difficulties">
         <item>Easy</item>
         <item>Medium</item>
