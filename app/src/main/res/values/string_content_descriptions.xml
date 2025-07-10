@@ -2,4 +2,5 @@
 <resources>
     <string name="start_screen_btn">Continue Button</string>
     <string name="profile_pic">Profile Picture</string>
+    <string name="log_icon">Log Icon</string>
 </resources>

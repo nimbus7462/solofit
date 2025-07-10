@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_main">
+
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="650dp"
+        android:background="@drawable/bg_sidepage_frame"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_page_title"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingRight="20dp">
+
+            <ImageView
+                android:id="@+id/imvInfoIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/icon_info" />
+
+            <TextView
+                android:id="@+id/txvQuestInfoTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/schibsted_grotesk"
+                android:gravity="center"
+                android:paddingBottom="8dp"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/quest_info"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txvQHistQuestName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/play"
+            android:gravity="center"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="Quest Name Here"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imvQHistTagIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/icon_str" />
+
+            <TextView
+                android:id="@+id/txvQHistStatReward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="+ 1 STR"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/imvQHistExpIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/icon_exp" />
+
+            <TextView
+                android:id="@+id/txvQHistExpReward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="+ 10 EXP"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imvQHistExtraTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:srcCompat="@drawable/icon_extra_str" />
+
+            <TextView
+                android:id="@+id/txvQHistExtraTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="Chest, Triceps"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txvQHistDifficultyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/difficulty"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/txvQHistDifficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:background="@drawable/bg_diff_text_normal"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:padding="2dp"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txvQHistDescription"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_desc"
+            android:fontFamily="@font/play"
+            android:gravity="center"
+            android:padding="20dp"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txvQHistQuestStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/inclusive_sans"
+            android:gravity="center"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="@string/completed"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/txvQHistCompletedDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inclusive_sans"
+            android:gravity="center"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="06/29/25"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

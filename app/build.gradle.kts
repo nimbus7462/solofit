@@ -63,5 +63,5 @@ dependencies {
     implementation("androidx.wear.compose:compose-material:1.5.0-beta03")
     implementation("androidx.activity:activity-compose:1.8.2") // or latest
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
-
+    implementation ("com.google.android.material:material:1.11.0")
 }
