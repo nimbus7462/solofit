@@ -1,4 +1,5 @@
 package com.example.solofit
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,8 @@ import androidx.navigation.fragment.navArgs
 
 class Add_Edit_Quest : Fragment() {
 
-    private val args: Add_Edit_QuestArgs by navArgs() // ✅ Safe Args usage
+    private val args: Add_Edit_QuestArgs by navArgs() // ✅ Safe Args
+    private lateinit var dbHelper: MyDatabaseHelper    // ✅ DB helper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,12 +27,15 @@ class Add_Edit_Quest : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
+
+        dbHelper = MyDatabaseHelper(requireContext()) // ✅ Init DB helper
+
         val questTypeSpinner = view.findViewById<Spinner>(R.id.spnQuestType)
         val questDiffSpinner = view.findViewById<Spinner>(R.id.spnDifficulty)
         val questTypes = resources.getStringArray(R.array.quest_types)
         val questDiff = resources.getStringArray(R.array.quest_difficulties)
+
         val typeAdapter = ArrayAdapter(
             requireContext(),
             R.layout.spinner_item,
@@ -47,9 +52,7 @@ class Add_Edit_Quest : Fragment() {
         difficultyAdapter.setDropDownViewResource(R.layout.spinner_dropdown)
         questDiffSpinner.adapter = difficultyAdapter
 
-
-
-        // ✅ Get references to your EditText views
+        // ✅ Get references to EditTexts and buttons
         val edtQuestHeader = view.findViewById<EditText>(R.id.edtQuestsTitle)
         val edtQuestName = view.findViewById<EditText>(R.id.edtQuestName)
         val edtQuestTags = view.findViewById<EditText>(R.id.edtExtraTags)
@@ -59,7 +62,8 @@ class Add_Edit_Quest : Fragment() {
         val btnYes = view.findViewById<Button>(R.id.btnYes)
         val btnGoBack = view.findViewById<Button>(R.id.btnGoBack)
         val confirmationPanel = view.findViewById<ConstraintLayout>(R.id.clConfirmation)
-        // ✅ Set values from passed arguments
+
+        // ✅ Populate fields if editing
         edtQuestHeader.setText(args.questTitle)
         edtQuestName.setText(args.questName)
         edtQuestDesc.setText(args.questDescription)
@@ -69,9 +73,9 @@ class Add_Edit_Quest : Fragment() {
         questTypeSpinner.setSelection(getSpinnerIndex(questTypeSpinner, args.questType))
         questDiffSpinner.setSelection(getSpinnerIndex(questDiffSpinner, args.questDifficulty))
 
-
         val btnSave = view.findViewById<View>(R.id.btnSaveAdd)
         val btnCancel = view.findViewById<View>(R.id.btnCancelAdd)
+
         btnSave.setOnClickListener {
             handleSaveButton(
                 edtQuestName,
@@ -82,29 +86,28 @@ class Add_Edit_Quest : Fragment() {
                 questTypeSpinner,
                 questDiffSpinner
             )
-
         }
 
         btnCancel.setOnClickListener {
             handleCancelButton()
         }
 
-        // Handle Android back button
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     handleCancelButton()
                 }
             })
+
         btnYes.setOnClickListener {
-            findNavController().popBackStack() // Go back to the ManageQuest screen
+            findNavController().popBackStack()
         }
+
         btnGoBack.setOnClickListener {
             confirmationPanel?.visibility = View.INVISIBLE
         }
-
-
     }
+
     private fun getSpinnerIndex(spinner: Spinner, value: String): Int {
         for (i in 0 until spinner.count) {
             if (spinner.getItemAtPosition(i).toString().equals(value, ignoreCase = true)) {
@@ -113,6 +116,7 @@ class Add_Edit_Quest : Fragment() {
         }
         return 0
     }
+
     private fun handleSaveButton(
         edtQuestName: EditText,
         edtQuestTags: EditText,
@@ -120,7 +124,7 @@ class Add_Edit_Quest : Fragment() {
         edtStatReward: EditText,
         edtQuestDesc: EditText,
         questTypeSpinner: Spinner,
-        questDiffSpinner:Spinner
+        questDiffSpinner: Spinner
     ) {
         val name = edtQuestName.text.toString().trim()
         val tags = edtQuestTags.text.toString().trim()
@@ -129,8 +133,8 @@ class Add_Edit_Quest : Fragment() {
         val desc = edtQuestDesc.text.toString().trim()
         val type = questTypeSpinner.selectedItem.toString()
         val diff = questDiffSpinner.selectedItem.toString()
-        var save: Boolean
-        save = true
+        var save = true
+
         when {
             name.isEmpty() -> {
                 edtQuestName.error = "Required"
@@ -159,73 +163,63 @@ class Add_Edit_Quest : Fragment() {
             }
         }
 
-        var exp: Int
-        var statVal: Int
+        val exp = xp.toIntOrNull()
+        val statVal = stat.toIntOrNull()
 
-        try {
-            exp = xp.toInt()
-            if (exp == 0) {
-                edtExpReward.error = "Cannot be 0"
-                showToast("XP reward cannot be 0")
-                save = false
-            }
-        } catch (e: NumberFormatException) {
-            edtExpReward.error = "Must be a number"
+        if (exp == null || exp == 0) {
+            edtExpReward.error = "Must be a valid number > 0"
             showToast("XP reward must be a valid number")
             save = false
         }
 
-// Try parsing Stat
-        try {
-            statVal = stat.toInt()
-            if (statVal == 0) {
-                edtStatReward.error = "Cannot be 0"
-                showToast("Stat reward cannot be 0")
-                save = false
-            }
-        } catch (e: NumberFormatException) {
-            edtStatReward.error = "Must be a number"
+        if (statVal == null || statVal == 0) {
+            edtStatReward.error = "Must be a valid number > 0"
             showToast("Stat reward must be a valid number")
             save = false
         }
-        if(save){
+
+        if (save) {
             val temp_icon = when (type) {
                 "Strength" -> R.drawable.dumbell_icon
                 "Vitality" -> R.drawable.meditate
                 else -> R.drawable.footprint
             }
+
             val quest = Quest(
-                id = if (args.questId == -1) QuestDataHelper.generateNewId() else args.questId, // Handle ID
+                id = if (args.questId == -1) 0 else args.questId, // 0 = AUTO_INCREMENT
                 title = name,
                 description = desc,
                 tag = type,
                 addOnTags = tags,
                 difficulty = diff,
-                xpReward = xp.toInt(),
-                statReward = stat.toInt(),
+                xpReward = exp!!,
+                statReward = statVal!!,
                 isCompleted = false,
                 isCancelled = false,
                 icon = temp_icon
             )
 
-            if (args.questId == -1) {
-                QuestDataHelper.addQuest(quest)
+            val success = if (args.questId == -1) {
+                dbHelper.addQuest(quest)
             } else {
-                val index = QuestDataHelper.findQuestIndexById(args.questId)
-                if (index != null) {
-                    QuestDataHelper.updateQuest(index, quest)
-                }
+                dbHelper.updateQuest(quest)
             }
-            findNavController().popBackStack()
+
+            if (success) {
+                showToast("Quest saved!")
+                findNavController().popBackStack()
+            } else {
+                showToast("Failed to save quest")
+            }
         }
     }
+
     private fun showToast(message: String) {
         android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT).show()
     }
+
     private fun handleCancelButton() {
         val confirmationPanel = view?.findViewById<ConstraintLayout>(R.id.clConfirmation)
         confirmationPanel?.visibility = View.VISIBLE
     }
-
-
 }

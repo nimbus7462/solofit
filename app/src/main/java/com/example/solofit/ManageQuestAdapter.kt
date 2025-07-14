@@ -7,7 +7,8 @@ import com.example.solofit.databinding.EditableQuestBinding
 
 class ManageQuestAdapter(
     private val quests: MutableList<Quest>,
-    private val onItemClick: (Quest) -> Unit
+    private val onItemClick: (Quest) -> Unit,
+    private val onDeleteClick: (Quest) -> Unit  // ✅ New param!
 ) : RecyclerView.Adapter<ManageQuestAdapter.QuestViewHolder>() {
 
     fun updateList(newList: List<Quest>) {
@@ -28,16 +29,13 @@ class ManageQuestAdapter(
         val quest = quests[position]
         holder.binding.tvQuestTitle.text = quest.title
         holder.binding.ivIcon.setImageResource(quest.icon)
+
         holder.binding.imageButton2.setOnClickListener {
             onItemClick(quest)
         }
+
         holder.binding.ibDelete.setOnClickListener {
-            val questToRemove = quests[position]
-
-            // Remove from the data source
-            QuestDataHelper.quests.removeIf { it.id == questToRemove.id }
-
-            // Remove from the adapter list
+            onDeleteClick(quest)  // ✅ Call DB delete
             quests.removeAt(position)
             notifyItemRemoved(position)
         }
