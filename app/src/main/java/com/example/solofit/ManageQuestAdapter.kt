@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solofit.databinding.EditableQuestBinding
+import com.example.solofit.model.Quest
 
 class ManageQuestAdapter(
     private val quests: MutableList<Quest>,

@@ -1,16 +1,16 @@
-package com.example.solofit
+package com.example.solofit.QuestboardActivities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.solofit.QuestBoardAdapter.Companion.addOnTagsKey
-import com.example.solofit.QuestBoardAdapter.Companion.descKey
-import com.example.solofit.QuestBoardAdapter.Companion.difficultyKey
-import com.example.solofit.QuestBoardAdapter.Companion.iconKey
-import com.example.solofit.QuestBoardAdapter.Companion.tagKey
-import com.example.solofit.QuestBoardAdapter.Companion.titleKey
-import com.example.solofit.QuestBoardAdapter.Companion.xpRewardKey
+import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.addOnTagsKey
+import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.descKey
+import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.difficultyKey
+import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.iconKey
+import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.tagKey
+import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.titleKey
+import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.xpRewardKey
+import com.example.solofit.R
 import com.example.solofit.databinding.QuestInfoBinding
 
 class QuestInfoActivity : AppCompatActivity() {

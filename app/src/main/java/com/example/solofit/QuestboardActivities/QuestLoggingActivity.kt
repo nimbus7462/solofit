@@ -1,4 +1,4 @@
-package com.example.solofit
+package com.example.solofit.QuestboardActivities
 
 import android.content.Intent
 import android.os.Bundle

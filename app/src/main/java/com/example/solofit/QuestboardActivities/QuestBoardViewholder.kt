@@ -1,6 +1,7 @@
-package com.example.solofit
+package com.example.solofit.QuestboardActivities
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.solofit.model.Quest
 import com.example.solofit.databinding.QuestboardItemLayoutBinding
 
 

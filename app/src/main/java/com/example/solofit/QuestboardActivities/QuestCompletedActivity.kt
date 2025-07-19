@@ -1,22 +1,21 @@
-package com.example.solofit
+package com.example.solofit.QuestboardActivities
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.solofit.databinding.QuestCancelledBinding
+import com.example.solofit.databinding.QuestCompletedBinding
 
-
-class QuestCancelledActivity : AppCompatActivity(){
+class QuestCompletedActivity : AppCompatActivity(){
 
     // Instance variable not constant
-    private lateinit var viewBinding: QuestCancelledBinding
+    private lateinit var viewBinding: QuestCompletedBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.viewBinding = QuestCancelledBinding.inflate(layoutInflater)
+        this.viewBinding = QuestCompletedBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        viewBinding.btnLogCancelled.setOnClickListener {
+        viewBinding.btnLogCompleted.setOnClickListener {
             val intentLoggingActivity = Intent(applicationContext, QuestLoggingActivity::class.java)
 
 
@@ -24,7 +23,7 @@ class QuestCancelledActivity : AppCompatActivity(){
 
         }
 
-        viewBinding.btnReturnCancelled.setOnClickListener {
+        viewBinding.btnReturnCompleted.setOnClickListener {
             val intentQuestBoardActivity = Intent(applicationContext, QuestBoardActivity::class.java)
 
 
@@ -32,9 +31,6 @@ class QuestCancelledActivity : AppCompatActivity(){
 
         }
 
-
     }
-
-
 
 }

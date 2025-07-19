@@ -26,13 +26,13 @@
         </activity>
 
         <activity
-            android:name=".QuestBoardActivity"
+            android:name=".QuestboardActivities.QuestBoardActivity"
             android:exported="true"
             android:theme="@style/Theme.Solofit">
         </activity>
 
         <activity
-            android:name=".QuestInfoActivity"
+            android:name=".QuestboardActivities.QuestInfoActivity"
             android:exported="true"
             android:theme="@style/Theme.Solofit">
         </activity>
@@ -48,21 +48,21 @@
         </activity>
 
         <activity
-            android:name=".QuestCancelledActivity"
+            android:name=".QuestboardActivities.QuestCancelledActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Solofit">
         </activity>
 
         <activity
-            android:name=".QuestCompletedActivity"
+            android:name=".QuestboardActivities.QuestCompletedActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Solofit">
         </activity>
 
         <activity
-            android:name=".QuestLoggingActivity"
+            android:name=".QuestboardActivities.QuestLoggingActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Solofit">

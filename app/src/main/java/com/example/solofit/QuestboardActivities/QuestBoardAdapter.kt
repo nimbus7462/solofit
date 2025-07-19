@@ -1,12 +1,10 @@
-package com.example.solofit
+package com.example.solofit.QuestboardActivities
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.example.solofit.model.Quest
 import com.example.solofit.databinding.QuestboardItemLayoutBinding
 
 /*

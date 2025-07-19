@@ -1,4 +1,4 @@
-import com.example.solofit.Quest
+import com.example.solofit.model.Quest
 import com.example.solofit.R
 
 class QuestDataHelper {

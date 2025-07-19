@@ -1,230 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="@drawable/bg_main">
 
-    <!-- Centered CardView for Quest Info -->
-    <com.google.android.material.card.MaterialCardView
+    <!-- Replaced MaterialCardView with full ConstraintLayout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/questCardCompleted"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="650dp"
         android:layout_margin="24dp"
-        app:cardElevation="10dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/bg_main_frame"
+        android:maxHeight="650dp"
+        android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="619dp"
-            android:background="@drawable/bg_main_frame"
-            android:padding="24dp">
+        <!-- Title Image -->
+        <ImageView
+            android:id="@+id/titleImageCompleted"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@drawable/white_border"
+            android:contentDescription="Quest Info Title"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/quest_finished"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Title Text -->
+        <TextView
+            android:id="@+id/questTitleCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="3 x 10 Push-Ups"
+            android:textColor="@android:color/white"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleImageCompleted" />
+
+        <!-- EXP Row -->
+        <LinearLayout
+            android:id="@+id/expRowCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/questTitleCompleted">
 
             <ImageView
-                android:id="@+id/titleImageCompleted"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/quest_finished"
-                android:background="@drawable/white_border"
-                android:padding="4dp"
-                android:contentDescription="Quest Info Title"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/icon_arrow_up" />
 
             <TextView
-                android:id="@+id/questTitleCompleted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3 x 10 Push-Ups"
+                android:layout_marginStart="8dp"
+                android:text="+10 EXP"
                 android:textColor="@android:color/white"
-                android:textSize="28sp"
-                app:layout_constraintTop_toBottomOf="@id/titleImageCompleted"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="20dp" />
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <!-- Bookmark + Text -->
+        <LinearLayout
+            android:id="@+id/bookmarkTextWrapperCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/white_border"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expRowCompleted">
 
             <LinearLayout
-                android:id="@+id/expRowCompleted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+
+                <ImageButton
+                    android:id="@+id/bookmarkBtnCompleted"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="4dp"
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Bookmark"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_bookmark" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/questInstructionsCompleted"
+                android:layout_width="251dp"
+                android:layout_height="120dp"
+                android:padding="12dp"
+                android:text="Begin in a plank with hands slightly wider than shoulders..."
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Stat Block -->
+        <LinearLayout
+            android:id="@+id/statBlockCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bookmarkTextWrapperCompleted">
+
+            <!-- STR -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/questTitleCompleted"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="20dp">
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/icon_arrow_up" />
+                    android:contentDescription="Strength"
+                    android:src="@drawable/icon_str" />
 
                 <TextView
+                    android:id="@+id/strValueCompleted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="+10 EXP"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/white" />
+                    android:text="STR: 38"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp" />
             </LinearLayout>
 
-            <!-- Bookmark + Text Layout -->
+            <!-- END -->
             <LinearLayout
-                android:id="@+id/bookmarkTextWrapperCompleted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/white_border"
-                app:layout_constraintTop_toBottomOf="@id/expRowCompleted"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end">
-
-                    <ImageButton
-                        android:id="@+id/bookmarkBtnCompleted"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginEnd="4dp"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="Bookmark"
-                        android:src="@drawable/icon_bookmark"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true"
-                        android:padding="8dp" />
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Endurance"
+                    android:src="@drawable/icon_shoe" />
 
                 <TextView
-                    android:id="@+id/questInstructionsCompleted"
-                    android:layout_width="251dp"
-                    android:layout_height="95dp"
-                    android:padding="12dp"
-                    android:text="Begin in a plank with hands slightly wider than shoulders..."
+                    android:id="@+id/endValueCompleted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="END: 50"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp" />
+                    android:textSize="20dp" />
             </LinearLayout>
 
-            <!-- Stat Block -->
+            <!-- VIT -->
             <LinearLayout
-                android:id="@+id/statBlockCompleted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/bookmarkTextWrapperCompleted"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:orientation="horizontal">
 
-                <!-- STR Row -->
-                <LinearLayout
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Vitality"
+                    android:src="@drawable/icon_vit" />
+
+                <TextView
+                    android:id="@+id/vitValueCompleted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/icon_str"
-                        android:contentDescription="Strength" />
-
-                    <TextView
-                        android:id="@+id/strValueCompleted"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="STR: 38"
-                        android:textColor="@android:color/white"
-                        android:textSize="20dp"
-                        android:layout_marginStart="8dp" />
-                </LinearLayout>
-
-                <!-- END Row -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/icon_shoe"
-                        android:contentDescription="Endurance" />
-
-                    <TextView
-                        android:id="@+id/endValueCompleted"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="END: 50"
-                        android:textColor="@android:color/white"
-                        android:textSize="20dp"
-                        android:layout_marginStart="8dp" />
-                </LinearLayout>
-
-                <!-- VIT Row -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/icon_vit"
-                        android:contentDescription="Vitality" />
-
-                    <TextView
-                        android:id="@+id/vitValueCompleted"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VIT: 30"
-                        android:textColor="@android:color/white"
-                        android:textSize="20dp"
-                        android:layout_marginStart="8dp" />
-                </LinearLayout>
+                    android:layout_marginStart="8dp"
+                    android:text="VIT: 30"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp" />
             </LinearLayout>
+        </LinearLayout>
 
-            <!-- Button Row -->
-            <LinearLayout
-                android:id="@+id/buttonRowCompleted"
+        <!-- Buttons -->
+        <LinearLayout
+            android:id="@+id/buttonRowCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/btnLogCompleted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:backgroundTint="#0D47A1"
+                android:text="Log Thoughts"
+                android:textColor="@android:color/white" />
 
-                <Button
-                    android:id="@+id/btnLogCompleted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Log Thoughts"
-                    android:textColor="@android:color/white"
-                    android:backgroundTint="#0D47A1" />
+            <Button
+                android:id="@+id/btnReturnCompleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:backgroundTint="#444444"
+                android:text="Return"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnReturnCompleted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Return"
-                    android:textColor="@android:color/white"
-                    android:backgroundTint="#444444" />
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
