@@ -8,7 +8,8 @@ import com.example.solofit.model.Quest
 
 class ManageQuestAdapter(
     private val quests: MutableList<Quest>,
-    private val onItemClick: (Quest) -> Unit
+    private val onItemClick: (Quest) -> Unit,
+    private val onDeleteClick: (Quest) -> Unit  // ✅ New param!
 ) : RecyclerView.Adapter<ManageQuestAdapter.QuestViewHolder>() {
 
     fun updateList(newList: List<Quest>) {
@@ -33,12 +34,7 @@ class ManageQuestAdapter(
             onItemClick(quest)
         }
         holder.binding.ibDelete.setOnClickListener {
-            val questToRemove = quests[position]
-
-            // Remove from the data source
-            QuestDataHelper.quests.removeIf { it.id == questToRemove.id }
-
-            // Remove from the adapter list
+            onDeleteClick(quest)  // ✅ Call DB delete
             quests.removeAt(position)
             notifyItemRemoved(position)
         }
