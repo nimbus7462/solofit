@@ -190,11 +190,6 @@ class Add_Edit_Quest : Fragment() {
             save = false
         }
         if(save){
-            val temp_icon = when (type) {
-                "Strength" -> R.drawable.dumbell_icon
-                "Vitality" -> R.drawable.meditate
-                else -> R.drawable.footprint
-            }
             val quest = Quest(
                 id = if (args.questId == -1) QuestDataHelper.generateNewId() else args.questId, // Handle ID
                 title = name,
@@ -204,9 +199,6 @@ class Add_Edit_Quest : Fragment() {
                 difficulty = diff,
                 xpReward = xp.toInt(),
                 statReward = stat.toInt(),
-                isCompleted = false,
-                isCancelled = false,
-                icon = temp_icon
             )
 
             if (args.questId == -1) {

@@ -44,10 +44,12 @@
     <string name="logging">LOGGING</string>
     <string name="edit_log">Edit Log</string>
     <string name="saved_quotes">SAVED QUOTES</string>
+    <string name="complete_quest">Complete</string>
     <string-array name="quest_difficulties">
         <item>Easy</item>
-        <item>Medium</item>
-        <item>Endurance</item>
+        <item>Normal</item>
+        <item>Hard</item>
+        <item>Extreme</item>
     </string-array>
 
     <string-array name="quest_types">

@@ -6,11 +6,7 @@ data class Quest(
     val description: String,
     val tag: String,           // Strength, Endurance, Vitality
     val addOnTags: String,
-    val difficulty: String,    // Easy, Medium, Hard
+    val difficulty: String,    // Easy, Medium, Hard, Extreme
     val xpReward: Int,
     val statReward: Int,
-    val isCompleted: Boolean,
-    val isCancelled: Boolean,
-    val icon: Int,
-    val log: String             // for user logging
 )

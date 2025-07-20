@@ -28,7 +28,7 @@ class ManageQuestAdapter(
     override fun onBindViewHolder(holder: QuestViewHolder, position: Int) {
         val quest = quests[position]
         holder.binding.tvQuestTitle.text = quest.title
-        holder.binding.ivIcon.setImageResource(quest.icon)
+       // holder.binding.ivIcon.setImageResource(quest.icon)
         holder.binding.imageButton2.setOnClickListener {
             onItemClick(quest)
         }

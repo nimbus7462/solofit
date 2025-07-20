@@ -35,10 +35,7 @@ class QuestDataHelper {
                             addOnTags = "Chest, Triceps",
                             difficulty = "Medium",
                             xpReward = 50,
-                            statReward = 1,
-                            isCompleted = false,
-                            isCancelled = false,
-                            icon = R.drawable.dumbell_icon
+                            statReward = 1
                         ),
                         Quest(
                             id = 1,
@@ -48,36 +45,29 @@ class QuestDataHelper {
                             addOnTags = "Chest, Triceps",
                             difficulty = "Hard",
                             xpReward = 80,
-                            statReward = 1,
-                            isCompleted = false,
-                            isCancelled = false,
-                            icon = R.drawable.dumbell_icon
+                            statReward = 1
+
                         ),
                         Quest(
                             id = 2,
-                            title = "60s Plank",
-                            description = "Hold a plank for 60 seconds for core strength.",
+                            title = "15 min. Meditation",
+                            description = "Mindfulness exercise for 15 minutes.",
                             tag = "Vitality",
-                            addOnTags = "Chest, Triceps",
+                            addOnTags = "Box Breathe",
                             difficulty = "Medium",
                             xpReward = 60,
-                            statReward = 2,
-                            isCompleted = false,
-                            isCancelled = false,
-                            icon = R.drawable.dumbell_icon
+                            statReward = 2
+
                         ),
                         Quest(
                             id = 3,
                             title = "10km Jog",
                             description = "Jog 10 kilometers to build endurance and stamina.",
                             tag = "Endurance",
-                            addOnTags = "Chest, Triceps",
-                            difficulty = "Hard",
+                            addOnTags = "High Intensity",
+                            difficulty = "Extreme",
                             xpReward = 120,
-                            statReward = 3,
-                            isCompleted = false,
-                            isCancelled = false,
-                            icon = R.drawable.footprint
+                            statReward = 10
                         ),
                         Quest(
                             id = 4,
@@ -87,10 +77,7 @@ class QuestDataHelper {
                             addOnTags = "Chest, Triceps",
                             difficulty = "Easy",
                             xpReward = 30,
-                            statReward = 1,
-                            isCompleted = false,
-                            isCancelled = false,
-                            icon = R.drawable.footprint
+                            statReward = 5
                         )
                     )
                 )
