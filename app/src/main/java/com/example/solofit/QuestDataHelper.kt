@@ -33,7 +33,7 @@ class QuestDataHelper {
                             description = "Do 3 sets of 15 push-ups to strengthen your chest and triceps.",
                             tag = "Strength",
                             addOnTags = "Chest, Triceps",
-                            difficulty = "Medium",
+                            difficulty = "Normal",
                             xpReward = 50,
                             statReward = 1
                         ),
@@ -54,7 +54,7 @@ class QuestDataHelper {
                             description = "Mindfulness exercise for 15 minutes.",
                             tag = "Vitality",
                             addOnTags = "Box Breathe",
-                            difficulty = "Medium",
+                            difficulty = "Normal",
                             xpReward = 60,
                             statReward = 2
 

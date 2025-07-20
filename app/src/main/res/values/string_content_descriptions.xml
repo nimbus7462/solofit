@@ -3,4 +3,5 @@
     <string name="start_screen_btn">Continue Button</string>
     <string name="profile_pic">Profile Picture</string>
     <string name="log_icon">Log Icon</string>
+    <string name="save_quote_icon">Save Quote Icon</string>
 </resources>

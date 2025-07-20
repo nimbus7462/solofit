@@ -47,19 +47,15 @@
             android:theme="@style/Theme.Solofit">
         </activity>
 
+
         <activity
-            android:name=".QuestboardActivities.QuestCancelledActivity"
+            android:name=".QuestboardActivities.QuestAbortCompleteActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Solofit">
         </activity>
 
-        <activity
-            android:name=".QuestboardActivities.QuestCompletedActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Solofit">
-        </activity>
+
 
         <activity
             android:name=".QuestboardActivities.QuestLoggingActivity"

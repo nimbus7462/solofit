@@ -38,8 +38,8 @@ class QuestBoardActivity : AppCompatActivity() {
         // keeping things simple with a LinearLayout.
         this.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val helper: SnapHelper = LinearSnapHelper()
-        helper.attachToRecyclerView(recyclerView)
+        //val helper: SnapHelper = LinearSnapHelper()
+        //helper.attachToRecyclerView(recyclerView)
     }
 
 }

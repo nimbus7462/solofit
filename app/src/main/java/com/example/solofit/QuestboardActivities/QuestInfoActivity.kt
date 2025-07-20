@@ -18,6 +18,7 @@ import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.stat
 
 class QuestInfoActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val viewBinding: QuestInfoBinding = QuestInfoBinding.inflate(layoutInflater)
@@ -69,21 +70,30 @@ class QuestInfoActivity : AppCompatActivity() {
 
 
 
-        viewBinding.btnCancelQuest.setOnClickListener {
-            val intentCancelQuest = Intent(applicationContext, QuestCancelledActivity::class.java)
-
-
-            this.startActivity(intentCancelQuest)
-
+        viewBinding.btnAbortQuest.setOnClickListener {
+            val intentAbortQuest = Intent(applicationContext, QuestAbortCompleteActivity::class.java).apply {
+                putExtra(QuestAbortCompleteActivity.EXTRA_QUEST_STATUS, QuestAbortCompleteActivity.STATUS_CANCELLED)
+                putExtra(QuestAbortCompleteActivity.EXTRA_QUEST_NAME, title)
+                putExtra(QuestAbortCompleteActivity.EXTRA_XP_REWARD, xpReward)
+            }
+            startActivity(intentAbortQuest)
+            finish()
         }
+
 
         viewBinding.btnCompleteQuest.setOnClickListener {
-            val intentCompletedQuest = Intent(applicationContext, QuestCompletedActivity::class.java)
-
-
-            this.startActivity(intentCompletedQuest)
-
+            val intentCompletedQuest = Intent(applicationContext, QuestAbortCompleteActivity::class.java).apply {
+                putExtra(QuestAbortCompleteActivity.EXTRA_QUEST_STATUS, QuestAbortCompleteActivity.STATUS_COMPLETED)
+                putExtra(QuestAbortCompleteActivity.EXTRA_QUEST_NAME, title)
+                putExtra(QuestAbortCompleteActivity.EXTRA_XP_REWARD, xpReward)
+                putExtra(QuestAbortCompleteActivity.EXTRA_STAT_REWARD, statReward)
+                putExtra(QuestAbortCompleteActivity.EXTRA_STAT_TYPE, tag)
+            }
+            startActivity(intentCompletedQuest)
+            finish()
         }
+
+
 
 
     }

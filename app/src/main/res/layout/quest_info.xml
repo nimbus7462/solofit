@@ -211,7 +211,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnCancelQuest"
+                android:id="@+id/btnAbortQuest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
@@ -219,7 +219,7 @@
                 android:fontFamily="@font/play"
                 android:shadowColor="@color/bright_red"
                 android:shadowRadius="10"
-                android:text="@string/cancel"
+                android:text="@string/abort"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
