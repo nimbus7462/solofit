@@ -36,8 +36,6 @@ class QuestDataHelper {
                             difficulty = "Medium",
                             xpReward = 50,
                             statReward = 1,
-                            isCompleted = false,
-                            isCancelled = false,
                             icon = R.drawable.dumbell_icon
                         ),
                         Quest(
@@ -49,8 +47,6 @@ class QuestDataHelper {
                             difficulty = "Hard",
                             xpReward = 80,
                             statReward = 1,
-                            isCompleted = false,
-                            isCancelled = false,
                             icon = R.drawable.dumbell_icon
                         ),
                         Quest(
@@ -62,8 +58,6 @@ class QuestDataHelper {
                             difficulty = "Medium",
                             xpReward = 60,
                             statReward = 2,
-                            isCompleted = false,
-                            isCancelled = false,
                             icon = R.drawable.dumbell_icon
                         ),
                         Quest(
@@ -75,8 +69,6 @@ class QuestDataHelper {
                             difficulty = "Hard",
                             xpReward = 120,
                             statReward = 3,
-                            isCompleted = false,
-                            isCancelled = false,
                             icon = R.drawable.footprint
                         ),
                         Quest(
@@ -88,8 +80,6 @@ class QuestDataHelper {
                             difficulty = "Easy",
                             xpReward = 30,
                             statReward = 1,
-                            isCompleted = false,
-                            isCancelled = false,
                             icon = R.drawable.footprint
                         )
                     )

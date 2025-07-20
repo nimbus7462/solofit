@@ -47,7 +47,7 @@
     <string-array name="quest_difficulties">
         <item>Easy</item>
         <item>Medium</item>
-        <item>Endurance</item>
+        <item>Hard</item>z
     </string-array>
 
     <string-array name="quest_types">

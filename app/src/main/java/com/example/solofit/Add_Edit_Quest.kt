@@ -194,8 +194,6 @@ class Add_Edit_Quest : Fragment() {
                 difficulty = diff,
                 xpReward = exp!!,
                 statReward = statVal!!,
-                isCompleted = false,
-                isCancelled = false,
                 icon = temp_icon
             )
 

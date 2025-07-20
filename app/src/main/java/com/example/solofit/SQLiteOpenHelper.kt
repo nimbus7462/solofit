@@ -15,11 +15,10 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         // Table names
         const val QUEST_TABLE = "quest_table"
         const val QUOTE_TABLE = "quote_table"
-        const val QUEST_LOG_TABLE = "quest_log_table"
+        const val QUEST_HISTORY = "quest_history"
         const val USER_STATS_TABLE = "user_stats_table"
         const val DAILY_SUMMARY_TABLE = "daily_summary_table"
     }
-
     override fun onCreate(db: SQLiteDatabase) {
         val createQuestTable = """
             CREATE TABLE $QUEST_TABLE (
@@ -31,8 +30,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty TEXT,
                 xp_reward INTEGER,
                 stat_reward INTEGER,
-                is_completed INTEGER,
-                is_cancelled INTEGER,
                 icon INTEGER
             );
         """.trimIndent()
@@ -45,12 +42,12 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
 //            );
 //        """.trimIndent()
 //
-//        val createQuestLogTable = """
+//        val createQuestHistoryTable = """
 //            CREATE TABLE $QUEST_LOG_TABLE (
-//                log_id INTEGER PRIMARY KEY AUTOINCREMENT,
-//                quest_id INTEGER,
+//                hisotry_id INTEGER PRIMARY KEY AUTOINCREMENT,
+//                status INTEGER,
 //                log TEXT,
-//                timestamp TEXT,
+//                date Date,
 //                FOREIGN KEY (quest_id) REFERENCES $QUEST_TABLE (id)
 //            );
 //        """.trimIndent()
@@ -110,8 +107,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Medium",
                 xpReward = 50,
                 statReward = 1,
-                isCompleted = false,
-                isCancelled = false,
                 icon = R.drawable.dumbell_icon
             ),
             Quest(
@@ -123,8 +118,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Hard",
                 xpReward = 80,
                 statReward = 1,
-                isCompleted = false,
-                isCancelled = false,
                 icon = R.drawable.dumbell_icon
             ),
             Quest(
@@ -136,8 +129,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Medium",
                 xpReward = 60,
                 statReward = 2,
-                isCompleted = false,
-                isCancelled = false,
                 icon = R.drawable.meditate
             ),
             Quest(
@@ -149,8 +140,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Hard",
                 xpReward = 120,
                 statReward = 3,
-                isCompleted = false,
-                isCancelled = false,
                 icon = R.drawable.footprint
             ),
             Quest(
@@ -162,8 +151,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Easy",
                 xpReward = 30,
                 statReward = 1,
-                isCompleted = false,
-                isCancelled = false,
                 icon = R.drawable.footprint
             )
         )
@@ -177,8 +164,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 put("difficulty", quest.difficulty)
                 put("xp_reward", quest.xpReward)
                 put("stat_reward", quest.statReward)
-                put("is_completed", if (quest.isCompleted) 1 else 0)
-                put("is_cancelled", if (quest.isCancelled) 1 else 0)
                 put("icon", quest.icon)
             }
             db.insert(QUEST_TABLE, null, values)
@@ -195,8 +180,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             put("difficulty", quest.difficulty)
             put("xp_reward", quest.xpReward)
             put("stat_reward", quest.statReward)
-            put("is_completed", if (quest.isCompleted) 1 else 0)
-            put("is_cancelled", if (quest.isCancelled) 1 else 0)
             put("icon", quest.icon)
         }
         val result = db.insert(QUEST_TABLE, null, values)
@@ -214,8 +197,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             put("difficulty", quest.difficulty)
             put("xp_reward", quest.xpReward)
             put("stat_reward", quest.statReward)
-            put("is_completed", if (quest.isCompleted) 1 else 0)
-            put("is_cancelled", if (quest.isCancelled) 1 else 0)
             put("icon", quest.icon)
         }
         val result = db.update(QUEST_TABLE, values, "id=?", arrayOf(quest.id.toString()))
@@ -246,8 +227,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                         difficulty = getString(getColumnIndexOrThrow("difficulty")),
                         xpReward = getInt(getColumnIndexOrThrow("xp_reward")),
                         statReward = getInt(getColumnIndexOrThrow("stat_reward")),
-                        isCompleted = getInt(getColumnIndexOrThrow("is_completed")) == 1,
-                        isCancelled = getInt(getColumnIndexOrThrow("is_cancelled")) == 1,
                         icon = getInt(getColumnIndexOrThrow("icon"))
                     )
                 )
