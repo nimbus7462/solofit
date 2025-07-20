@@ -55,7 +55,7 @@ class QuestInfoActivity : AppCompatActivity() {
         viewBinding.txvQInfoStatReward.text = statLabel
 
 
-
+        // setting the difficulty color schemes
         val (bgRes, shadowColorRes) = when (difficulty) {
             "Easy" -> R.drawable.bg_diff_text_easy to R.color.bright_green
             "Normal" -> R.drawable.bg_diff_text_normal to R.color.cyan
@@ -66,13 +66,14 @@ class QuestInfoActivity : AppCompatActivity() {
         viewBinding.txvQInfoDifficulty.setBackgroundResource(bgRes)
         viewBinding.txvQInfoDifficulty.setShadowLayer(10f, 0f, 0f, ContextCompat.getColor(this, shadowColorRes))
         viewBinding.txvQInfoDifficulty.text = difficulty
+
+
+
         viewBinding.txvQInfoExpReward.text = "+ $xpReward EXP"
-
-
 
         viewBinding.btnAbortQuest.setOnClickListener {
             val intentAbortQuest = Intent(applicationContext, QuestAbortCompleteActivity::class.java).apply {
-                putExtra(QuestAbortCompleteActivity.EXTRA_QUEST_STATUS, QuestAbortCompleteActivity.STATUS_CANCELLED)
+                putExtra(QuestAbortCompleteActivity.EXTRA_QUEST_STATUS, QuestAbortCompleteActivity.STATUS_ABORTED)
                 putExtra(QuestAbortCompleteActivity.EXTRA_QUEST_NAME, title)
                 putExtra(QuestAbortCompleteActivity.EXTRA_XP_REWARD, xpReward)
             }

@@ -10,7 +10,7 @@ class QuestAbortCompleteActivity : AppCompatActivity(){
     companion object {
         const val EXTRA_QUEST_STATUS = "quest_status"
         const val STATUS_COMPLETED = "completed"
-        const val STATUS_CANCELLED = "cancelled"
+        const val STATUS_ABORTED = "aborted"
         const val EXTRA_QUEST_NAME = "quest_name"
         const val EXTRA_XP_REWARD = "xp_reward"
         const val EXTRA_STAT_REWARD = "stat_reward"
@@ -57,7 +57,7 @@ class QuestAbortCompleteActivity : AppCompatActivity(){
 
             }
 
-            STATUS_CANCELLED -> {
+            STATUS_ABORTED -> {
                 viewBinding.lloQuestHeader.setBackgroundResource(R.drawable.bg_quest_abort)
                 viewBinding.txvQuestStatusTitle.text = getString(R.string.quest_aborted)
                 viewBinding.btnFinishQuest.setBackgroundResource(R.drawable.bg_return_btn)
