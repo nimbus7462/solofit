@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solofit.databinding.EditableQuestBinding
+import com.example.solofit.model.Quest
 
 class ManageQuestAdapter(
     private val quests: MutableList<Quest>,
@@ -28,12 +29,10 @@ class ManageQuestAdapter(
     override fun onBindViewHolder(holder: QuestViewHolder, position: Int) {
         val quest = quests[position]
         holder.binding.tvQuestTitle.text = quest.title
-        holder.binding.ivIcon.setImageResource(quest.icon)
-
+       // holder.binding.ivIcon.setImageResource(quest.icon)
         holder.binding.imageButton2.setOnClickListener {
             onItemClick(quest)
         }
-
         holder.binding.ibDelete.setOnClickListener {
             onDeleteClick(quest)  // ✅ Call DB delete
             quests.removeAt(position)

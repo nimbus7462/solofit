@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.solofit.model.Quest
 
 class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     context, DATABASE_NAME, null, DATABASE_VERSION
@@ -107,7 +108,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Medium",
                 xpReward = 50,
                 statReward = 1,
-                icon = R.drawable.dumbell_icon
             ),
             Quest(
                 id = 0,
@@ -118,7 +118,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Hard",
                 xpReward = 80,
                 statReward = 1,
-                icon = R.drawable.dumbell_icon
             ),
             Quest(
                 id = 0,
@@ -129,7 +128,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Medium",
                 xpReward = 60,
                 statReward = 2,
-                icon = R.drawable.meditate
             ),
             Quest(
                 id = 0,
@@ -140,7 +138,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Hard",
                 xpReward = 120,
                 statReward = 3,
-                icon = R.drawable.footprint
             ),
             Quest(
                 id = 0,
@@ -151,7 +148,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 difficulty = "Easy",
                 xpReward = 30,
                 statReward = 1,
-                icon = R.drawable.footprint
             )
         )
 
@@ -164,7 +160,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 put("difficulty", quest.difficulty)
                 put("xp_reward", quest.xpReward)
                 put("stat_reward", quest.statReward)
-                put("icon", quest.icon)
             }
             db.insert(QUEST_TABLE, null, values)
         }
@@ -180,7 +175,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             put("difficulty", quest.difficulty)
             put("xp_reward", quest.xpReward)
             put("stat_reward", quest.statReward)
-            put("icon", quest.icon)
         }
         val result = db.insert(QUEST_TABLE, null, values)
         db.close()
@@ -197,7 +191,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             put("difficulty", quest.difficulty)
             put("xp_reward", quest.xpReward)
             put("stat_reward", quest.statReward)
-            put("icon", quest.icon)
         }
         val result = db.update(QUEST_TABLE, values, "id=?", arrayOf(quest.id.toString()))
         db.close()
@@ -226,8 +219,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                         addOnTags = getString(getColumnIndexOrThrow("add_on_tags")),
                         difficulty = getString(getColumnIndexOrThrow("difficulty")),
                         xpReward = getInt(getColumnIndexOrThrow("xp_reward")),
-                        statReward = getInt(getColumnIndexOrThrow("stat_reward")),
-                        icon = getInt(getColumnIndexOrThrow("icon"))
+                        statReward = getInt(getColumnIndexOrThrow("stat_reward"))
                     )
                 )
             }

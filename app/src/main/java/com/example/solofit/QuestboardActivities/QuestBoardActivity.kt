@@ -1,14 +1,13 @@
-package com.example.solofit
+package com.example.solofit.QuestboardActivities
 
 import android.os.Bundle
-import android.widget.Adapter
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.example.solofit.databinding.QuestboardPageBinding
+import com.example.solofit.model.Quest
+import com.example.solofit.databinding.QuestBoardActivityBinding
 
 
 class QuestBoardActivity : AppCompatActivity() {
@@ -19,9 +18,9 @@ class QuestBoardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        // enableEdgeToEdge()
 
-        val questBoardBinding: QuestboardPageBinding = QuestboardPageBinding.inflate(layoutInflater)
+        val questBoardBinding: QuestBoardActivityBinding = QuestBoardActivityBinding.inflate(layoutInflater)
         setContentView(questBoardBinding.root)
 
         // Initialize the RecyclerView
@@ -39,8 +38,8 @@ class QuestBoardActivity : AppCompatActivity() {
         // keeping things simple with a LinearLayout.
         this.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val helper: SnapHelper = LinearSnapHelper()
-        helper.attachToRecyclerView(recyclerView)
+        //val helper: SnapHelper = LinearSnapHelper()
+        //helper.attachToRecyclerView(recyclerView)
     }
 
 }

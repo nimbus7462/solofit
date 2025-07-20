@@ -3,8 +3,7 @@ package com.example.solofit
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
+import com.example.solofit.QuestboardActivities.QuestBoardActivity
 import com.example.solofit.databinding.MainMenuBinding
 
 class MainMenu : AppCompatActivity() {
@@ -21,13 +20,11 @@ class MainMenu : AppCompatActivity() {
         // Button click now starts a new Activity instead of navigating fragments
         binding.btnManageQuests.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-
             startActivity(intent)
         }
 
         binding.btnQuestboard.setOnClickListener{
             val intent = Intent(this, QuestBoardActivity::class.java)
-
             startActivity(intent)
         }
 

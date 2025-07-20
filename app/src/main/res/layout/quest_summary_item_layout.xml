@@ -11,7 +11,7 @@
         android:layout_width="300dp"
         android:layout_height="90dp"
         android:layout_margin="10dp"
-        android:background="@drawable/bg_quest_item"
+        android:background="@drawable/bg_quest_item_normal"
         android:backgroundTintMode="src_in"
         android:orientation="horizontal"
         android:paddingLeft="20dp"

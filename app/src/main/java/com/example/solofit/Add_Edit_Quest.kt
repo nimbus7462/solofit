@@ -1,5 +1,4 @@
 package com.example.solofit
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.solofit.model.Quest
 
 class Add_Edit_Quest : Fragment() {
 
@@ -73,6 +73,7 @@ class Add_Edit_Quest : Fragment() {
         questTypeSpinner.setSelection(getSpinnerIndex(questTypeSpinner, args.questType))
         questDiffSpinner.setSelection(getSpinnerIndex(questDiffSpinner, args.questDifficulty))
 
+
         val btnSave = view.findViewById<View>(R.id.btnSaveAdd)
         val btnCancel = view.findViewById<View>(R.id.btnCancelAdd)
 
@@ -86,28 +87,29 @@ class Add_Edit_Quest : Fragment() {
                 questTypeSpinner,
                 questDiffSpinner
             )
+
         }
 
         btnCancel.setOnClickListener {
             handleCancelButton()
         }
 
+        // Handle Android back button
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     handleCancelButton()
                 }
             })
-
         btnYes.setOnClickListener {
             findNavController().popBackStack()
         }
-
         btnGoBack.setOnClickListener {
             confirmationPanel?.visibility = View.INVISIBLE
         }
-    }
 
+
+    }
     private fun getSpinnerIndex(spinner: Spinner, value: String): Int {
         for (i in 0 until spinner.count) {
             if (spinner.getItemAtPosition(i).toString().equals(value, ignoreCase = true)) {
@@ -124,7 +126,7 @@ class Add_Edit_Quest : Fragment() {
         edtStatReward: EditText,
         edtQuestDesc: EditText,
         questTypeSpinner: Spinner,
-        questDiffSpinner: Spinner
+        questDiffSpinner:Spinner
     ) {
         val name = edtQuestName.text.toString().trim()
         val tags = edtQuestTags.text.toString().trim()
@@ -194,7 +196,6 @@ class Add_Edit_Quest : Fragment() {
                 difficulty = diff,
                 xpReward = exp!!,
                 statReward = statVal!!,
-                icon = temp_icon
             )
 
             val success = if (args.questId == -1) {
@@ -220,4 +221,6 @@ class Add_Edit_Quest : Fragment() {
         val confirmationPanel = view?.findViewById<ConstraintLayout>(R.id.clConfirmation)
         confirmationPanel?.visibility = View.VISIBLE
     }
+
+
 }

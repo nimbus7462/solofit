@@ -44,11 +44,19 @@
     <string name="logging">LOGGING</string>
     <string name="edit_log">Edit Log</string>
     <string name="saved_quotes">SAVED QUOTES</string>
+    <string name="complete_quest">Complete</string>
+    <string name="abort">Abort</string>
+    <string name="log_thoughts">Log Thoughts</string>
+    <string name="finish_logging">Finish Logging</string>
+    <string name="quest_completed">QUEST COMPLETED</string>
+    <string name="quest_aborted">QUEST ABORTED</string>
+    <string name="return_quest">RETURN</string>
     <string name="quest_summary">QUEST SUMMARY</string>
     <string-array name="quest_difficulties">
         <item>Easy</item>
-        <item>Medium</item>
-        <item>Hard</item>z
+        <item>Normal</item>
+        <item>Hard</item>
+        <item>Extreme</item>
     </string-array>
 
     <string-array name="quest_types">

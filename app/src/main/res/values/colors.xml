@@ -10,4 +10,6 @@
     <color name="cyan">#72F6FF</color>
     <color name="bright_green">#1BFF89</color>
     <color name="bright_red">#FF0000</color>
+    <color name="bright_purple">#4C00F1</color>
+    <color name="light_gray">#C6C6C6</color>
 </resources>

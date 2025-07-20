@@ -1,29 +1,14 @@
-package com.example.solofit
+package com.example.solofit.QuestboardActivities
+import com.example.solofit.R
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.example.solofit.model.Quest
 import com.example.solofit.databinding.QuestboardItemLayoutBinding
 
-/*
-data class Quest(
-    val title: String,
-    val description: String,
-    val tag: String,           // Strength, Endurance, Vitality
-    val addOnTags: String,
-    val difficulty: String,    // Easy, Medium, Hard
-    val xpReward: Int,
-    val isCompleted: Boolean,
-    val isCancelled: Boolean,
-    val icon: Int
-)
- */
-
-class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestBoardViewholder>() {
+class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestBoardViewHolder>() {
 
     // These are static keys that you can use for the passing data around.
     companion object {
@@ -33,21 +18,47 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
         const val addOnTagsKey : String = "ADD_ON_TAGS_KEY"
         const val difficultyKey: String = "DIFFICULTY_KEY"
         const val xpRewardKey: String = "XP_REWARD_KEY"
-        const val iconKey: String = "ICON_KEY"
+        const val statRewardKey: String = "STAT_REWARD_KEY"
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestBoardViewholder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestBoardViewHolder {
         val itemViewBinding: QuestboardItemLayoutBinding = QuestboardItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return QuestBoardViewholder(itemViewBinding)
+        return QuestBoardViewHolder(itemViewBinding)
     }
 
-    override fun onBindViewHolder(holder: QuestBoardViewholder, position: Int) {
+    override fun onBindViewHolder(holder: QuestBoardViewHolder, position: Int) {
         val questItem = questList[position]
         holder.bindData(questItem)
+        when (questItem.difficulty) {
+            "Easy" -> {
+                holder.setQuestBackground(R.drawable.bg_quest_item_easy)
+            }
+            "Normal" -> {
+                holder.setQuestBackground(R.drawable.bg_quest_item_normal)
+            }
+            "Hard" -> {
+                holder.setQuestBackground(R.drawable.bg_quest_item_hard)
+            }
+            "Extreme" -> {
+                holder.setQuestBackground(R.drawable.bg_quest_item_extreme)
+            }
+        }
+        when(questItem.tag) {
+            "Strength" -> {
+                holder.setQuestIcon(R.drawable.icon_str)
+            }
+            "Endurance" -> {
+                holder.setQuestIcon(R.drawable.icon_end)
+            }
+            "Vitality" -> {
+                holder.setQuestIcon(R.drawable.icon_vit)
+            }
+
+        }
 
         // Set up click listener on the whole itemView
         holder.itemView.setOnClickListener {
@@ -58,7 +69,7 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
                 putExtra(addOnTagsKey, questItem.addOnTags)
                 putExtra(difficultyKey, questItem.difficulty)
                 putExtra(xpRewardKey, questItem.xpReward)
-                putExtra(iconKey, questItem.icon)
+                putExtra(statRewardKey, questItem.statReward)
             }
             holder.itemView.context.startActivity(intent)
         }
