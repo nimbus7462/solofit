@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,8 +14,8 @@ class ManageQuest : Fragment() {
     private var _binding: FragmentManageQuestBinding? = null
     private val binding get() = _binding!!
 
-    // Declare adapter once
     private lateinit var adapter: ManageQuestAdapter
+    private lateinit var dbHelper: MyDatabaseHelper  // ✅ Use your DB helper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,22 +28,30 @@ class ManageQuest : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val questList = QuestDataHelper.initializeQuests()
+        dbHelper = MyDatabaseHelper(requireContext())
 
-        adapter = ManageQuestAdapter(questList.toMutableList()) { quest ->
-            val action = ManageQuestDirections.actionManageQuestToAddEditQuest(
-                quest.id,
-                "EDIT QUEST",
-                quest.title,
-                quest.description,
-                quest.tag,
-                quest.difficulty,
-                quest.addOnTags,
-                quest.xpReward,
-                quest.statReward
-            )
-            findNavController().navigate(action)
-        }
+        // ✅ Load quests from DB instead of QuestDataHelper
+        val questList = dbHelper.getAllQuests()
+
+        adapter = ManageQuestAdapter(questList.toMutableList(),
+            onItemClick = { quest ->
+                val action = ManageQuestDirections.actionManageQuestToAddEditQuest(
+                    quest.id,
+                    "EDIT QUEST",
+                    quest.title,
+                    quest.description,
+                    quest.tag,
+                    quest.difficulty,
+                    quest.addOnTags,
+                    quest.xpReward,
+                    quest.statReward
+                )
+                findNavController().navigate(action)
+            },
+            onDeleteClick = { quest ->
+                dbHelper.deleteQuest(quest.id)
+            }
+        )
 
         binding.questRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.questRecyclerView.adapter = adapter
@@ -58,8 +65,7 @@ class ManageQuest : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        val updatedList = ArrayList(QuestDataHelper.quests)
+        val updatedList = dbHelper.getAllQuests()
         adapter.updateList(updatedList)
     }
 
@@ -67,5 +73,4 @@ class ManageQuest : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

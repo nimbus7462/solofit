@@ -9,7 +9,5 @@ data class Quest(
     val difficulty: String,    // Easy, Medium, Hard
     val xpReward: Int,
     val statReward: Int,
-    val isCompleted: Boolean,
-    val isCancelled: Boolean,
     val icon: Int
 )
