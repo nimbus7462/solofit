@@ -16,9 +16,6 @@ class QuestLoggingActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         viewBinding.btnFinishLog.setOnClickListener {
-            val intentLoggingActivity = Intent(applicationContext, QuestBoardActivity::class.java)
-
-            this.startActivity(intentLoggingActivity)
             finish()
         }
 
