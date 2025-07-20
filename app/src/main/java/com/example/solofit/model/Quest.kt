@@ -8,5 +8,5 @@ data class Quest(
     val addOnTags: String,
     val difficulty: String,    // Easy, Medium, Hard, Extreme
     val xpReward: Int,
-    val statReward: Int,
+    val statReward: Int, //
 )
