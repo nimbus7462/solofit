@@ -37,7 +37,7 @@
             android:theme="@style/Theme.Solofit">
         </activity>
         <activity
-            android:name=".StatusActivity"
+            android:name=".StatusAndQHistoryActivities.StatusActivity"
             android:exported="true"
             android:theme="@style/Theme.Solofit">
         </activity>
@@ -50,6 +50,26 @@
 
         <activity
             android:name=".QuestboardActivities.QuestAbortCompleteActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Solofit">
+        </activity>
+
+        <activity
+            android:name=".StatusAndQHistoryActivities.EditLogActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Solofit">
+        </activity>
+
+        <activity
+            android:name=".StatusAndQHistoryActivities.QuestHistoryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Solofit">
+        </activity>
+        <activity
+            android:name=".StatusAndQHistoryActivities.QuestHistoryQuestInfoActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Solofit">

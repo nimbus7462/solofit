@@ -205,10 +205,12 @@
             android:textColor="@color/white" />
 
         <LinearLayout
+            android:id="@+id/lloQuestInfoBtnRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <Button
                 android:id="@+id/btnAbortQuest"
@@ -236,6 +238,42 @@
                 android:text="@string/complete_quest"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lloShowIfQHistRow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txvQInfoQuestStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inclusive_sans"
+                android:gravity="center"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/completed"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/txvQInfoCompletedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:fontFamily="@font/inclusive_sans"
+                android:gravity="center"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="06/29/25"
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+
         </LinearLayout>
 
 

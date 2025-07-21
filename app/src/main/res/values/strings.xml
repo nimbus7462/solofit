@@ -52,6 +52,7 @@
     <string name="quest_aborted">QUEST ABORTED</string>
     <string name="return_quest">RETURN</string>
     <string name="quest_summary">QUEST SUMMARY</string>
+    <string name="aborted">Aborted</string>
     <string-array name="quest_difficulties">
         <item>Easy</item>
         <item>Normal</item>

@@ -3,6 +3,7 @@ package com.example.solofit
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.solofit.StatusAndQHistoryActivities.StatusActivity
 import com.example.solofit.QuestboardActivities.QuestBoardActivity
 import com.example.solofit.databinding.MainMenuBinding
 

@@ -15,6 +15,18 @@ class QuestDataHelper {
             quests[index] = quest
         }
 
+        fun getQuestsFromUserQuestActivities(): ArrayList<Quest> {
+            val userQuestActs = UserQuestActivityDataHelper.initUQA()
+            val allQuests = initializeQuests()
+
+            val joinedQuests = userQuestActs.mapNotNull { uqa ->
+                allQuests.find { it.id == uqa.questID }
+            }
+
+            return ArrayList(joinedQuests)
+        }
+
+
         fun findQuestByTitle(title: String): Int? {
             return quests.indexOfFirst { it.title == title }.takeIf { it >= 0 }
         }

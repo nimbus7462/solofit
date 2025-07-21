@@ -24,8 +24,8 @@
 
         <ImageView
             android:id="@+id/imvQuest_icon"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_margin="15dp"
             app:srcCompat="@drawable/icon_str" />

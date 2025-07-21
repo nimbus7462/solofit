@@ -18,14 +18,12 @@ class QuestBoardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // enableEdgeToEdge()
 
         val questBoardBinding: QuestBoardActivityBinding = QuestBoardActivityBinding.inflate(layoutInflater)
         setContentView(questBoardBinding.root)
 
         // Initialize the RecyclerView
         this.recyclerView = questBoardBinding.recViewQuests
-
 
         // Get quests from SQLite now instead of DataHelper
         val dbHelper = MyDatabaseHelper.getInstance(this)!!
@@ -37,8 +35,6 @@ class QuestBoardActivity : AppCompatActivity() {
         // keeping things simple with a LinearLayout.
         this.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        //val helper: SnapHelper = LinearSnapHelper()
-        //helper.attachToRecyclerView(recyclerView)
     }
 
 }
