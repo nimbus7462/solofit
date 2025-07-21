@@ -1,27 +1,31 @@
-package com.example.solofit
+package com.example.solofit.database
+
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import androidx.activity.OnBackPressedCallback
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.example.solofit.database.MyDatabaseHelper
+import android.util.Log
 import com.example.solofit.model.Quest
 
 class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     context, DbReferences.DATABASE_NAME, null, DbReferences.DATABASE_VERSION
 ) {
+
+    // Singleton instance
+    // The singleton pattern design, step 2
+    companion object {
+        private var instance: MyDatabaseHelper? = null
+
+        // only opens one db connection
+        @Synchronized
+        fun getInstance(context: Context): MyDatabaseHelper? {
+            if (instance == null) {
+                Log.d("Table created", "Table created successfully from getInstance")
+                instance = MyDatabaseHelper(context.applicationContext)
+            }
+            return instance
+        }
+    }
 
     // Step 0: All constants for structure, columns, and SQL
     private object DbReferences {
@@ -40,6 +44,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         const val COLUMN_STAT_REWARD = "stat_reward"
         const val COLUMN_ICON = "icon"
 
+        // Creates the Quest Table
         const val CREATE_TABLE_STATEMENT = """
             CREATE TABLE $TABLE_NAME (
                 $_ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,12 +59,17 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             );
         """
 
+        // TODO: Create Quote table
+
+        // TODO: Create User table
+
         const val DROP_TABLE_STATEMENT = "DROP TABLE IF EXISTS $TABLE_NAME"
     }
 
     /* Step 3: Create the table when DB is first initialized */
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(DbReferences.CREATE_TABLE_STATEMENT)
+        // Log.d("Created table", "Table created successfully")
         insertInitialQuests(db)
     }
 
@@ -72,11 +82,11 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     /* Step 5a: Insert seed data into the quest table on first install */
     private fun insertInitialQuests(db: SQLiteDatabase) {
         val quests = listOf(
-            Quest(1, "3 x 15 Push-ups", "Do 3 sets of 15 push-ups to strengthen your chest and triceps.", "Strength", "Chest, Triceps", "Medium", 50, 1),
-            Quest(2, "3 x 10 Pull-ups", "Do 3 sets of 10 pull-ups for upper body power.", "Strength", "Back, Biceps", "Hard", 80, 1),
-            Quest(0, "60s Plank", "Hold a plank for 60 seconds for core strength.", "Vitality", "Core, Balance", "Medium", 60, 2),
-            Quest(0, "10km Jog", "Jog 10 kilometers to build endurance and stamina.", "Endurance", "Cardio, Stamina", "Hard", 120, 3),
-            Quest(0, "3 x 30 Jumping Jacks", "Do 3 sets of 30 jumping jacks to warm up and activate full body.", "Endurance", "Warm-up, Cardio", "Easy", 30, 1)
+            Quest("3 x 15 Push-ups", "Do 3 sets of 15 push-ups to strengthen your chest and triceps.", "Strength", "Chest, Triceps", "Medium", 50, 1),
+            Quest("3 x 10 Pull-ups", "Do 3 sets of 10 pull-ups for upper body power.", "Strength", "Back, Biceps", "Hard", 80, 1),
+            Quest("60s Plank", "Hold a plank for 60 seconds for core strength.", "Vitality", "Core, Balance", "Medium", 60, 2),
+            Quest("10km Jog", "Jog 10 kilometers to build endurance and stamina.", "Endurance", "Cardio, Stamina", "Hard", 120, 3),
+            Quest("3 x 30 Jumping Jacks", "Do 3 sets of 30 jumping jacks to warm up and activate full body.", "Endurance", "Warm-up, Cardio", "Easy", 30, 1)
         )
 
         for (q in quests) {
@@ -189,3 +199,4 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
     }
 }
+

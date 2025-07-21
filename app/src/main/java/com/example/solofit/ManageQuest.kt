@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.FragmentManageQuestBinding
 
 class ManageQuest : Fragment() {
@@ -28,9 +29,9 @@ class ManageQuest : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dbHelper = MyDatabaseHelper(requireContext())
+        // dbHelper = MyDatabaseHelper(requireContext())
 
-        // ✅ Load quests from DB instead of QuestDataHelper
+        // ✅ Load quests from DB instead of com.example.solofit.datahelpers.QuestDataHelper
         val questList = dbHelper.getAllQuests()
 
         adapter = ManageQuestAdapter(questList.toMutableList(),
