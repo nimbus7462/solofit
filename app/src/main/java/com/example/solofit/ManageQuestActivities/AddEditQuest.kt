@@ -104,6 +104,12 @@ class AddEditQuest : Fragment() {
             showConfirmationMessage("Cancel")
         }
 
+        binding.btnCloseMsg.setOnClickListener {
+            binding.cloErrorMessages.visibility = View.INVISIBLE
+            binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+        }
+
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -161,47 +167,41 @@ class AddEditQuest : Fragment() {
         val difficulty = binding.spnDifficulty.selectedItem.toString()
 
         var isValid = true
+        val errorMessages = mutableListOf<String>()
 
         if (name.isEmpty()) {
-            binding.edtQuestName.error = "Required"
-            showToast("Quest name is required")
-            isValid = false
-        }
-
-        if (extraTags.isBlank()) {
-            binding.edtExtraTags.error = "Required"
-            showToast("Tags are required")
+            errorMessages.add("• Quest name is required")
             isValid = false
         }
 
         if (xp == null || xp == 0) {
-            binding.edtExpRewards.error = "Must be a valid number > 0"
-            showToast("XP reward must be a valid number")
+            errorMessages.add("• XP reward must be > 0")
             isValid = false
         }
 
         if (stat == null || stat == 0) {
-            binding.edtStatRewards.error = "Must be a valid number > 0"
-            showToast("Stat reward must be a valid number")
+            errorMessages.add("• Stat reward must be > 0")
             isValid = false
         }
 
         if (desc.isEmpty()) {
-            binding.edtDescription.error = "Required"
-            showToast("Description is required")
+            errorMessages.add("• Description is required")
             isValid = false
         }
 
         if (questType.isBlank()) {
-            showToast("Please choose a quest type")
+            errorMessages.add("• Quest type is required")
             isValid = false
         }
 
         if (difficulty.isBlank()) {
-            showToast("Please choose a quest difficulty")
+            errorMessages.add("• Quest difficulty is required")
             isValid = false
         }
 
+        if (!isValid) {
+            showErrorMessages(errorMessages)
+        }
         return if (isValid) {
             Quest(
                 id = if (questId == -1) 0 else questId,
@@ -226,6 +226,15 @@ class AddEditQuest : Fragment() {
 
     private fun showToast(message: String) {
         android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showErrorMessages(errors: List<String>) {
+        val formattedErrors = errors.joinToString("\n") { it }
+
+        binding.txvErrorMsgList.text = formattedErrors
+
+        binding.cloErrorMessages.visibility = View.VISIBLE
+        binding.viewBackgroundBlocker.visibility = View.VISIBLE
     }
 
     private fun handleConfirmationMsg() {

@@ -61,6 +61,7 @@
                 android:gravity="center"
                 android:hint="@string/hint_questName"
                 android:inputType="text"
+                android:maxLength="25"
                 android:paddingBottom="5dp"
                 android:shadowColor="@color/cyan"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -156,6 +157,7 @@
                     android:gravity="center_horizontal|top"
                     android:hint="@string/hint_extraTags"
                     android:inputType="text"
+                    android:maxLength="35"
                     android:padding="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="#ABADAD"
@@ -193,7 +195,8 @@
                     android:fontFamily="@font/play"
                     android:gravity="center"
                     android:hint="@string/hint_expReward"
-                    android:inputType="text"
+                    android:inputType="number"
+                    android:maxLength="3"
                     android:padding="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="#ABADAD"
@@ -231,7 +234,8 @@
                     android:fontFamily="@font/play"
                     android:gravity="center"
                     android:hint="@string/hint_expReward"
-                    android:inputType="text"
+                    android:inputType="number"
+                    android:maxLength="3"
                     android:padding="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="#ABADAD"
@@ -269,10 +273,12 @@
                     android:fontFamily="@font/play"
                     android:gravity="top"
                     android:hint="@string/hint_addDesc"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
+                    android:maxLength="100"
                     android:padding="15dp"
                     android:textColor="@color/white"
                     android:textColorHint="#ABADAD" />
+
 
             </LinearLayout>
 
@@ -326,6 +332,70 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cloErrorMessages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="400dp"
+            android:background="@drawable/bg_confirm_box"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/txvErrorMsgHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:shadowColor="@color/bright_red"
+                android:shadowRadius="10"
+                android:text="@string/error"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/txvErrorMsgList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:fontFamily="@font/play"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnCloseMsg"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_return_btn"
+                android:fontFamily="@font/play"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:shadowColor="@color/light_gray"
+                android:shadowRadius="10"
+                android:text="@string/close"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cloConfirmation"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -341,6 +411,7 @@
             android:background="@drawable/bg_confirm_box"
             android:gravity="center"
             android:orientation="vertical"
+            android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -360,7 +431,7 @@
                 android:shadowRadius="10"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@color/white"
-                android:textSize="34sp"
+                android:textSize="30sp"
                 tools:layout_editor_absoluteX="43dp"
                 tools:layout_editor_absoluteY="80dp" />
 
