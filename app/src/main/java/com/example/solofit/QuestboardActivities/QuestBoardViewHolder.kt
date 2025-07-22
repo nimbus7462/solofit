@@ -20,4 +20,13 @@ class QuestBoardViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.V
         binding.lloQuest.background = ContextCompat.getDrawable(binding.root.context, bgResId)
     }
 
+    fun setQuestNameTextShadow(colorResId: Int) {
+        binding.txvQuestName.setShadowLayer(
+            10f,
+            0f,
+            0f,
+            ContextCompat.getColor(binding.root.context, colorResId))
+    }
+
+
 }

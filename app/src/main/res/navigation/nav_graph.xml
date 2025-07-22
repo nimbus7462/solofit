@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/manage_quest"
-        android:name="com.example.solofit.ManageQuestActivities.ManageQuest"
+        android:name="com.example.solofit.ManageQuestFragments.ManageQuest"
         android:label="fragment_manage_quest"
         tools:layout="@layout/fragment_manage_quest" >
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/add_edit_quest"
-        android:name="com.example.solofit.ManageQuestActivities.AddEditQuest"
+        android:name="com.example.solofit.ManageQuestFragments.AddEditQuest"
         android:label="add_quest"
         tools:layout="@layout/add_edit_quest">
         <argument

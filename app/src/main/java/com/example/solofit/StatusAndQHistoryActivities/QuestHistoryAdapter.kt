@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.example.solofit.QuestInfoViewOnlyActivity
 import com.example.solofit.R
 import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
@@ -50,7 +51,7 @@ class QuestHistoryAdapter(private val questList: ArrayList<Quest>, private val u
                 val matchingQuest = questList.find { it.id == uqa.questID }
 
                 matchingQuest?.let { questItem ->
-                    val intent = Intent(holder.itemView.context, QuestHistoryQuestInfoActivity::class.java).apply {
+                    val intent = Intent(holder.itemView.context, QuestInfoViewOnlyActivity::class.java).apply {
                         // From Quest
                         putExtra(EXTRA_QUEST_TITLE, questItem.title)
                         putExtra(EXTRA_DESC, questItem.description)
@@ -83,8 +84,14 @@ class QuestHistoryAdapter(private val questList: ArrayList<Quest>, private val u
 
         matchingUQA?.let {
             when (it.questStatus) {
-                "Completed" -> holder.setQuestBackground(R.drawable.bg_qhist_completed)
-                "Aborted" -> holder.setQuestBackground(R.drawable.bg_qhist_aborted)
+                "Completed" -> {
+                    holder.setQuestBackground(R.drawable.bg_qhist_completed)
+                    holder.setQuestNameTextShadow(R.color.bright_green)
+                }
+                "Aborted" -> {
+                    holder.setQuestBackground(R.drawable.bg_qhist_aborted)
+                    holder.setQuestNameTextShadow(R.color.light_gray)
+                }
             }
         }
 

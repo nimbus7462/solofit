@@ -1,4 +1,4 @@
-package com.example.solofit.ManageQuestActivities
+package com.example.solofit.ManageQuestFragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

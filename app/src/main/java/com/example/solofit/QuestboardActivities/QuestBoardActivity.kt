@@ -8,22 +8,23 @@ import com.example.solofit.model.Quest
 import com.example.solofit.databinding.QuestBoardActivityBinding
 import com.example.solofit.datahelpers.QuestDataHelper
 import com.example.solofit.database.MyDatabaseHelper
+import com.example.solofit.databinding.DailySummaryPageBinding
 
 
 class QuestBoardActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var questList: ArrayList<Quest>
-
+    private lateinit var viewBinding: QuestBoardActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val questBoardBinding: QuestBoardActivityBinding = QuestBoardActivityBinding.inflate(layoutInflater)
-        setContentView(questBoardBinding.root)
+        viewBinding = QuestBoardActivityBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
         // Initialize the RecyclerView
-        this.recyclerView = questBoardBinding.recViewQuests
+        this.recyclerView = viewBinding.recViewQuests
 
         // Get quests from SQLite now instead of DataHelper
         val dbHelper = MyDatabaseHelper.getInstance(this)!!

@@ -1,4 +1,4 @@
-package com.example.solofit.ManageQuestActivities
+package com.example.solofit.ManageQuestFragments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -36,29 +36,26 @@ class ManageQuestAdapter(
         when (questItem.difficulty) {
             "Easy" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_easy)
+                holder.setQuestNameTextShadow(R.color.bright_green)
             }
             "Normal" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_normal)
+                holder.setQuestNameTextShadow(R.color.cyan)
             }
             "Hard" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_hard)
+                holder.setQuestNameTextShadow(R.color.bright_red)
             }
             "Extreme" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_extreme)
+                holder.setQuestNameTextShadow(R.color.bright_purple)
             }
         }
-
         // Switch case for icon
-        when(questItem.tag) {
-            "Strength" -> {
-                holder.setQuestIcon(R.drawable.icon_str)
-            }
-            "Endurance" -> {
-                holder.setQuestIcon(R.drawable.icon_end)
-            }
-            "Vitality" -> {
-                holder.setQuestIcon(R.drawable.icon_vit)
-            }
+        when (questItem.tag) {
+            "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
+            "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)
+            "Vitality" -> holder.setQuestIcon(R.drawable.icon_vit)
         }
 
         holder.setActionBtnVisibility(isVisible = true)

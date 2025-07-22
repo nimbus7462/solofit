@@ -31,4 +31,12 @@ class QuestHistoryViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView
     fun setActionBtnIcon(iconResId: Int) {
         binding.imbQuestAction.setImageResource(iconResId)
     }
+
+    fun setQuestNameTextShadow(colorResId: Int) {
+        binding.txvQuestName.setShadowLayer(
+            10f,
+            0f,
+            0f,
+            ContextCompat.getColor(binding.root.context, colorResId))
+    }
 }

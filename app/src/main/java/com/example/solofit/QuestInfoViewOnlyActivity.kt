@@ -1,13 +1,13 @@
-package com.example.solofit.StatusAndQHistoryActivities
+package com.example.solofit
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.solofit.R
+import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter
 import com.example.solofit.databinding.QuestInfoBinding
 
-class QuestHistoryQuestInfoActivity : AppCompatActivity() {
+class QuestInfoViewOnlyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val viewBinding: QuestInfoBinding = QuestInfoBinding.inflate(layoutInflater)
@@ -16,13 +16,13 @@ class QuestHistoryQuestInfoActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
 // Get data from intent using correct types and defaults
-        val title = intent.getStringExtra(QuestHistoryAdapter.EXTRA_QUEST_TITLE) ?: ""
-        val desc = intent.getStringExtra(QuestHistoryAdapter.EXTRA_DESC) ?: "No Description"
-        val tag = intent.getStringExtra(QuestHistoryAdapter.EXTRA_TAG) ?: ""
-        val addOnTags = intent.getStringExtra(QuestHistoryAdapter.EXTRA_ADD_ON_TAGS) ?: ""
-        val difficulty = intent.getStringExtra(QuestHistoryAdapter.EXTRA_DIFFICULTY) ?: ""
-        val xpReward = intent.getIntExtra(QuestHistoryAdapter.EXTRA_XP_REWARD, 0)
-        val statReward = intent.getIntExtra(QuestHistoryAdapter.EXTRA_STAT_REWARD, 0)
+        val title = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_QUEST_TITLE) ?: ""
+        val desc = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_DESC) ?: "No Description"
+        val tag = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_TAG) ?: ""
+        val addOnTags = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_ADD_ON_TAGS) ?: ""
+        val difficulty = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_DIFFICULTY) ?: ""
+        val xpReward = intent.getIntExtra(QuestHistoryAdapter.Companion.EXTRA_XP_REWARD, 0)
+        val statReward = intent.getIntExtra(QuestHistoryAdapter.Companion.EXTRA_STAT_REWARD, 0)
 
 
         // Bind data to views
@@ -79,7 +79,7 @@ class QuestHistoryQuestInfoActivity : AppCompatActivity() {
         )
         viewBinding.txvQInfoDifficulty.text = difficulty
 
-        val questStatus = intent.getStringExtra(QuestHistoryAdapter.EXTRA_QUEST_STATUS)
+        val questStatus = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_QUEST_STATUS)
         val statusText = if (questStatus == "Aborted") {
             getString(R.string.aborted)
         } else {
@@ -87,7 +87,7 @@ class QuestHistoryQuestInfoActivity : AppCompatActivity() {
         }
 
         // date
-        val dateCompleted = intent.getStringExtra(QuestHistoryAdapter.EXTRA_DATE_COMPLETED)
+        val dateCompleted = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_DATE_COMPLETED)
         viewBinding.txvQInfoCompletedDate.text = dateCompleted
         viewBinding.txvQInfoQuestStatus.text = statusText
 

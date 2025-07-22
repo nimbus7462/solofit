@@ -1,4 +1,4 @@
-package com.example.solofit.ManageQuestActivities
+package com.example.solofit.ManageQuestFragments
 
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -30,6 +30,14 @@ class ManageQuestViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.
 
     fun setActionBtnIcon(iconResId: Int) {
         binding.imbQuestAction.setImageResource(iconResId)
+    }
+
+    fun setQuestNameTextShadow(colorResId: Int) {
+        binding.txvQuestName.setShadowLayer(
+            10f,
+            0f,
+            0f,
+            ContextCompat.getColor(binding.root.context, colorResId))
     }
 
 }
