@@ -1,4 +1,4 @@
-package com.example.solofit
+package com.example.solofit.ManageQuestActivities
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,26 +12,25 @@ import com.example.solofit.databinding.FragmentManageQuestBinding
 
 class ManageQuest : Fragment() {
 
-    private var _binding: FragmentManageQuestBinding? = null
-    private val binding get() = _binding!!
+
+    private var viewBinding: FragmentManageQuestBinding? = null
+    private val binding get() = viewBinding!!
 
     private lateinit var adapter: ManageQuestAdapter
-    private lateinit var dbHelper: MyDatabaseHelper  // ✅ Use your DB helper
+    private lateinit var dbHelper: MyDatabaseHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentManageQuestBinding.inflate(inflater, container, false)
-        return binding.root
+        viewBinding = FragmentManageQuestBinding.inflate(inflater, container, false)
+        return viewBinding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        dbHelper = MyDatabaseHelper(requireContext())
         super.onViewCreated(view, savedInstanceState)
 
-        // dbHelper = MyDatabaseHelper(requireContext())
-
-        // ✅ Load quests from DB instead of com.example.solofit.datahelpers.QuestDataHelper
         val questList = dbHelper.getAllQuests()
 
         adapter = ManageQuestAdapter(questList.toMutableList(),
@@ -54,12 +53,12 @@ class ManageQuest : Fragment() {
             }
         )
 
-        binding.questRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.questRecyclerView.adapter = adapter
+        binding.recViewManageQuest.layoutManager = LinearLayoutManager(requireContext())
+        binding.recViewManageQuest.adapter = adapter
 
         binding.btnAddQuest.setOnClickListener {
             val action = ManageQuestDirections
-                .actionManageQuestToAddEditQuest(-1, "EDIT QUEST", "", "", "", "", "", 0, 0)
+                .actionManageQuestToAddEditQuest(-1, "ADD QUEST", "", "", "", "", "", 0, 0)
             findNavController().navigate(action)
         }
     }
@@ -72,6 +71,7 @@ class ManageQuest : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        viewBinding = null
     }
 }
+

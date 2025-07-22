@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/questboard_page"
+    android:id="@+id/cloAddEditQuest"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_main">
 
     <LinearLayout
-        android:id="@+id/lloAddQuest"
+        android:id="@+id/lloQuestboard"
         android:layout_width="350dp"
         android:layout_height="650dp"
         android:background="@drawable/bg_main_frame"

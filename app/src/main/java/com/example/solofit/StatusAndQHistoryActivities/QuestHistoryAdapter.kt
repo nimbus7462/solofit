@@ -4,17 +4,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.addOnTagsKey
-import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.descKey
-import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.difficultyKey
-import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.statRewardKey
-import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.tagKey
-import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.titleKey
-import com.example.solofit.QuestboardActivities.QuestBoardAdapter.Companion.xpRewardKey
-import com.example.solofit.QuestboardActivities.QuestBoardViewHolder
-import com.example.solofit.QuestboardActivities.QuestInfoActivity
 import com.example.solofit.R
-import com.example.solofit.databinding.QuestHistoryItemLayoutBinding
+import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
 import com.example.solofit.model.UserQuestActivity
 
@@ -38,7 +29,7 @@ class QuestHistoryAdapter(private val questList: ArrayList<Quest>, private val u
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestHistoryViewHolder {
-        val itemViewBinding: QuestHistoryItemLayoutBinding = QuestHistoryItemLayoutBinding.inflate(
+        val itemViewBinding: QuestItemLayoutBinding = QuestItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -49,7 +40,8 @@ class QuestHistoryAdapter(private val questList: ArrayList<Quest>, private val u
     override fun onBindViewHolder(holder: QuestHistoryViewHolder, position: Int) {
         val questItem = questList[position]
         holder.bindData(questItem)
-
+        holder.setActionBtnIcon(R.drawable.icon_log)
+        holder.setActionBtnVisibility(isVisible = true)
         holder.itemView.setOnClickListener {
             // Find the UQA first, then match the quest to it
             val matchingUQA = userQuestActList.find { it.questID == questItem.id }
@@ -96,7 +88,7 @@ class QuestHistoryAdapter(private val questList: ArrayList<Quest>, private val u
             }
         }
 
-        holder.setLogBtnClickListener {
+        holder.setActionBtnClickListenerAsLog {
             // Match UserQuestActivity by questID
             val matchingUQA = userQuestActList.find { it.questID == questItem.id }
 

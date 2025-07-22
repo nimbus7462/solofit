@@ -6,11 +6,9 @@
     app:startDestination="@id/manage_quest">
 
 
-
-
     <fragment
         android:id="@+id/manage_quest"
-        android:name="com.example.solofit.ManageQuest"
+        android:name="com.example.solofit.ManageQuestActivities.ManageQuest"
         android:label="fragment_manage_quest"
         tools:layout="@layout/fragment_manage_quest" >
         <action
@@ -19,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/add_edit_quest"
-        android:name="com.example.solofit.Add_Edit_Quest"
+        android:name="com.example.solofit.ManageQuestActivities.AddEditQuest"
         android:label="add_quest"
         tools:layout="@layout/add_edit_quest">
         <argument
@@ -27,11 +25,11 @@
             app:argType="integer"
             android:defaultValue="-1" />
         <argument
-            android:name="questTitle"
+            android:name="pageHeader"
             app:argType="string"
             android:defaultValue="" />
         <argument
-            android:name="questName"
+            android:name="questTitle"
             app:argType="string"
             android:defaultValue="" />
         <argument
@@ -47,7 +45,7 @@
             app:argType="string"
             android:defaultValue="" />
         <argument
-            android:name="questTags"
+            android:name="questExtraTags"
             app:argType="string"
             android:defaultValue="" />
         <argument

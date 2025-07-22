@@ -24,10 +24,10 @@
 
         <ImageView
             android:id="@+id/imvQuest_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center"
-            android:layout_margin="15dp"
+            android:layout_margin="5dp"
             app:srcCompat="@drawable/icon_str" />
 
         <TextView
@@ -36,13 +36,27 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="15dp"
+            android:layout_weight="1"
             android:fontFamily="@font/inclusive_sans"
             android:gravity="center"
             android:shadowColor="@color/cyan"
             android:shadowRadius="10"
             android:text="TextView"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
+
+
+        <ImageButton
+            android:id="@+id/imbQuestAction"
+            android:layout_width="38dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/log_icon"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            app:srcCompat="@android:color/transparent" />
 
     </LinearLayout>
 

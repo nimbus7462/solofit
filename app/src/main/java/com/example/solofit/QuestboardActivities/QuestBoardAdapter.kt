@@ -5,8 +5,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
-import com.example.solofit.databinding.QuestboardItemLayoutBinding
 
 class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestBoardViewHolder>() {
 
@@ -22,7 +22,7 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestBoardViewHolder {
-        val itemViewBinding: QuestboardItemLayoutBinding = QuestboardItemLayoutBinding.inflate(
+        val itemViewBinding: QuestItemLayoutBinding = QuestItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -61,7 +61,6 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
             "Vitality" -> {
                 holder.setQuestIcon(R.drawable.icon_vit)
             }
-
         }
 
         // Set up click listener on the whole itemView
