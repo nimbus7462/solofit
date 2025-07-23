@@ -2,34 +2,34 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/questboard_page"
+    android:id="@+id/cloAddEditQuest"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="1"
     android:background="@drawable/bg_main"
-    android:contentDescription="discard"
-    tools:context=".Add_Edit_Quest">
+    tools:context=".ManageQuestFragments.ManageQuest">
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:fillViewport="true"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/lloAddQuest"
-            android:layout_width="350dp"
+            android:id="@+id/lloMainLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_main_frame"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="10dp">
 
-            <EditText
-                android:id="@+id/edtQuestsTitle"
+            <TextView
+                android:id="@+id/txvAddEditQuestHeader"
                 android:layout_width="315dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
@@ -46,6 +46,7 @@
                 android:textColor="@color/white"
                 android:textSize="34sp" />
 
+
             <EditText
                 android:id="@+id/edtQuestName"
                 android:layout_width="315dp"
@@ -60,10 +61,11 @@
                 android:gravity="center"
                 android:hint="@string/hint_questName"
                 android:inputType="text"
+                android:maxLength="25"
                 android:paddingBottom="5dp"
                 android:shadowColor="@color/cyan"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="@color/edit_text_color"
+                android:textColor="@color/white"
                 android:textColorHint="#ABADAD"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -155,8 +157,9 @@
                     android:gravity="center_horizontal|top"
                     android:hint="@string/hint_extraTags"
                     android:inputType="text"
+                    android:maxLength="35"
                     android:padding="10dp"
-                    android:textColor="@color/edit_text_color"
+                    android:textColor="@color/white"
                     android:textColorHint="#ABADAD"
                     android:textSize="12sp" />
 
@@ -192,9 +195,10 @@
                     android:fontFamily="@font/play"
                     android:gravity="center"
                     android:hint="@string/hint_expReward"
-                    android:inputType="text"
+                    android:inputType="number"
+                    android:maxLength="3"
                     android:padding="10dp"
-                    android:textColor="@color/edit_text_color"
+                    android:textColor="@color/white"
                     android:textColorHint="#ABADAD"
                     android:textSize="14sp" />
 
@@ -217,11 +221,11 @@
                     android:shadowColor="@color/cyan"
                     android:shadowRadius="10"
                     android:text="@string/stat_reward"
-                    android:textColor="@color/edit_text_color"
+                    android:textColor="@color/white"
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/etdStatExpRewards"
+                    android:id="@+id/edtStatRewards"
                     android:layout_width="170dp"
                     android:layout_height="48dp"
                     android:layout_gravity="end"
@@ -230,9 +234,10 @@
                     android:fontFamily="@font/play"
                     android:gravity="center"
                     android:hint="@string/hint_expReward"
-                    android:inputType="text"
+                    android:inputType="number"
+                    android:maxLength="3"
                     android:padding="10dp"
-                    android:textColor="@color/edit_text_color"
+                    android:textColor="@color/white"
                     android:textColorHint="#ABADAD"
                     android:textSize="14sp" />
 
@@ -268,10 +273,12 @@
                     android:fontFamily="@font/play"
                     android:gravity="top"
                     android:hint="@string/hint_addDesc"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
+                    android:maxLength="100"
                     android:padding="15dp"
-                    android:textColor="@color/edit_text_color"
+                    android:textColor="@color/white"
                     android:textColorHint="#ABADAD" />
+
 
             </LinearLayout>
 
@@ -282,7 +289,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btnCancelAdd"
+                    android:id="@+id/btnCancelAddEdit"
                     android:layout_width="115dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="15dp"
@@ -296,7 +303,7 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/btnSaveAdd"
+                    android:id="@+id/btnSaveAddEdit"
                     android:layout_width="115dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="35dp"
@@ -313,84 +320,163 @@
         </LinearLayout>
     </ScrollView>
 
+    <View
+        android:id="@+id/viewBackgroundBlocker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#D308133A"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clConfirmation"
+        android:id="@+id/cloErrorMessages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible">
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/ivConfirmationPanel"
-            android:layout_width="0dp"
-            android:layout_height="380dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="400dp"
+            android:background="@drawable/bg_confirm_box"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.498"
-            app:srcCompat="@drawable/white_border_box" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvConfirmation"
-            android:layout_width="315dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="80dp"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/schibsted_grotesk"
+            <TextView
+                android:id="@+id/txvErrorMsgHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:shadowColor="@color/bright_red"
+                android:shadowRadius="10"
+                android:text="@string/error"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/txvErrorMsgList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:fontFamily="@font/play"
+                android:gravity="center_horizontal"
+                android:paddingTop="10dp"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnCloseMsg"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_return_btn"
+                android:fontFamily="@font/play"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:shadowColor="@color/light_gray"
+                android:shadowRadius="10"
+                android:text="@string/close"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cloConfirmation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_confirm_box"
             android:gravity="center"
-            android:paddingBottom="5dp"
-            android:shadowColor="@color/cyan"
-            android:shadowRadius="10"
-            android:text="Are You Sure?"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/white"
-            android:textSize="34sp"
-            app:layout_constraintEnd_toEndOf="@+id/ivConfirmationPanel"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintStart_toStartOf="@+id/ivConfirmationPanel"
-            app:layout_constraintTop_toTopOf="@+id/ivConfirmationPanel" />
+            android:orientation="vertical"
+            android:padding="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/btnYes"
-            android:layout_width="115dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="92dp"
-            android:background="@drawable/bg_add_quest_save"
-            android:fontFamily="@font/play"
-            android:shadowColor="@color/bright_green"
-            android:shadowRadius="10"
-            android:text="YES"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivConfirmationPanel"
-            app:layout_constraintEnd_toEndOf="@+id/ivConfirmationPanel"
-            app:layout_constraintTop_toBottomOf="@+id/tvConfirmation"
-            app:layout_constraintVertical_bias="1.0"
-            tools:ignore="UnknownId" />
+            <TextView
+                android:id="@+id/txvConfirmationMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="80dp" />
 
-        <Button
-            android:id="@+id/btnGoBack"
-            android:layout_width="115dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginBottom="92dp"
-            android:background="@drawable/discard_panel_button"
-            android:contentDescription="yes"
-            android:fontFamily="@font/play"
-            android:shadowColor="#C6C6C6"
-            android:shadowRadius="10"
-            android:text="GO BACK"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivConfirmationPanel"
-            app:layout_constraintStart_toStartOf="@+id/ivConfirmationPanel"
-            app:layout_constraintTop_toBottomOf="@+id/tvConfirmation"
-            app:layout_constraintVertical_bias="1.0" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnGoBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="40dp"
+                    android:background="@drawable/bg_return_btn"
+                    android:contentDescription="@string/go_back_btn"
+                    android:fontFamily="@font/play"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvConfirmation"
+                    tools:layout_editor_absoluteX="24dp" />
+
+                <Button
+                    android:id="@+id/btnConfirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:background="@drawable/bg_complete_btn"
+                    android:contentDescription="@string/confirm_btn"
+                    android:fontFamily="@font/play"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvConfirmation"
+                    tools:ignore="UnknownId"
+                    tools:layout_editor_absoluteX="261dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

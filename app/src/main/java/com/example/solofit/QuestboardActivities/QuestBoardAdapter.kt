@@ -5,8 +5,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
-import com.example.solofit.databinding.QuestboardItemLayoutBinding
 
 class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestBoardViewHolder>() {
 
@@ -22,7 +22,7 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestBoardViewHolder {
-        val itemViewBinding: QuestboardItemLayoutBinding = QuestboardItemLayoutBinding.inflate(
+        val itemViewBinding: QuestItemLayoutBinding = QuestItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -34,34 +34,30 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
         val questItem = questList[position]
         holder.bindData(questItem)
 
-        // Switch case for background colors based on difficulty
+        // Switch case for colors based on difficulty
         when (questItem.difficulty) {
             "Easy" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_easy)
+                holder.setQuestNameTextShadow(R.color.bright_green)
             }
             "Normal" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_normal)
+                holder.setQuestNameTextShadow(R.color.cyan)
             }
             "Hard" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_hard)
+                holder.setQuestNameTextShadow(R.color.bright_red)
             }
             "Extreme" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_extreme)
+                holder.setQuestNameTextShadow(R.color.bright_purple)
             }
         }
-
         // Switch case for icon
-        when(questItem.tag) {
-            "Strength" -> {
-                holder.setQuestIcon(R.drawable.icon_str)
-            }
-            "Endurance" -> {
-                holder.setQuestIcon(R.drawable.icon_end)
-            }
-            "Vitality" -> {
-                holder.setQuestIcon(R.drawable.icon_vit)
-            }
-
+        when (questItem.tag) {
+            "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
+            "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)
+            "Vitality" -> holder.setQuestIcon(R.drawable.icon_vit)
         }
 
         // Set up click listener on the whole itemView

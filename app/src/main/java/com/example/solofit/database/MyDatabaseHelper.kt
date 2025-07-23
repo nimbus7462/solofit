@@ -160,9 +160,9 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     /* Step 5a: Insert seed data into the quest table on first install */
     private fun insertInitialQuests(db: SQLiteDatabase) {
         val quests = listOf(
-            Quest("3 x 15 Push-ups", "Do 3 sets of 15 push-ups to strengthen your chest and triceps.", "Strength", "Chest, Triceps", "Medium", 50, 1),
+            Quest("3 x 15 Push-ups", "Do 3 sets of 15 push-ups to strengthen your chest and triceps.", "Strength", "Chest, Triceps", "Normal", 50, 1),
             Quest("3 x 10 Pull-ups", "Do 3 sets of 10 pull-ups for upper body power.", "Strength", "Back, Biceps", "Hard", 80, 1),
-            Quest("60s Plank", "Hold a plank for 60 seconds for core strength.", "Vitality", "Core, Balance", "Medium", 60, 2),
+            Quest("60s Plank", "Hold a plank for 60 seconds for core strength.", "Vitality", "Core, Balance", "Normal", 60, 2),
             Quest("10km Jog", "Jog 10 kilometers to build endurance and stamina.", "Endurance", "Cardio, Stamina", "Hard", 120, 3),
             Quest("3 x 30 Jumping Jacks", "Do 3 sets of 30 jumping jacks to warm up and activate full body.", "Endurance", "Warm-up, Cardio", "Easy", 30, 1)
         )
@@ -240,7 +240,8 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
     /* 🟡 Update: Modify an existing quest */
-    fun updateQuest(q: Quest) {
+    /* 🟡 Update: Modify an existing quest and return number of rows updated */
+    fun updateQuest(q: Quest): Int {
         val database = this.writableDatabase
 
         val values = ContentValues().apply {
@@ -253,16 +254,21 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             put(DbReferences.COLUMN_STAT_REWARD, q.statReward)
         }
 
+
+
         // This builds the WHERE clause for the update:
         val selection = DbReferences.COLUMN_QUEST_ID + " = ?" //where clause with a placeholder "?"
         val selectionArgs = arrayOf(q.id.toString()) //fills the placeholder
 
         // Executes the update. Updates the row that matches the id.
         // Closes the database after the operation.
-        database.update(DbReferences.TABLE_QUEST, values, selection, selectionArgs)
-
+  
+        val rowsUpdated = database.update(DbReferences.TABLE_QUEST, values, selection, selectionArgs)
         database.close()
+
+        return rowsUpdated
     }
+
 
     /* 🔴 Delete: Remove a quest by its ID */
     fun deleteQuest(id: Int) {

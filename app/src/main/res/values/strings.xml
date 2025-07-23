@@ -2,6 +2,7 @@
     <string name="app_name">solofit</string>
     <string name="quests">QUESTS</string>
     <string name="add_quest">ADD QUEST</string>
+    <string name="add_quest_outer">Add Quest</string>
     <string name="edit_quest">EDIT QUEST</string>
     <string name="continue_button">Continue</string>
     <string name="welcome">Welcome to SoloFit</string>
@@ -52,7 +53,13 @@
     <string name="quest_aborted">QUEST ABORTED</string>
     <string name="return_quest">RETURN</string>
     <string name="quest_summary">QUEST SUMMARY</string>
+    <string name="aborted">Aborted</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
+    <string name="error">ERROR:</string>
+    <string name="close">CLOSE</string>
     <string-array name="quest_difficulties">
+        <item />
         <item>Easy</item>
         <item>Normal</item>
         <item>Hard</item>
@@ -60,8 +67,9 @@
     </string-array>
 
     <string-array name="quest_types">
+        <item />
         <item>Strength</item>
-        <item>Vitality</item>
         <item>Endurance</item>
+        <item>Vitality</item>
     </string-array>
 </resources>

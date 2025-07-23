@@ -135,8 +135,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -145,6 +145,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/schibsted_grotesk"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
                             android:shadowColor="@color/cyan"
                             android:shadowRadius="10"
                             android:text="@string/exp"
@@ -164,6 +166,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="5dp"
                                 android:fontFamily="@font/schibsted_grotesk"
+                                android:paddingStart="5dp"
+                                android:paddingEnd="5dp"
                                 android:shadowColor="@color/cyan"
                                 android:shadowRadius="10"
                                 android:text="@string/title"
@@ -205,6 +209,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/schibsted_grotesk"
                         android:gravity="end"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         android:shadowColor="@color/cyan"
                         android:shadowRadius="10"
                         android:text="67 / 150"
