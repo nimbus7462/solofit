@@ -1,3 +1,5 @@
+package com.example.solofit.model
+
 class Quote {
     var quoteID: Int = 0
     var quoteText: String
