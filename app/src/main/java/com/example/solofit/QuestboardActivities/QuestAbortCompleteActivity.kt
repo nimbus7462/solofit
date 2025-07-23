@@ -77,6 +77,8 @@ class QuestAbortCompleteActivity : AppCompatActivity(){
 
         viewBinding.btnLogThoughts.setOnClickListener {
             val intentLoggingActivity = Intent(applicationContext, QuestLoggingActivity::class.java)
+            // send the quest title to the logging activity
+            intentLoggingActivity.putExtra(EXTRA_QUEST_NAME, viewBinding.txvQStatusQuestName.text.toString())
 
             this.startActivity(intentLoggingActivity)
             finish()

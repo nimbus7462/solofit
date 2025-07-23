@@ -1,4 +1,8 @@
 package com.example.solofit
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,215 +16,176 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.model.Quest
 
-class Add_Edit_Quest : Fragment() {
+class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
+    context, DbReferences.DATABASE_NAME, null, DbReferences.DATABASE_VERSION
+) {
 
-    private val args: Add_Edit_QuestArgs by navArgs() // ✅ Safe Args
-    private lateinit var dbHelper: MyDatabaseHelper    // ✅ DB helper
+    // Step 0: All constants for structure, columns, and SQL
+    private object DbReferences {
+        const val DATABASE_NAME = "quest_app.db"
+        const val DATABASE_VERSION = 1
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.add_edit_quest, container, false)
+        const val TABLE_NAME = "quest_table"
+
+        const val _ID = "id"
+        const val COLUMN_TITLE = "title"
+        const val COLUMN_DESCRIPTION = "description"
+        const val COLUMN_TAG = "tag"
+        const val COLUMN_ADD_ON_TAGS = "add_on_tags"
+        const val COLUMN_DIFFICULTY = "difficulty"
+        const val COLUMN_XP_REWARD = "xp_reward"
+        const val COLUMN_STAT_REWARD = "stat_reward"
+        const val COLUMN_ICON = "icon"
+
+        const val CREATE_TABLE_STATEMENT = """
+            CREATE TABLE $TABLE_NAME (
+                $_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_TITLE TEXT,
+                $COLUMN_DESCRIPTION TEXT,
+                $COLUMN_TAG TEXT,
+                $COLUMN_ADD_ON_TAGS TEXT,
+                $COLUMN_DIFFICULTY TEXT,
+                $COLUMN_XP_REWARD INTEGER,
+                $COLUMN_STAT_REWARD INTEGER,
+                $COLUMN_ICON INTEGER
+            );
+        """
+
+        const val DROP_TABLE_STATEMENT = "DROP TABLE IF EXISTS $TABLE_NAME"
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    /* Step 3: Create the table when DB is first initialized */
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(DbReferences.CREATE_TABLE_STATEMENT)
+        insertInitialQuests(db)
+    }
 
-        dbHelper = MyDatabaseHelper(requireContext()) // ✅ Init DB helper
+    /* Step 4: Drop and recreate the table when DB version changes */
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL(DbReferences.DROP_TABLE_STATEMENT)
+        onCreate(db)
+    }
 
-        val questTypeSpinner = view.findViewById<Spinner>(R.id.spnQuestType)
-        val questDiffSpinner = view.findViewById<Spinner>(R.id.spnDifficulty)
-        val questTypes = resources.getStringArray(R.array.quest_types)
-        val questDiff = resources.getStringArray(R.array.quest_difficulties)
-
-        val typeAdapter = ArrayAdapter(
-            requireContext(),
-            R.layout.spinner_item,
-            questTypes
+    /* Step 5a: Insert seed data into the quest table on first install */
+    private fun insertInitialQuests(db: SQLiteDatabase) {
+        val quests = listOf(
+            Quest(1, "3 x 15 Push-ups", "Do 3 sets of 15 push-ups to strengthen your chest and triceps.", "Strength", "Chest, Triceps", "Medium", 50, 1),
+            Quest(2, "3 x 10 Pull-ups", "Do 3 sets of 10 pull-ups for upper body power.", "Strength", "Back, Biceps", "Hard", 80, 1),
+            Quest(0, "60s Plank", "Hold a plank for 60 seconds for core strength.", "Vitality", "Core, Balance", "Medium", 60, 2),
+            Quest(0, "10km Jog", "Jog 10 kilometers to build endurance and stamina.", "Endurance", "Cardio, Stamina", "Hard", 120, 3),
+            Quest(0, "3 x 30 Jumping Jacks", "Do 3 sets of 30 jumping jacks to warm up and activate full body.", "Endurance", "Warm-up, Cardio", "Easy", 30, 1)
         )
-        typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown)
-        questTypeSpinner.adapter = typeAdapter
 
-        val difficultyAdapter = ArrayAdapter(
-            requireContext(),
-            R.layout.spinner_item,
-            questDiff
+        for (q in quests) {
+            val values = ContentValues().apply {
+                put(DbReferences.COLUMN_TITLE, q.title)
+                put(DbReferences.COLUMN_DESCRIPTION, q.description)
+                put(DbReferences.COLUMN_TAG, q.tag)
+                put(DbReferences.COLUMN_ADD_ON_TAGS, q.addOnTags)
+                put(DbReferences.COLUMN_DIFFICULTY, q.difficulty)
+                put(DbReferences.COLUMN_XP_REWARD, q.xpReward)
+                put(DbReferences.COLUMN_STAT_REWARD, q.statReward)
+            }
+            db.insert(DbReferences.TABLE_NAME, null, values)
+        }
+    }
+
+    /* 🟢 Read: Returns all quests in a list */
+    fun getAllQuests(): ArrayList<Quest> {
+        val database = this.readableDatabase
+        val c = database.query(
+            DbReferences.TABLE_NAME,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         )
-        difficultyAdapter.setDropDownViewResource(R.layout.spinner_dropdown)
-        questDiffSpinner.adapter = difficultyAdapter
 
-        // ✅ Get references to EditTexts and buttons
-        val edtQuestHeader = view.findViewById<EditText>(R.id.edtQuestsTitle)
-        val edtQuestName = view.findViewById<EditText>(R.id.edtQuestName)
-        val edtQuestTags = view.findViewById<EditText>(R.id.edtExtraTags)
-        val edtExpReward = view.findViewById<EditText>(R.id.edtExpRewards)
-        val edtStatReward = view.findViewById<EditText>(R.id.etdStatExpRewards)
-        val edtQuestDesc = view.findViewById<EditText>(R.id.edtDescription)
-        val btnYes = view.findViewById<Button>(R.id.btnYes)
-        val btnGoBack = view.findViewById<Button>(R.id.btnGoBack)
-        val confirmationPanel = view.findViewById<ConstraintLayout>(R.id.clConfirmation)
+        val quests: ArrayList<Quest> = ArrayList()
 
-        // ✅ Populate fields if editing
-        edtQuestHeader.setText(args.questTitle)
-        edtQuestName.setText(args.questName)
-        edtQuestDesc.setText(args.questDescription)
-        edtQuestTags.setText(args.questTags)
-        edtExpReward.setText(args.questXpReward.toString())
-        edtStatReward.setText(args.questStatReward.toString())
-        questTypeSpinner.setSelection(getSpinnerIndex(questTypeSpinner, args.questType))
-        questDiffSpinner.setSelection(getSpinnerIndex(questDiffSpinner, args.questDifficulty))
-
-
-        val btnSave = view.findViewById<View>(R.id.btnSaveAdd)
-        val btnCancel = view.findViewById<View>(R.id.btnCancelAdd)
-
-        btnSave.setOnClickListener {
-            handleSaveButton(
-                edtQuestName,
-                edtQuestTags,
-                edtExpReward,
-                edtStatReward,
-                edtQuestDesc,
-                questTypeSpinner,
-                questDiffSpinner
+        while (c.moveToNext()) {
+            quests.add(
+                Quest(
+                    id = c.getInt(c.getColumnIndexOrThrow(DbReferences._ID)),
+                    title = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_TITLE)),
+                    description = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_DESCRIPTION)),
+                    tag = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_TAG)),
+                    addOnTags = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ADD_ON_TAGS)),
+                    difficulty = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_DIFFICULTY)),
+                    xpReward = c.getInt(c.getColumnIndexOrThrow(DbReferences.COLUMN_XP_REWARD)),
+                    statReward = c.getInt(c.getColumnIndexOrThrow(DbReferences.COLUMN_STAT_REWARD))
+                )
             )
-
         }
 
-        btnCancel.setOnClickListener {
-            handleCancelButton()
-        }
+        c.close()
+        database.close()
 
-        // Handle Android back button
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    handleCancelButton()
-                }
-            })
-        btnYes.setOnClickListener {
-            findNavController().popBackStack()
-        }
-        btnGoBack.setOnClickListener {
-            confirmationPanel?.visibility = View.INVISIBLE
-        }
-
-
-    }
-    private fun getSpinnerIndex(spinner: Spinner, value: String): Int {
-        for (i in 0 until spinner.count) {
-            if (spinner.getItemAtPosition(i).toString().equals(value, ignoreCase = true)) {
-                return i
-            }
-        }
-        return 0
+        return quests
     }
 
-    private fun handleSaveButton(
-        edtQuestName: EditText,
-        edtQuestTags: EditText,
-        edtExpReward: EditText,
-        edtStatReward: EditText,
-        edtQuestDesc: EditText,
-        questTypeSpinner: Spinner,
-        questDiffSpinner:Spinner
-    ) {
-        val name = edtQuestName.text.toString().trim()
-        val tags = edtQuestTags.text.toString().trim()
-        val xp = edtExpReward.text.toString().trim()
-        val stat = edtStatReward.text.toString().trim()
-        val desc = edtQuestDesc.text.toString().trim()
-        val type = questTypeSpinner.selectedItem.toString()
-        val diff = questDiffSpinner.selectedItem.toString()
-        var save = true
+    /* 🟢 Insert: Adds a new quest to the DB and returns success */
+    @Synchronized
+    fun insertQuest(q: Quest): Long {
+        val database = this.writableDatabase
 
-        when {
-            name.isEmpty() -> {
-                edtQuestName.error = "Required"
-                showToast("Quest name is required")
-                save = false
-            }
-            tags.isEmpty() -> {
-                edtQuestTags.error = "Required"
-                showToast("Tags are required")
-                save = false
-            }
-            xp.isEmpty() -> {
-                edtExpReward.error = "Required"
-                showToast("XP reward is required")
-                save = false
-            }
-            stat.isEmpty() -> {
-                edtStatReward.error = "Required"
-                showToast("Stat reward is required")
-                save = false
-            }
-            desc.isEmpty() -> {
-                edtQuestDesc.error = "Required"
-                showToast("Description is required")
-                save = false
-            }
+        val values = ContentValues().apply {
+            put(DbReferences.COLUMN_TITLE, q.title)
+            put(DbReferences.COLUMN_DESCRIPTION, q.description)
+            put(DbReferences.COLUMN_TAG, q.tag)
+            put(DbReferences.COLUMN_ADD_ON_TAGS, q.addOnTags)
+            put(DbReferences.COLUMN_DIFFICULTY, q.difficulty)
+            put(DbReferences.COLUMN_XP_REWARD, q.xpReward)
+            put(DbReferences.COLUMN_STAT_REWARD, q.statReward)
         }
 
-        val exp = xp.toIntOrNull()
-        val statVal = stat.toIntOrNull()
+        val id = database.insert(DbReferences.TABLE_NAME, null, values)
 
-        if (exp == null || exp == 0) {
-            edtExpReward.error = "Must be a valid number > 0"
-            showToast("XP reward must be a valid number")
-            save = false
-        }
-
-        if (statVal == null || statVal == 0) {
-            edtStatReward.error = "Must be a valid number > 0"
-            showToast("Stat reward must be a valid number")
-            save = false
-        }
-
-        if (save) {
-            val temp_icon = when (type) {
-                "Strength" -> R.drawable.dumbell_icon
-                "Vitality" -> R.drawable.meditate
-                else -> R.drawable.footprint
-            }
-
-            val quest = Quest(
-                id = if (args.questId == -1) 0 else args.questId, // 0 = AUTO_INCREMENT
-                title = name,
-                description = desc,
-                tag = type,
-                addOnTags = tags,
-                difficulty = diff,
-                xpReward = exp!!,
-                statReward = statVal!!,
-            )
-
-            val success = if (args.questId == -1) {
-                dbHelper.addQuest(quest)
-            } else {
-                dbHelper.updateQuest(quest)
-            }
-
-            if (success) {
-                showToast("Quest saved!")
-                findNavController().popBackStack()
-            } else {
-                showToast("Failed to save quest")
-            }
-        }
+        database.close()
+        return id
     }
 
-    private fun showToast(message: String) {
-        android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT).show()
+    /* 🟡 Update: Modify an existing quest */
+    fun updateQuest(q: Quest) {
+        val database = this.writableDatabase
+
+        val values = ContentValues().apply {
+            put(DbReferences.COLUMN_TITLE, q.title)
+            put(DbReferences.COLUMN_DESCRIPTION, q.description)
+            put(DbReferences.COLUMN_TAG, q.tag)
+            put(DbReferences.COLUMN_ADD_ON_TAGS, q.addOnTags)
+            put(DbReferences.COLUMN_DIFFICULTY, q.difficulty)
+            put(DbReferences.COLUMN_XP_REWARD, q.xpReward)
+            put(DbReferences.COLUMN_STAT_REWARD, q.statReward)
+        }
+
+        // This builds the WHERE clause for the update:
+        val selection = DbReferences._ID + " = ?" //where clause with a placeholder "?"
+        val selectionArgs = arrayOf(q.id.toString()) //fills the placeholder
+
+        // Executes the update. Updates the row that matches the id.
+        // Closes the database after the operation.
+        database.update(DbReferences.TABLE_NAME, values, selection, selectionArgs)
+
+        database.close()
     }
 
-    private fun handleCancelButton() {
-        val confirmationPanel = view?.findViewById<ConstraintLayout>(R.id.clConfirmation)
-        confirmationPanel?.visibility = View.VISIBLE
+    /* 🔴 Delete: Remove a quest by its ID */
+    fun deleteQuest(id: Int) {
+        val database = this.writableDatabase
+
+        // WHERE clause
+        val selection = DbReferences._ID + " = ?"
+        val selectionArgs = arrayOf(id.toString())
+
+        // Executes the delete
+        database.delete(DbReferences.TABLE_NAME, selection, selectionArgs)
+
+        database.close()
     }
-
-
 }

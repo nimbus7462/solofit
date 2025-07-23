@@ -33,6 +33,8 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
     override fun onBindViewHolder(holder: QuestBoardViewHolder, position: Int) {
         val questItem = questList[position]
         holder.bindData(questItem)
+
+        // Switch case for background colors based on difficulty
         when (questItem.difficulty) {
             "Easy" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_easy)
@@ -47,6 +49,8 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
                 holder.setQuestBackground(R.drawable.bg_quest_item_extreme)
             }
         }
+
+        // Switch case for icon
         when(questItem.tag) {
             "Strength" -> {
                 holder.setQuestIcon(R.drawable.icon_str)
