@@ -7,6 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.StartingPageBinding
+import com.example.solofit.api.ZenQuotesFetcher
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
 
 class StartingPageActivity : AppCompatActivity() {
 
@@ -26,6 +30,17 @@ class StartingPageActivity : AppCompatActivity() {
 
         // creates the database as soon as the app is launched
         myDbHelper = MyDatabaseHelper.getInstance(this@StartingPageActivity)!!
+
+        // 🔁 Fetch and insert ZenQuotes only once
+        lifecycleScope.launch {
+            ZenQuotesFetcher.fetchAndInsertQuotesOnce(applicationContext)
+
+            // Fetch and log all quotes, Debugger
+            val quotes = myDbHelper.getAllQuotes()
+            for (quote in quotes) {
+                Log.d("QUOTE_LOG", "\"${quote.quoteText}\" — ${quote.quoteAuthor}")
+            }
+        }
 
         // Button click listener
         binding.btnContinue.setOnClickListener {
