@@ -17,13 +17,13 @@ package com.example.solofit.model
 class Quest {
     var id: Int = 0
         set
-    var title: String
+    var questName: String
         set
     var description: String
         set
-    var tag: String
+    var questType: String
         set
-    var addOnTags: String
+    var extraTags: String
         set
     var difficulty: String
         set
@@ -33,23 +33,23 @@ class Quest {
         set
 
     // Constructor without ID – used before inserting into DB
-    constructor(title: String, description: String, tag: String, addOnTags: String, difficulty: String, xpReward: Int, statReward: Int) {
-        this.title = title
+    constructor(questName: String, description: String, questType: String, extraTags: String, difficulty: String, xpReward: Int, statReward: Int) {
+        this.questName = questName
         this.description = description
-        this.tag = tag
-        this.addOnTags = addOnTags
+        this.questType = questType
+        this.extraTags = extraTags
         this.difficulty = difficulty
         this.xpReward = xpReward
         this.statReward = statReward
     }
 
     // Constructor with ID – used when loading from DB
-    constructor(id: Int, title: String, description: String, tag: String, addOnTags: String, difficulty: String, xpReward: Int, statReward: Int) {
+    constructor(id: Int, questName: String, description: String, questType: String, extraTags: String, difficulty: String, xpReward: Int, statReward: Int) {
         this.id = id
-        this.title = title
+        this.questName = questName
         this.description = description
-        this.tag = tag
-        this.addOnTags = addOnTags
+        this.questType = questType
+        this.extraTags = extraTags
         this.difficulty = difficulty
         this.xpReward = xpReward
         this.statReward = statReward
@@ -59,13 +59,14 @@ class Quest {
     override fun toString(): String {
         return "Quest{" +
                 "id=$id" +
-                ", title='$title'" +
+                ", questName='$questName'" +
                 ", description='$description'" +
-                ", tag='$tag'" +
-                ", addOnTags='$addOnTags'" +
+                ", questType='$questType'" +
+                ", extraTags='$extraTags'" +
                 ", difficulty='$difficulty'" +
                 ", xpReward=$xpReward" +
                 ", statReward=$statReward" +
                 '}'
     }
 }
+

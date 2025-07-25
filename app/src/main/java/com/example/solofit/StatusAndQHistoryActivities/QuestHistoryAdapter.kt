@@ -53,17 +53,17 @@ class QuestHistoryAdapter(private val questList: ArrayList<Quest>, private val u
                 matchingQuest?.let { questItem ->
                     val intent = Intent(holder.itemView.context, QuestInfoViewOnlyActivity::class.java).apply {
                         // From Quest
-                        putExtra(EXTRA_QUEST_TITLE, questItem.title)
+                        putExtra(EXTRA_QUEST_TITLE, questItem.questName)
                         putExtra(EXTRA_DESC, questItem.description)
-                        putExtra(EXTRA_TAG, questItem.tag)
-                        putExtra(EXTRA_ADD_ON_TAGS, questItem.addOnTags)
+                        putExtra(EXTRA_TAG, questItem.questType)
+                        putExtra(EXTRA_ADD_ON_TAGS, questItem.extraTags)
                         putExtra(EXTRA_DIFFICULTY, questItem.difficulty)
                         putExtra(EXTRA_XP_REWARD, questItem.xpReward)
                         putExtra(EXTRA_STAT_REWARD, questItem.statReward)
 
 
                         // From UQA
-                        putExtra(EXTRA_DATE_COMPLETED, uqa.dateCompleted)
+                        putExtra(EXTRA_DATE_COMPLETED, uqa.dateCreated)
                         putExtra(EXTRA_QUEST_STATUS, uqa.questStatus)
                     }
                     holder.itemView.context.startActivity(intent)
@@ -73,7 +73,7 @@ class QuestHistoryAdapter(private val questList: ArrayList<Quest>, private val u
         }
 
         // Set icon based on tag
-        when (questItem.tag) {
+        when (questItem.questType) {
             "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
             "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)
             "Vitality" -> holder.setQuestIcon(R.drawable.icon_vit)
@@ -102,8 +102,8 @@ class QuestHistoryAdapter(private val questList: ArrayList<Quest>, private val u
             // Only proceed if there's a matching UQA
             matchingUQA?.let { uqa ->
                 val intent = Intent(holder.itemView.context, EditLogActivity::class.java).apply {
-                    putExtra(EXTRA_QUEST_TITLE, questItem.title)
-                    putExtra(EXTRA_DATE_COMPLETED, uqa.dateCompleted)
+                    putExtra(EXTRA_QUEST_TITLE, questItem.questName)
+                    putExtra(EXTRA_DATE_COMPLETED, uqa.dateCreated)
                     putExtra(EXTRA_USER_LOG, uqa.userLogs)
                     putExtra(EXTRA_QUEST_STATUS, uqa.questStatus)
                     putExtra(EXTRA_UQA_ID, uqa.userQuestActID)

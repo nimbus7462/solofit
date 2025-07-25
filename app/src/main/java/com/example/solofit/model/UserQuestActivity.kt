@@ -4,7 +4,7 @@ class UserQuestActivity {
     var userQuestActID: Int = 0           // Primary Key
     var questStatus: String
     var userLogs: String
-    var dateCompleted: String             // Format: "YYYY-MM-DD"
+    var dateCreated: String               // Format: "YYYY-MM-DD"
     var questID: Int                      // Foreign Key to Quest
     var quoteID: Int                      // Foreign Key to Quote
     var userID: Int                       // Foreign Key to User
@@ -13,14 +13,14 @@ class UserQuestActivity {
     constructor(
         questStatus: String,
         userLogs: String,
-        dateCompleted: String,
+        dateCreated: String,
         questID: Int,
         quoteID: Int,
         userID: Int
     ) {
         this.questStatus = questStatus
         this.userLogs = userLogs
-        this.dateCompleted = dateCompleted
+        this.dateCreated = dateCreated
         this.questID = questID
         this.quoteID = quoteID
         this.userID = userID
@@ -31,7 +31,7 @@ class UserQuestActivity {
         userQuestActID: Int,
         questStatus: String,
         userLogs: String,
-        dateCompleted: String,
+        dateCreated: String,
         questID: Int,
         quoteID: Int,
         userID: Int
@@ -39,7 +39,7 @@ class UserQuestActivity {
         this.userQuestActID = userQuestActID
         this.questStatus = questStatus
         this.userLogs = userLogs
-        this.dateCompleted = dateCompleted
+        this.dateCreated = dateCreated
         this.questID = questID
         this.quoteID = quoteID
         this.userID = userID
@@ -50,7 +50,7 @@ class UserQuestActivity {
                 "userQuestActID=$userQuestActID" +
                 ", questStatus='$questStatus'" +
                 ", userLogs='$userLogs'" +
-                ", dateCompleted='$dateCompleted'" +
+                ", dateCreated='$dateCreated'" +
                 ", questID=$questID" +
                 ", quoteID=$quoteID" +
                 ", userID=$userID" +

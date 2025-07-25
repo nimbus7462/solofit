@@ -1,4 +1,4 @@
-package com.example.solofit.API
+package com.example.solofit.QuestAPI
 
 import retrofit2.http.GET
 

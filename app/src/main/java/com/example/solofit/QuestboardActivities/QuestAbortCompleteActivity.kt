@@ -1,31 +1,69 @@
 package com.example.solofit.QuestboardActivities
 
 import android.content.Intent
-import com.example.solofit.R
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.solofit.R
+import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.AbortCompleteQuestBinding
+import com.example.solofit.model.Quest
+import com.example.solofit.model.UserQuestActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
-class QuestAbortCompleteActivity : AppCompatActivity(){
+class QuestAbortCompleteActivity : AppCompatActivity() {
+
     companion object {
         const val EXTRA_QUEST_STATUS = "quest_status"
         const val STATUS_COMPLETED = "completed"
         const val STATUS_ABORTED = "aborted"
-        const val EXTRA_QUEST_NAME = "quest_name"
-        const val EXTRA_XP_REWARD = "xp_reward"
-        const val EXTRA_STAT_REWARD = "stat_reward"
-        const val EXTRA_STAT_TYPE = "stat_type"
+        const val QUEST_ID_KEY = "quest_id"
     }
+
     private lateinit var viewBinding: AbortCompleteQuestBinding
+    private var isSaved = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.viewBinding = AbortCompleteQuestBinding.inflate(layoutInflater)
+        viewBinding = AbortCompleteQuestBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        viewBinding.txvQStatusQuestName.text = intent.getStringExtra(EXTRA_QUEST_NAME)
-
+        val questId = intent.getIntExtra(QUEST_ID_KEY, -1)
         val questStatus = intent.getStringExtra(EXTRA_QUEST_STATUS)
+
+        if (questId == -1 || questStatus == null) {
+            finish()
+            return
+        }
+
+        val dbHelper = MyDatabaseHelper.getInstance(this)!!
+        val quest: Quest = dbHelper.getQuestById(questId) ?: run {
+            finish()
+            return
+        }
+
+        // Quest name shown at the top
+        viewBinding.txvQStatusQuestName.text = quest.questName
+
+        // TODO: Load and display a random quote
+        val quote = dbHelper.getRandomQuote()
+        quote?.let { selectedQuote ->
+            viewBinding.txvQuoteContent.text = "“${selectedQuote.quoteText}”"
+            viewBinding.txvQuoteAuthor.text = "- ${selectedQuote.quoteAuthor}"
+
+            isSaved = selectedQuote.isSaved
+            val icon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
+            viewBinding.imbSaveQuote.setImageResource(icon)
+
+            viewBinding.imbSaveQuote.setOnClickListener {
+                isSaved = !isSaved
+                val updatedIcon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
+                viewBinding.imbSaveQuote.setImageResource(updatedIcon)
+
+                // Now this works:
+                dbHelper.updateQuoteSaveStatus(selectedQuote.quoteID, isSaved)
+            }
+        }
 
         when (questStatus) {
             STATUS_COMPLETED -> {
@@ -34,15 +72,12 @@ class QuestAbortCompleteActivity : AppCompatActivity(){
                 viewBinding.btnFinishQuest.setBackgroundResource(R.drawable.bg_complete_btn)
                 viewBinding.btnFinishQuest.text = getString(R.string.complete_quest)
                 viewBinding.btnFinishQuest.setShadowLayer(10f, 0f, 0f, getColor(R.color.bright_green))
-                val expRewards = intent.getIntExtra(EXTRA_XP_REWARD, 0)
-                viewBinding.txvExpChanges.text =  " ( +$expRewards ) EXP"
+
+                viewBinding.txvExpChanges.text = "( +${quest.xpReward} ) EXP"
                 viewBinding.txvExpChanges.setShadowLayer(10f, 0f, 0f, getColor(R.color.bright_green))
                 viewBinding.imvExpIcon.setImageResource(R.drawable.icon_exp_gain)
 
-                val questStatType = intent.getStringExtra(EXTRA_STAT_TYPE)
-                val statRewards = intent.getIntExtra(EXTRA_STAT_REWARD, 0)
-
-                val statTextView = when (questStatType) {
+                val statTextView = when (quest.questType) {
                     "Strength" -> viewBinding.txvGainedStr
                     "Endurance" -> viewBinding.txvGainedEnd
                     "Vitality" -> viewBinding.txvGainedVit
@@ -50,11 +85,9 @@ class QuestAbortCompleteActivity : AppCompatActivity(){
                 }
 
                 statTextView?.apply {
-                    text = " ( +$statRewards )"
+                    text = " ( +${quest.statReward} )"
                     setShadowLayer(10f, 0f, 0f, getColor(R.color.bright_green))
                 }
-
-
             }
 
             STATUS_ABORTED -> {
@@ -64,41 +97,61 @@ class QuestAbortCompleteActivity : AppCompatActivity(){
                 viewBinding.btnFinishQuest.text = getString(R.string.return_quest)
                 viewBinding.btnFinishQuest.setShadowLayer(10f, 0f, 0f, getColor(R.color.light_gray))
 
-                val expDeduction = intent.getIntExtra(EXTRA_XP_REWARD, 0) / 2
-                viewBinding.txvExpChanges.text =  " ( -$expDeduction ) EXP"
-
+                val penaltyExp = quest.xpReward / 2
+                viewBinding.txvExpChanges.text = "( -$penaltyExp ) EXP"
                 viewBinding.txvExpChanges.setShadowLayer(10f, 0f, 0f, getColor(R.color.bright_red))
                 viewBinding.imvExpIcon.setImageResource(R.drawable.icon_exp_loss)
-
-
             }
         }
 
-
         viewBinding.btnLogThoughts.setOnClickListener {
-            val intentLoggingActivity = Intent(applicationContext, QuestLoggingActivity::class.java)
-            // send the quest title to the logging activity
-            intentLoggingActivity.putExtra(EXTRA_QUEST_NAME, viewBinding.txvQStatusQuestName.text.toString())
-
-            this.startActivity(intentLoggingActivity)
+            val intent = Intent(applicationContext, QuestLoggingActivity::class.java)
+            intent.putExtra(QUEST_ID_KEY, quest.id)
+            startActivity(intent)
             finish()
         }
 
+        // TODO: once the Cancel or Complete btn is clicked, set the questStatus UserQuestActivity attribute to "ABORTED" or "COMPLETED" depending on the action
         viewBinding.btnFinishQuest.setOnClickListener {
+            // STEP 1: Get today’s date
+            val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+            // STEP 2: Get UQA for this quest and today
+            val matchingUQAs = dbHelper.getUserQuestsByStatusAndDate("CREATED", today)
+            val uqa = matchingUQAs.find { it.questID == quest.id }
+
+            // STEP 3: Update status if match found
+            if (uqa != null) {
+                val newStatus = when (questStatus) {
+                    STATUS_COMPLETED -> "COMPLETED"
+                    STATUS_ABORTED -> "ABORTED"
+                    else -> uqa.questStatus // fallback, shouldn't happen
+                }
+
+                // STEP 3.1 Manually create a new UQA object with updated status
+                val updatedUQA = UserQuestActivity(
+                    userQuestActID = uqa.userQuestActID,
+                    questStatus = newStatus,
+                    userLogs = uqa.userLogs,
+                    dateCreated = uqa.dateCreated,
+                    questID = uqa.questID,
+                    quoteID = uqa.quoteID,
+                    userID = uqa.userID
+                )
+
+                // STEP 3.2 Update the DB
+                dbHelper.updateUserQuestActivity(updatedUQA)
+            }
+
+            // STEP 4: Finish activity
             finish()
         }
-
 
         var isSaved = false
-
         viewBinding.imbSaveQuote.setOnClickListener {
             isSaved = !isSaved
-            val newRes = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
-            viewBinding.imbSaveQuote.setImageResource(newRes)
+            val icon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
+            viewBinding.imbSaveQuote.setImageResource(icon)
         }
-
-
-
-
     }
 }
