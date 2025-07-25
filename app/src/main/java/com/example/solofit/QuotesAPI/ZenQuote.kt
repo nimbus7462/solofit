@@ -1,4 +1,4 @@
-package com.example.solofit.QuestAPI
+package com.example.solofit.QuotesAPI
 
 data class ZenQuote(
     val q: String, // Quote text

@@ -1,10 +1,12 @@
 package com.example.solofit.DailySummaryActivities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestSummaryBinding
 import com.example.solofit.datahelpers.QuestDataHelper
 import com.example.solofit.datahelpers.UserQuestActivityDataHelper
@@ -14,9 +16,8 @@ import com.example.solofit.model.UserQuestActivity
 class QuestSummaryActivity : AppCompatActivity() {
     private lateinit var viewBinding: QuestSummaryBinding
     private lateinit var recyclerView: RecyclerView
-    private val questList: ArrayList<Quest> = QuestDataHelper.getQuestsFromUserQuestActivities()
-    private val userQuestActList: ArrayList<UserQuestActivity> = UserQuestActivityDataHelper.initUQA()
-
+    lateinit var todaysUQAList: ArrayList<UserQuestActivity>
+    val dbHelper = MyDatabaseHelper.getInstance(this)!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,10 +26,18 @@ class QuestSummaryActivity : AppCompatActivity() {
 
         this.recyclerView = viewBinding.recViewQuestSummary
 
-        // Not Using DB at the moment
-       // val dbHelper = MyDatabaseHelper.getInstance(this)!!
+        // Just getting the UQAList from the previous activity
+        todaysUQAList = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+                intent.getParcelableArrayListExtra("uqaList", UserQuestActivity::class.java)
+            else ->
+                @Suppress("DEPRECATION")
+                intent.getParcelableArrayListExtra("uqaList")
+        } ?: arrayListOf()
 
-        this.recyclerView.adapter = QuestSummaryAdapter(this.questList, this.userQuestActList)
+        todaysUQAList.removeIf { it.questStatus.equals("CREATED", ignoreCase = true) }
+
+        this.recyclerView.adapter = QuestSummaryAdapter(this.todaysUQAList, dbHelper)
 
 
         this.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

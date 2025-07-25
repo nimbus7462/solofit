@@ -80,11 +80,12 @@ class QuestInfoViewOnlyActivity : AppCompatActivity() {
         viewBinding.txvQInfoDifficulty.text = difficulty
 
         val questStatus = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_QUEST_STATUS)
-        val statusText = if (questStatus == "Aborted") {
-            getString(R.string.aborted)
-        } else {
-            getString(R.string.completed)
+        val statusText = when (questStatus) {
+            "ABORTED" -> getString(R.string.aborted)
+            "COMPLETED" -> getString(R.string.completed)
+            else -> {"INVALID"}
         }
+
 
         // date
         val dateCompleted = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_DATE_COMPLETED)

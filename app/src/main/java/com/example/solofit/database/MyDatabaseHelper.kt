@@ -342,13 +342,26 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
     // Step 2: Get UserQuestActivities by status and date
-    fun getUserQuestsByStatusAndDate(status: String, date: String): List<UserQuestActivity> {
+    fun getUserQuestsByStatusAndDate(status: String?, date: String): List<UserQuestActivity> {
         val database = this.readableDatabase
+
+        val (selection, selectionArgs) = if (status != null) {
+            Pair(
+                "${DbReferences.COLUMN_QUEST_STATUS} = ? AND ${DbReferences.COLUMN_DATE_CREATED} = ?",
+                arrayOf(status, date)
+            )
+        } else {
+            Pair(
+                "${DbReferences.COLUMN_DATE_CREATED} = ?",
+                arrayOf(date)
+            )
+        }
+
         val cursor = database.query(
             DbReferences.TABLE_UQA,
             null,
-            "${DbReferences.COLUMN_QUEST_STATUS} = ? AND ${DbReferences.COLUMN_DATE_CREATED} = ?",
-            arrayOf(status, date),
+            selection,
+            selectionArgs,
             null,
             null,
             null
@@ -373,6 +386,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
         return result
     }
+
 
     // Step 3: Automatically cancel unfinished quests from past days
     fun autoCancelOldUnfinishedQuests(today: String) {

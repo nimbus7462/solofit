@@ -37,8 +37,8 @@
     <string name="end">END:</string>
     <string name="vit">VIT:</string>
     <string name="completed_quests">COMPLETED QUESTS:</string>
-    <string name="cancelled_quests">CANCELLED QUESTS:</string>
-    <string name="exp_gained">EXP GAINED:</string>
+    <string name="aborted_quests">ABORTED QUESTS:</string>
+    <string name="exp_gained">EXP EARNED ON</string>
     <string name="quest_info">QUEST INFO</string>
     <string name="completed">Completed</string>
     <string name="quest_history">QUEST HISTORY</string>

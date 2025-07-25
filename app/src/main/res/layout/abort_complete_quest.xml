@@ -225,9 +225,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/schibsted_grotesk"
                     android:padding="5dp"
-                    android:shadowColor="@color/cyan"
+                    android:shadowColor="@color/bright_green"
                     android:shadowRadius="10"
-                    android:textColor="@color/white"
+                    android:textColor="@color/bright_green"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -275,9 +275,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/schibsted_grotesk"
                     android:padding="5dp"
-                    android:shadowColor="@color/cyan"
+                    android:shadowColor="@color/bright_green"
                     android:shadowRadius="10"
-                    android:textColor="@color/white"
+                    android:textColor="@color/bright_green"
                     android:textSize="18sp" />
 
 
@@ -327,9 +327,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/schibsted_grotesk"
                     android:padding="5dp"
-                    android:shadowColor="@color/cyan"
+                    android:shadowColor="@color/bright_green"
                     android:shadowRadius="10"
-                    android:textColor="@color/white"
+                    android:textColor="@color/bright_green"
                     android:textSize="18sp" />
             </LinearLayout>
 

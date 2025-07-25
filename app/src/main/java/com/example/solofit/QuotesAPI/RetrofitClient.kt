@@ -1,4 +1,4 @@
-package com.example.solofit.QuestAPI
+package com.example.solofit.QuotesAPI
 
 // RetrofitClient.kt
 import retrofit2.Retrofit

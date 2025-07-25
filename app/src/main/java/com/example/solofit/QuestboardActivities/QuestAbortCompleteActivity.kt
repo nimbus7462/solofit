@@ -1,13 +1,16 @@
 package com.example.solofit.QuestboardActivities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.AbortCompleteQuestBinding
 import com.example.solofit.model.Quest
 import com.example.solofit.model.UserQuestActivity
+import com.example.solofit.utilities.UserStreakManager
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,6 +26,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
     private lateinit var viewBinding: AbortCompleteQuestBinding
     private var isSaved = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = AbortCompleteQuestBinding.inflate(layoutInflater)
@@ -141,6 +145,11 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
 
                 // STEP 3.2 Update the DB
                 dbHelper.updateUserQuestActivity(updatedUQA)
+
+                // STEP 3.3 Update streak if completed
+                if (newStatus == "COMPLETED") {
+                    UserStreakManager.updateStreakIfNeeded(this)
+                }
             }
 
             // STEP 4: Finish activity

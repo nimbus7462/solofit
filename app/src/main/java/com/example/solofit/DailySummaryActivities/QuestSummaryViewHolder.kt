@@ -3,7 +3,6 @@ package com.example.solofit.DailySummaryActivities
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.databinding.QuestSummaryItemLayoutBinding
 import com.example.solofit.model.Quest
 

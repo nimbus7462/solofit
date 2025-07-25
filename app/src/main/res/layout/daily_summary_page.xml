@@ -86,6 +86,7 @@
                                 android:id="@+id/txvCompletedQuestsVal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:padding="5dp"
                                 android:shadowColor="@color/bright_green"
                                 android:shadowRadius="10"
                                 android:text="10"
@@ -99,22 +100,23 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/txvCancelledQuests"
+                                android:id="@+id/txvAbortedQuests"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="5dp"
                                 android:layout_weight="1"
                                 android:shadowColor="@color/bright_red"
                                 android:shadowRadius="10"
-                                android:text="@string/cancelled_quests"
+                                android:text="@string/aborted_quests"
                                 android:textColor="@color/white"
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:id="@+id/txvCancelledQuestsVal"
+                                android:id="@+id/txvAbortedQuestsVal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:padding="5dp"
                                 android:shadowColor="@color/bright_red"
                                 android:shadowRadius="10"
                                 android:text="2"
@@ -125,12 +127,10 @@
                 </LinearLayout>
 
 
-
                 <LinearLayout
                     android:id="@+id/secondrow_summ"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -138,6 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -162,7 +163,7 @@
                             android:shadowRadius="10"
                             android:text="5"
                             android:textColor="@color/white"
-                            android:textSize="30sp" />
+                            android:textSize="28sp" />
 
                         <TextView
                             android:id="@+id/txvCurrDaysSumm"
@@ -177,16 +178,61 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llolevel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:gravity="center"
+                        android:layout_weight="1"
                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txvDailySummLevel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center_horizontal"
+                            android:shadowColor="@color/cyan"
+                            android:shadowRadius="10"
+                            android:text="@string/level"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/txvDailySummLevelValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center_horizontal"
+                            android:shadowColor="@color/cyan"
+                            android:shadowRadius="10"
+                            android:text="30"
+                            android:textColor="@color/white"
+                            android:textSize="28sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lloExp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp">
 
                         <TextView
                             android:id="@+id/txvExpGained"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:fontFamily="@font/schibsted_grotesk"
                             android:gravity="center"
                             android:shadowColor="@color/cyan"
@@ -196,24 +242,159 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/txvExpCalculationVal"
+                            android:id="@+id/txvDateToday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:fontFamily="@font/schibsted_grotesk"
                             android:gravity="center"
                             android:shadowColor="@color/cyan"
                             android:shadowRadius="10"
-                            android:text="70 x 1.05 = 74"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lloCalculation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txvPLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:shadowColor="@color/cyan"
+                            android:shadowRadius="10"
+                            android:text="("
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txvGainedExpVal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:shadowColor="@color/bright_green"
+                            android:shadowRadius="10"
+                            android:text="70"
+                            android:textColor="@color/bright_green"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txvMultiply"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:shadowColor="@color/cyan"
+                            android:shadowRadius="10"
+                            android:text="x"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txvStreakVal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:shadowColor="@color/cyan"
+                            android:shadowRadius="10"
+                            android:text="20"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txvPRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:shadowColor="@color/cyan"
+                            android:shadowRadius="10"
+                            android:text=")"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txvMinus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:shadowColor="@color/cyan"
+                            android:shadowRadius="10"
+                            android:text="-"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txvPenaltyVal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:shadowColor="@color/bright_red"
+                            android:shadowRadius="10"
+                            android:text="10"
+                            android:textColor="@color/bright_red"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txvEquals"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:shadowColor="@color/cyan"
+                            android:shadowRadius="10"
+                            android:text="="
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txvFinalExpValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/schibsted_grotesk"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:shadowColor="#FFC107"
+                            android:shadowRadius="10"
+                            android:text="10"
+                            android:textColor="@color/gold"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/thirdrow_summ"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -237,39 +418,6 @@
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             android:textStyle="italic" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical|end"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/txvSummTitleText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:fontFamily="@font/schibsted_grotesk"
-                                android:paddingStart="5dp"
-                                android:paddingEnd="5dp"
-                                android:shadowColor="@color/cyan"
-                                android:shadowRadius="10"
-                                android:text="@string/title"
-                                android:textColor="@color/white"
-                                android:textSize="12sp"
-                                android:textStyle="italic" />
-
-                            <TextView
-                                android:id="@+id/txvSummUserTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/schibsted_grotesk"
-                                android:shadowColor="@color/bright_green"
-                                android:shadowRadius="10"
-                                android:text="TextView"
-                                android:textColor="@color/white"
-                                android:textSize="12sp" />
-                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -303,11 +451,12 @@
                         android:textStyle="italic" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/fourthrow_summ"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -319,8 +468,8 @@
 
                         <ImageView
                             android:id="@+id/imvSummStrIcon"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginEnd="15dp"
                             app:srcCompat="@drawable/icon_str" />
@@ -335,7 +484,7 @@
                             android:shadowRadius="10"
                             android:text="@string/str"
                             android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/txvSummStrValHere"
@@ -347,7 +496,7 @@
                             android:shadowRadius="10"
                             android:text="20"
                             android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/txvSummGainedStr"
@@ -355,11 +504,11 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/schibsted_grotesk"
                             android:padding="5dp"
-                            android:shadowColor="@color/cyan"
+                            android:shadowColor="@color/bright_green"
                             android:shadowRadius="10"
                             android:text="(+2)"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textColor="@color/bright_green"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -371,8 +520,8 @@
 
                         <ImageView
                             android:id="@+id/imvSummEndIcon"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginEnd="15dp"
                             app:srcCompat="@drawable/icon_end" />
@@ -387,7 +536,7 @@
                             android:shadowRadius="10"
                             android:text="@string/end"
                             android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/txvSummEndValHere"
@@ -399,7 +548,7 @@
                             android:shadowRadius="10"
                             android:text="10"
                             android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/txvSummGainedEnd"
@@ -407,11 +556,11 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/schibsted_grotesk"
                             android:padding="5dp"
-                            android:shadowColor="@color/cyan"
+                            android:shadowColor="@color/bright_green"
                             android:shadowRadius="10"
                             android:text="(+1)"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textColor="@color/bright_green"
+                            android:textSize="16sp" />
 
 
                     </LinearLayout>
@@ -425,8 +574,8 @@
 
                         <ImageView
                             android:id="@+id/imvSummVitIcon"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginEnd="15dp"
                             app:srcCompat="@drawable/icon_vit" />
@@ -441,7 +590,7 @@
                             android:shadowRadius="10"
                             android:text="@string/vit"
                             android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/txvSummVitValHere"
@@ -453,7 +602,7 @@
                             android:shadowRadius="10"
                             android:text="30"
                             android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/txvSummGainedVit"
@@ -461,11 +610,11 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/schibsted_grotesk"
                             android:padding="5dp"
-                            android:shadowColor="@color/cyan"
+                            android:shadowColor="@color/bright_green"
                             android:shadowRadius="10"
                             android:text="(+10)"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textColor="@color/bright_green"
+                            android:textSize="16sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
