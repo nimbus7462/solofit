@@ -8,6 +8,7 @@ import com.example.solofit.QuestboardActivities.QuestAbortCompleteActivity
 import com.example.solofit.StatusAndQHistoryActivities.EditLogActivity
 import com.example.solofit.databinding.EditLogBinding
 import com.example.solofit.R
+import com.example.solofit.utilities.Extras
 
 class EditLogActivity : AppCompatActivity() {
 
@@ -20,12 +21,12 @@ class EditLogActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         // passed quest title from the quest board
-        val questTitle = intent.getStringExtra(QuestHistoryAdapter.EXTRA_QUEST_TITLE)
+        val questTitle = intent.getStringExtra(Extras.EXTRA_QUEST_TITLE)
         viewBinding.txvLoggingQuestName.text = questTitle
 
 
 
-        val userLog = intent.getStringExtra(QuestHistoryAdapter.EXTRA_USER_LOG)
+        val userLog = intent.getStringExtra(Extras.EXTRA_USER_LOG)
         viewBinding.edtLog.setText(userLog)
         viewBinding.edtLog.isEnabled = false
 
@@ -36,15 +37,15 @@ class EditLogActivity : AppCompatActivity() {
             viewBinding.lloHideIfNotSelected.visibility = View.VISIBLE
         }
 
-        val questStatus = intent.getStringExtra(QuestHistoryAdapter.EXTRA_QUEST_STATUS)
-        val statusText = if (questStatus == "Aborted") {
+        val questStatus = intent.getStringExtra(Extras.EXTRA_QUEST_STATUS)
+        val statusText = if (questStatus == "ABORTED") {
             getString(R.string.aborted)
         } else {
             getString(R.string.completed)
         }
 
         // date
-        val dateCompleted = intent.getStringExtra(QuestHistoryAdapter.EXTRA_DATE_COMPLETED)
+        val dateCompleted = intent.getStringExtra(Extras.EXTRA_DATE_COMPLETED)
         viewBinding.txvLoggingCompletedDate.text = dateCompleted
         viewBinding.txvLoggingQuestStatus.text = statusText
 

@@ -10,18 +10,12 @@ import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.AbortCompleteQuestBinding
 import com.example.solofit.model.Quest
 import com.example.solofit.model.UserQuestActivity
+import com.example.solofit.utilities.Extras
 import com.example.solofit.utilities.UserStreakManager
 import java.text.SimpleDateFormat
 import java.util.*
 
 class QuestAbortCompleteActivity : AppCompatActivity() {
-
-    companion object {
-        const val EXTRA_QUEST_STATUS = "quest_status"
-        const val STATUS_COMPLETED = "completed"
-        const val STATUS_ABORTED = "aborted"
-        const val QUEST_ID_KEY = "quest_id"
-    }
 
     private lateinit var viewBinding: AbortCompleteQuestBinding
     private var isSaved = false
@@ -32,8 +26,8 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         viewBinding = AbortCompleteQuestBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        val questId = intent.getIntExtra(QUEST_ID_KEY, -1)
-        val questStatus = intent.getStringExtra(EXTRA_QUEST_STATUS)
+        val questId = intent.getIntExtra(Extras.QUEST_ID_KEY, -1)
+        val questStatus = intent.getStringExtra(Extras.EXTRA_QUEST_STATUS)
 
         if (questId == -1 || questStatus == null) {
             finish()
@@ -70,7 +64,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         }
 
         when (questStatus) {
-            STATUS_COMPLETED -> {
+            Extras.STATUS_COMPLETED -> {
                 viewBinding.lloQuestHeader.setBackgroundResource(R.drawable.bg_quest_complete)
                 viewBinding.txvQuestStatusTitle.text = getString(R.string.quest_completed)
                 viewBinding.btnFinishQuest.setBackgroundResource(R.drawable.bg_complete_btn)
@@ -94,7 +88,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
                 }
             }
 
-            STATUS_ABORTED -> {
+            Extras.STATUS_ABORTED -> {
                 viewBinding.lloQuestHeader.setBackgroundResource(R.drawable.bg_quest_abort)
                 viewBinding.txvQuestStatusTitle.text = getString(R.string.quest_aborted)
                 viewBinding.btnFinishQuest.setBackgroundResource(R.drawable.bg_return_btn)
@@ -110,7 +104,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
 
         viewBinding.btnLogThoughts.setOnClickListener {
             val intent = Intent(applicationContext, QuestLoggingActivity::class.java)
-            intent.putExtra(QUEST_ID_KEY, quest.id)
+            intent.putExtra(Extras.QUEST_ID_KEY, quest.id)
             startActivity(intent)
             finish()
         }
@@ -127,8 +121,8 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
             // STEP 3: Update status if match found
             if (uqa != null) {
                 val newStatus = when (questStatus) {
-                    STATUS_COMPLETED -> "COMPLETED"
-                    STATUS_ABORTED -> "ABORTED"
+                    Extras.STATUS_COMPLETED -> "COMPLETED"
+                    Extras.STATUS_ABORTED -> "ABORTED"
                     else -> uqa.questStatus // fallback, shouldn't happen
                 }
 

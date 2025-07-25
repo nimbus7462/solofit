@@ -9,19 +9,16 @@ import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestInfoBinding
 import com.example.solofit.model.Quest
+import com.example.solofit.utilities.Extras
 
 class QuestInfoActivity : AppCompatActivity() {
-
-    companion object {
-        const val QUEST_ID_KEY = "quest_id"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val viewBinding: QuestInfoBinding = QuestInfoBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        val questId = intent.getIntExtra(QUEST_ID_KEY, -1)
+        val questId = intent.getIntExtra(Extras.QUEST_ID_KEY, -1)
         if (questId == -1) {
             finish() // invalid id, exit early
             return
@@ -70,8 +67,8 @@ class QuestInfoActivity : AppCompatActivity() {
         // Button: Abort Quest
         viewBinding.btnAbortQuest.setOnClickListener {
             val intentAbortQuest = Intent(applicationContext, QuestAbortCompleteActivity::class.java).apply {
-                putExtra(QuestAbortCompleteActivity.EXTRA_QUEST_STATUS, QuestAbortCompleteActivity.STATUS_ABORTED)
-                putExtra(QuestAbortCompleteActivity.QUEST_ID_KEY, quest.id)
+                putExtra(Extras.EXTRA_QUEST_STATUS, Extras.STATUS_ABORTED)
+                putExtra(Extras.QUEST_ID_KEY, quest.id)
             }
             startActivity(intentAbortQuest)
             finish()
@@ -80,8 +77,8 @@ class QuestInfoActivity : AppCompatActivity() {
         // Button: Complete Quest
         viewBinding.btnCompleteQuest.setOnClickListener {
             val intentCompletedQuest = Intent(applicationContext, QuestAbortCompleteActivity::class.java).apply {
-                putExtra(QuestAbortCompleteActivity.EXTRA_QUEST_STATUS, QuestAbortCompleteActivity.STATUS_COMPLETED)
-                putExtra(QuestAbortCompleteActivity.QUEST_ID_KEY, quest.id)
+                putExtra(Extras.EXTRA_QUEST_STATUS, Extras.STATUS_COMPLETED)
+                putExtra(Extras.QUEST_ID_KEY, quest.id)
             }
             startActivity(intentCompletedQuest)
             finish()

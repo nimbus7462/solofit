@@ -6,24 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.solofit.R
 import com.example.solofit.StatusAndQHistoryActivities.EditLogActivity
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_ADD_ON_TAGS
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_DATE_COMPLETED
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_DESC
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_DIFFICULTY
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_QUEST_STATUS
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_QUEST_TITLE
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_STAT_REWARD
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_TAG
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_UQA_ID
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_USER_LOG
-import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter.Companion.EXTRA_XP_REWARD
 import com.example.solofit.QuestInfoViewOnlyActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestSummaryItemLayoutBinding
 import com.example.solofit.model.Quest
 import com.example.solofit.model.UserQuestActivity
+import com.example.solofit.utilities.Extras
 
 class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity>, private val dbHelper: MyDatabaseHelper): Adapter<QuestSummaryViewHolder>(){
+
+
+
     private val todaysQuestList = todaysUQAList.mapNotNull { dbHelper.getQuestById(it.questID) }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestSummaryViewHolder {
         val itemViewBinding: QuestSummaryItemLayoutBinding = QuestSummaryItemLayoutBinding.inflate(
@@ -44,18 +37,18 @@ class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity
             // Find the UQA first, then match the quest to it
             val intent = Intent(holder.itemView.context, QuestInfoViewOnlyActivity::class.java).apply {
                 // From Quest
-                putExtra(EXTRA_QUEST_TITLE, questItem.questName)
-                putExtra(EXTRA_DESC, questItem.description)
-                putExtra(EXTRA_TAG, questItem.questType)
-                putExtra(EXTRA_ADD_ON_TAGS, questItem.extraTags)
-                putExtra(EXTRA_DIFFICULTY, questItem.difficulty)
-                putExtra(EXTRA_XP_REWARD, questItem.xpReward)
-                putExtra(EXTRA_STAT_REWARD, questItem.statReward)
+                putExtra(Extras.EXTRA_QUEST_TITLE, questItem.questName)
+                putExtra(Extras.EXTRA_DESC, questItem.description)
+                putExtra(Extras.EXTRA_QUEST_TYPE, questItem.questType)
+                putExtra(Extras.EXTRA_EXTRA_TAGS, questItem.extraTags)
+                putExtra(Extras.EXTRA_DIFFICULTY, questItem.difficulty)
+                putExtra(Extras.EXTRA_XP_REWARD, questItem.xpReward)
+                putExtra(Extras.EXTRA_STAT_REWARD, questItem.statReward)
 
 
                 // From UQA
-                putExtra(EXTRA_DATE_COMPLETED, uqaItem.dateCreated)
-                putExtra(EXTRA_QUEST_STATUS, uqaItem.questStatus)
+                putExtra(Extras.EXTRA_DATE_COMPLETED, uqaItem.dateCreated)
+                putExtra(Extras.EXTRA_QUEST_STATUS, uqaItem.questStatus)
             }
             holder.itemView.context.startActivity(intent)
 
