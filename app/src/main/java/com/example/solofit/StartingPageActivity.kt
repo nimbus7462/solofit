@@ -1,5 +1,6 @@
 package com.example.solofit
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,8 +25,14 @@ class StartingPageActivity : AppCompatActivity() {
         // Inflate the binding and set the root view
         binding = StartingPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
+        /* Uncomment if you want to reset the streak value (for testing)
+        val prefs = this.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        prefs.edit()
+            .putInt("streak_count", 0)
+            .putString("last_streak_date", null)
+            .putInt("longest_streak", 0)
+            .apply()
+        */
         Log.d("StartingPage", "StartingPage launched")
 
         // creates the database as soon as the app is launched

@@ -2,6 +2,7 @@ package com.example.solofit.utilities
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.solofit.database.MyDatabaseHelper
 import java.time.LocalDate
@@ -66,6 +67,13 @@ object UserStreakManager {
                     .apply()
             }
         }
+
+        Log.d("STREAK_DEBUG", "Today's date: $todayStr")
+        Log.d("STREAK_DEBUG", "Completed quests today: ${completedToday.size}")
+        completedToday.forEach {
+            Log.d("STREAK_DEBUG", "Quest: $it")
+        }
+
     }
 
     fun getStreakCount(context: Context): Int {

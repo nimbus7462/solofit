@@ -1,18 +1,21 @@
 package com.example.solofit
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.DailySummaryActivities.DailySummaryActivity
 import com.example.solofit.ManageQuestFragments.NavHostManageQuest
 import com.example.solofit.StatusAndQHistoryActivities.StatusActivity
 import com.example.solofit.QuestboardActivities.QuestBoardActivity
+import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.MainMenuBinding
+import com.example.solofit.model.User
 
 class MainMenuActivity : AppCompatActivity() {
 
     private lateinit var binding: MainMenuBinding
-
+    val dbHelper = MyDatabaseHelper.getInstance(this)!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,6 +49,24 @@ class MainMenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.imbSettings.setOnClickListener{
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
 
     }
+
+    override fun onResume() {
+        super.onResume()
+       // dbHelper.logAllUsers()
+        val currentUser = dbHelper.getUserById(1)!! // Default User
+        val displayName = if (currentUser?.username.isNullOrBlank()) "Player" else currentUser?.username
+        binding.txvIgn.text = displayName
+
+        currentUser?.pfpUri?.let {
+            binding.imvPfp.setImageURI(Uri.parse(it))
+        }
+
+    }
+
 }

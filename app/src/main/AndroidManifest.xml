@@ -54,7 +54,11 @@
             android:exported="true"
             android:theme="@style/Theme.Solofit">
         </activity>
-
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Solofit">
+        </activity>
         <activity
             android:name=".QuestboardActivities.QuestAbortCompleteActivity"
             android:exported="true"

@@ -8,6 +8,7 @@
     android:background="@drawable/bg_main">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="350dp"
         android:layout_height="650dp"
         android:background="@drawable/bg_main_frame"
@@ -20,13 +21,14 @@
 
         <ImageView
             android:id="@+id/imvPfp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="15dp"
             android:contentDescription="@string/manage_quests"
             android:maxWidth="70dp"
             android:maxHeight="70dp"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/pfp" />
 
         <TextView
@@ -40,7 +42,6 @@
             android:padding="10dp"
             android:shadowColor="@color/cyan"
             android:shadowRadius="10"
-            android:text="TextView"
             android:textColor="@color/white"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -134,4 +135,19 @@
             android:textSize="32sp" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imbSettings"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/settings_btn"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.025"
+        app:srcCompat="@drawable/icon_settings" />
 </androidx.constraintlayout.widget.ConstraintLayout>
