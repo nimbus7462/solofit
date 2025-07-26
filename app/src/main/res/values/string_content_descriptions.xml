@@ -5,5 +5,6 @@
     <string name="log_icon">Log Icon</string>
     <string name="save_quote_icon">Save Quote Icon</string>
     <string name="go_back_btn">Go Back Button</string>
-    <string name="confirm_btn">Confirm</string>
+    <string name="confirm_btn">Confirm Button</string>
+    <string name="settings_btn">Settings Button</string>
 </resources>

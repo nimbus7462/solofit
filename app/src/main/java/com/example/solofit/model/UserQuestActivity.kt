@@ -1,15 +1,18 @@
 package com.example.solofit.model
 
-class UserQuestActivity {
-    var userQuestActID: Int = 0           // Primary Key
+import android.os.Parcel
+import android.os.Parcelable
+
+class UserQuestActivity : Parcelable {
+    var userQuestActID: Int = 0
     var questStatus: String
     var userLogs: String
-    var dateCreated: String               // Format: "YYYY-MM-DD"
-    var questID: Int                      // Foreign Key to Quest
-    var quoteID: Int                      // Foreign Key to Quote
-    var userID: Int                       // Foreign Key to User
+    var dateCreated: String
+    var questID: Int
+    var quoteID: Int
+    var userID: Int
 
-    // Constructor without ID (before DB assigns ID)
+    // Constructor without ID
     constructor(
         questStatus: String,
         userLogs: String,
@@ -26,7 +29,7 @@ class UserQuestActivity {
         this.userID = userID
     }
 
-    // Constructor with ID (when loading from DB)
+    // Constructor with ID
     constructor(
         userQuestActID: Int,
         questStatus: String,
@@ -43,6 +46,39 @@ class UserQuestActivity {
         this.questID = questID
         this.quoteID = quoteID
         this.userID = userID
+    }
+
+    // Constructor for Parcel
+    private constructor(parcel: Parcel) {
+        userQuestActID = parcel.readInt()
+        questStatus = parcel.readString() ?: ""
+        userLogs = parcel.readString() ?: ""
+        dateCreated = parcel.readString() ?: ""
+        questID = parcel.readInt()
+        quoteID = parcel.readInt()
+        userID = parcel.readInt()
+    }
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeInt(userQuestActID)
+        dest.writeString(questStatus)
+        dest.writeString(userLogs)
+        dest.writeString(dateCreated)
+        dest.writeInt(questID)
+        dest.writeInt(quoteID)
+        dest.writeInt(userID)
+    }
+
+    override fun describeContents(): Int = 0
+
+    companion object CREATOR : Parcelable.Creator<UserQuestActivity> {
+        override fun createFromParcel(parcel: Parcel): UserQuestActivity {
+            return UserQuestActivity(parcel)
+        }
+
+        override fun newArray(size: Int): Array<UserQuestActivity?> {
+            return arrayOfNulls(size)
+        }
     }
 
     override fun toString(): String {

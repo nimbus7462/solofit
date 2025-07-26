@@ -33,7 +33,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     // Step 0: All constants for structure, columns, and SQL
     private object DbReferences {
         const val DATABASE_NAME = "quest_app.db"
-        const val DATABASE_VERSION = 3  // Bumped up to 3 to reflect schema change
+        const val DATABASE_VERSION = 5  // Bumped up to 4 ; Changed User Table, pfp -> pfpUri (String), currentlevel int -> float
 
         // Quest Table
         const val TABLE_QUEST = "quest_table"
@@ -57,7 +57,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         const val TABLE_USER = "user_table"
         const val COLUMN_USER_ID = "user_id"
         const val COLUMN_USERNAME = "username"               // new
-        const val COLUMN_PFP = "pfp"                         // new
+        const val COLUMN_PFP_URI = "pfp_uri"                 // new
         const val COLUMN_USER_TITLE = "user_title"           // new
         const val COLUMN_LEVEL = "level"
         const val COLUMN_EXP = "current_exp"
@@ -94,10 +94,10 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         CREATE TABLE $TABLE_USER (
             $COLUMN_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             $COLUMN_USERNAME TEXT,
-            $COLUMN_PFP INTEGER,
+            $COLUMN_PFP_URI TEXT,
             $COLUMN_USER_TITLE TEXT,
             $COLUMN_LEVEL INTEGER,
-            $COLUMN_EXP INTEGER,
+            $COLUMN_EXP REAL,
             $COLUMN_LEVEL_CAP INTEGER,
             $COLUMN_STR INTEGER,
             $COLUMN_END INTEGER,
@@ -145,6 +145,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         db.execSQL(DbReferences.CREATE_TABLE_USER)
         db.execSQL(DbReferences.CREATE_TABLE_UQA)
         insertInitialQuests(db)
+        insertInitialUser(db)
     }
 
 
@@ -181,6 +182,23 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             db.insert(DbReferences.TABLE_QUEST, null, values)
         }
     }
+
+    private fun insertInitialUser(db: SQLiteDatabase) {
+        val values = ContentValues().apply {
+            put(DbReferences.COLUMN_USERNAME, "New Hunter")
+            put(DbReferences.COLUMN_PFP_URI, null as String?) // default no profile picture
+            put(DbReferences.COLUMN_USER_TITLE, "Novice")
+            put(DbReferences.COLUMN_LEVEL, 1)
+            put(DbReferences.COLUMN_EXP, 0.0f)
+            put(DbReferences.COLUMN_LEVEL_CAP, 100)
+            put(DbReferences.COLUMN_STR, 0)
+            put(DbReferences.COLUMN_END, 0)
+            put(DbReferences.COLUMN_VIT, 0)
+        }
+
+        db.insert(DbReferences.TABLE_USER, null, values)
+    }
+
 
 
     // CRUD FOR QUEST
@@ -342,13 +360,26 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
     // Step 2: Get UserQuestActivities by status and date
-    fun getUserQuestsByStatusAndDate(status: String, date: String): List<UserQuestActivity> {
+    fun getUserQuestsByStatusAndDate(status: String?, date: String): List<UserQuestActivity> {
         val database = this.readableDatabase
+
+        val (selection, selectionArgs) = if (status != null) {
+            Pair(
+                "${DbReferences.COLUMN_QUEST_STATUS} = ? AND ${DbReferences.COLUMN_DATE_CREATED} = ?",
+                arrayOf(status, date)
+            )
+        } else {
+            Pair(
+                "${DbReferences.COLUMN_DATE_CREATED} = ?",
+                arrayOf(date)
+            )
+        }
+
         val cursor = database.query(
             DbReferences.TABLE_UQA,
             null,
-            "${DbReferences.COLUMN_QUEST_STATUS} = ? AND ${DbReferences.COLUMN_DATE_CREATED} = ?",
-            arrayOf(status, date),
+            selection,
+            selectionArgs,
             null,
             null,
             null
@@ -373,6 +404,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
         return result
     }
+
 
     // Step 3: Automatically cancel unfinished quests from past days
     fun autoCancelOldUnfinishedQuests(today: String) {
@@ -498,7 +530,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         val database = this.writableDatabase
         val values = ContentValues().apply {
             put(DbReferences.COLUMN_USERNAME, user.username)
-            put(DbReferences.COLUMN_PFP, user.pfp)
+            put(DbReferences.COLUMN_PFP_URI, user.pfpUri)
             put(DbReferences.COLUMN_USER_TITLE, user.userTitle)
             put(DbReferences.COLUMN_LEVEL, user.level)
             put(DbReferences.COLUMN_EXP, user.currentExp)
@@ -512,6 +544,30 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         return id
     }
 
+    fun logAllUsers() {
+        val database = this.readableDatabase
+        val cursor = database.rawQuery("SELECT * FROM ${DbReferences.TABLE_USER}", null)
+        if (cursor.moveToFirst()) {
+            do {
+                val userID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_ID))
+                val username = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USERNAME))
+                val pfpUri = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_PFP_URI))
+                val title = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_TITLE))
+                val level = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL))
+                val exp = cursor.getFloat(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXP))
+                val cap = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL_CAP))
+                val str = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_STR))
+                val end = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_END))
+                val vit = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_VIT))
+
+                android.util.Log.d("USER_LOG", "User($userID, $username, $pfpUri, $title, level=$level, exp=$exp/$cap, STR=$str, END=$end, VIT=$vit)")
+            } while (cursor.moveToNext())
+        } else {
+            android.util.Log.d("USER_LOG", "No users found in the table.")
+        }
+        cursor.close()
+        database.close()
+    }
 
     fun getUserById(id: Int): User? {
         val database = this.readableDatabase
@@ -530,10 +586,10 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             user = User(
                 userID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_ID)),
                 username = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USERNAME)),
-                pfp = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_PFP)),
+                pfpUri = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_PFP_URI)),
                 userTitle = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_TITLE)),
                 level = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL)),
-                currentExp = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXP)),
+                currentExp = cursor.getFloat(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXP)),
                 levelCap = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL_CAP)),
                 strengthPts = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_STR)),
                 endurancePts = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_END)),
@@ -550,7 +606,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         val database = this.writableDatabase
         val values = ContentValues().apply {
             put(DbReferences.COLUMN_USERNAME, user.username)
-            put(DbReferences.COLUMN_PFP, user.pfp)
+            put(DbReferences.COLUMN_PFP_URI, user.pfpUri)
             put(DbReferences.COLUMN_USER_TITLE, user.userTitle)
             put(DbReferences.COLUMN_LEVEL, user.level)
             put(DbReferences.COLUMN_EXP, user.currentExp)

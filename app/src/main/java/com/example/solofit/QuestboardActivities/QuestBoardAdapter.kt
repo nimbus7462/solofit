@@ -7,12 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
+import com.example.solofit.utilities.Extras
 
 class QuestBoardAdapter(private val questList: ArrayList<Quest>) : Adapter<QuestBoardViewHolder>() {
-
-    companion object {
-        const val QUEST_ID_KEY = "quest_id"
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestBoardViewHolder {
         val itemViewBinding = QuestItemLayoutBinding.inflate(
@@ -57,7 +54,7 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>) : Adapter<Quest
         // Pass only the quest ID
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, QuestInfoActivity::class.java).apply {
-                putExtra(QUEST_ID_KEY, questItem.id)
+                putExtra(Extras.QUEST_ID_KEY, questItem.id)
             }
             holder.itemView.context.startActivity(intent)
         }

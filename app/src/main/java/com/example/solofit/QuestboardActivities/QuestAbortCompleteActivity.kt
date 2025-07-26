@@ -1,7 +1,9 @@
 package com.example.solofit.QuestboardActivities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
@@ -9,22 +11,18 @@ import com.example.solofit.databinding.AbortCompleteQuestBinding
 import com.example.solofit.model.Quest
 import com.example.solofit.model.Quote
 import com.example.solofit.model.UserQuestActivity
+import com.example.solofit.utilities.Extras
+import com.example.solofit.utilities.UserStreakManager
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.activity.OnBackPressedCallback
 
 class QuestAbortCompleteActivity : AppCompatActivity() {
 
-    companion object {
-        const val EXTRA_QUEST_STATUS = "quest_status"
-        const val STATUS_COMPLETED = "completed"
-        const val STATUS_ABORTED = "aborted"
-        const val QUEST_ID_KEY = "quest_id"
-    }
-
     private lateinit var viewBinding: AbortCompleteQuestBinding
     private var isSaved = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     // Store the selected quote for use when saving to UQA
     private var selectedQuote: Quote? = null
 
@@ -33,7 +31,6 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
     private var questStatus: String? = null
     private lateinit var quest: Quest
     private var hasSavedStatus = false // Track if save was already done
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = AbortCompleteQuestBinding.inflate(layoutInflater)
@@ -48,8 +45,9 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         })
 
         // Get quest info from intent
-        questId = intent.getIntExtra(QUEST_ID_KEY, -1)
-        questStatus = intent.getStringExtra(EXTRA_QUEST_STATUS)
+        questId = intent.getIntExtra(Extras.QUEST_ID_KEY, -1)
+        questStatus = intent.getStringExtra(Extras.EXTRA_QUEST_STATUS)
+
 
         if (questId == -1 || questStatus == null) {
             finish()
@@ -70,7 +68,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
 
         // Display completion or abortion visuals
         when (questStatus) {
-            STATUS_COMPLETED -> {
+            Extras.STATUS_COMPLETED -> {
                 viewBinding.lloQuestHeader.setBackgroundResource(R.drawable.bg_quest_complete)
                 viewBinding.txvQuestStatusTitle.text = getString(R.string.quest_completed)
                 viewBinding.btnFinishQuest.setBackgroundResource(R.drawable.bg_complete_btn)
@@ -94,7 +92,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
                 }
             }
 
-            STATUS_ABORTED -> {
+            Extras.STATUS_ABORTED -> {
                 viewBinding.lloQuestHeader.setBackgroundResource(R.drawable.bg_quest_abort)
                 viewBinding.txvQuestStatusTitle.text = getString(R.string.quest_aborted)
                 viewBinding.btnFinishQuest.setBackgroundResource(R.drawable.bg_return_btn)
@@ -111,7 +109,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         // Log thoughts button
         viewBinding.btnLogThoughts.setOnClickListener {
             val intent = Intent(applicationContext, QuestLoggingActivity::class.java)
-            intent.putExtra(QUEST_ID_KEY, quest.id)
+            intent.putExtra(Extras.QUEST_ID_KEY, quest.id)
             startActivity(intent)
             finish()
         }
@@ -160,8 +158,8 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
 
         if (uqa != null && questStatus != null) {
             val newStatus = when (questStatus) {
-                STATUS_COMPLETED -> "COMPLETED"
-                STATUS_ABORTED -> "ABORTED"
+                 Extras.STATUS_COMPLETED -> "COMPLETED"
+                 Extras.STATUS_ABORTED -> "ABORTED"
                 else -> uqa.questStatus
             }
 
@@ -176,6 +174,9 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
             )
 
             dbHelper.updateUserQuestActivity(updatedUQA)
+            if (newStatus == "COMPLETED") {
+                    UserStreakManager.updateStreakIfNeeded(this)
+                }
         }
     }
 

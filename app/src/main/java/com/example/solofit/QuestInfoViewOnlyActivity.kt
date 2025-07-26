@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.solofit.StatusAndQHistoryActivities.QuestHistoryAdapter
 import com.example.solofit.databinding.QuestInfoBinding
+import com.example.solofit.utilities.Extras
 
 class QuestInfoViewOnlyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,19 +17,19 @@ class QuestInfoViewOnlyActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
 // Get data from intent using correct types and defaults
-        val title = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_QUEST_TITLE) ?: ""
-        val desc = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_DESC) ?: "No Description"
-        val tag = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_TAG) ?: ""
-        val addOnTags = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_ADD_ON_TAGS) ?: ""
-        val difficulty = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_DIFFICULTY) ?: ""
-        val xpReward = intent.getIntExtra(QuestHistoryAdapter.Companion.EXTRA_XP_REWARD, 0)
-        val statReward = intent.getIntExtra(QuestHistoryAdapter.Companion.EXTRA_STAT_REWARD, 0)
+        val title = intent.getStringExtra(Extras.EXTRA_QUEST_TITLE) ?: ""
+        val desc = intent.getStringExtra(Extras.EXTRA_DESC) ?: "No Description"
+        val questType = intent.getStringExtra(Extras.EXTRA_QUEST_TYPE) ?: ""
+        val extraTags = intent.getStringExtra(Extras.EXTRA_EXTRA_TAGS) ?: ""
+        val difficulty = intent.getStringExtra(Extras.EXTRA_DIFFICULTY) ?: ""
+        val xpReward = intent.getIntExtra(Extras.EXTRA_XP_REWARD, 0)
+        val statReward = intent.getIntExtra(Extras.EXTRA_STAT_REWARD, 0)
 
 
         // Bind data to views
         viewBinding.txvQInfoQuestName.text = title
         viewBinding.txvQInfoDescription.text = desc
-        val (mainIcon, extraIcon, statLabel) = when (tag) {
+        val (mainIcon, extraIcon, statLabel) = when (questType) {
             "Strength" -> Triple(
                 R.drawable.icon_str,
                 R.drawable.icon_extra_str,
@@ -52,9 +53,9 @@ class QuestInfoViewOnlyActivity : AppCompatActivity() {
 
         mainIcon?.let { viewBinding.imvQInfoTagIcon.setImageResource(it) }
 
-        if (addOnTags.isNotBlank() && extraIcon != null) {
+        if (extraTags.isNotBlank() && extraIcon != null) {
             viewBinding.imvQInfoExtraTag.setImageResource(extraIcon)
-            viewBinding.txvQInfoExtraTag.text = addOnTags
+            viewBinding.txvQInfoExtraTag.text = extraTags
         } else {
             viewBinding.lloExtraTagRow.visibility = View.GONE
         }
@@ -79,15 +80,16 @@ class QuestInfoViewOnlyActivity : AppCompatActivity() {
         )
         viewBinding.txvQInfoDifficulty.text = difficulty
 
-        val questStatus = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_QUEST_STATUS)
-        val statusText = if (questStatus == "Aborted") {
-            getString(R.string.aborted)
-        } else {
-            getString(R.string.completed)
+        val questStatus = intent.getStringExtra(Extras.EXTRA_QUEST_STATUS)
+        val statusText = when (questStatus) {
+            "ABORTED" -> getString(R.string.aborted)
+            "COMPLETED" -> getString(R.string.completed)
+            else -> {"INVALID"}
         }
 
+
         // date
-        val dateCompleted = intent.getStringExtra(QuestHistoryAdapter.Companion.EXTRA_DATE_COMPLETED)
+        val dateCompleted = intent.getStringExtra(Extras.EXTRA_DATE_COMPLETED)
         viewBinding.txvQInfoCompletedDate.text = dateCompleted
         viewBinding.txvQInfoQuestStatus.text = statusText
 

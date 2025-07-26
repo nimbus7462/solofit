@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.InitialLoggingBinding
+import com.example.solofit.utilities.Extras
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -22,7 +23,7 @@ class QuestLoggingActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         // Step 1: Get Quest ID from intent
-        val questId = intent.getIntExtra(QuestAbortCompleteActivity.QUEST_ID_KEY, -1)
+        val questId = intent.getIntExtra(Extras.QUEST_ID_KEY, -1)
         if (questId == -1) {
             finish() // invalid quest
             return

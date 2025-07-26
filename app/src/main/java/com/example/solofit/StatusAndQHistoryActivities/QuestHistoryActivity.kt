@@ -15,9 +15,8 @@ import com.example.solofit.model.UserQuestActivity
 class QuestHistoryActivity: AppCompatActivity()  {
     private lateinit var viewBinding: QuestHistoryBinding
     private lateinit var recyclerView: RecyclerView
-    private val questList: ArrayList<Quest> = QuestDataHelper.getQuestsFromUserQuestActivities()
-    private val userQuestActList: ArrayList<UserQuestActivity> = UserQuestActivityDataHelper.initUQA()
-
+    lateinit var allUQAList: ArrayList<UserQuestActivity>
+    val dbHelper = MyDatabaseHelper.getInstance(this)!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,7 +26,9 @@ class QuestHistoryActivity: AppCompatActivity()  {
         // Initialize the RecyclerView
         this.recyclerView = viewBinding.recViewQuestHistory
 
-        this.recyclerView.adapter = QuestHistoryAdapter(this.questList, this.userQuestActList)
+        allUQAList = dbHelper.getAllUserQuestActivities()
+        allUQAList.removeIf { it.questStatus.equals("CREATED", ignoreCase = true) }
+        this.recyclerView.adapter = QuestHistoryAdapter(this.allUQAList, this.dbHelper)
 
         // Set the LayoutManager. This can be set to different kinds of LayoutManagers but we're
         // keeping things simple with a LinearLayout.
