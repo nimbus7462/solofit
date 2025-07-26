@@ -2,7 +2,7 @@ package com.example.solofit.api
 
 import android.content.Context
 import android.util.Log
-import com.example.solofit.QuestAPI.RetrofitClient
+import com.example.solofit.QuotesAPI.RetrofitClient
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.model.Quote
 import kotlinx.coroutines.Dispatchers

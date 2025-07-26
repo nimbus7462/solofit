@@ -6,11 +6,11 @@ class User {
     var pfp: Int
     var userTitle: String
     var level: Int
-    var currentExp: Int
+    var currentExp: Int // display, troy updated this to float
     var levelCap: Int
-    var strengthPts: Int
-    var endurancePts: Int
-    var vitalityPts: Int
+    var strengthPts: Int //display
+    var endurancePts: Int //display
+    var vitalityPts: Int //display
 
     // Constructor without ID – used before inserting into DB
     constructor(

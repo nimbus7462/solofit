@@ -65,11 +65,12 @@
             android:ems="10"
             android:fontFamily="@font/play"
             android:gravity="start|top"
+            android:hint="hint"
             android:inputType="textMultiLine"
             android:padding="20dp"
             android:shadowColor="@color/cyan"
+
             android:shadowRadius="10"
-            android:text="Pushed till failure for the last set"
             android:textColor="@color/white" />
 
         <TextView
