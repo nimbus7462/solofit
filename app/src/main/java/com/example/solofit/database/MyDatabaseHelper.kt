@@ -487,8 +487,13 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     // Helper function
     fun getRandomQuote(): Quote? {
         val db = this.readableDatabase
+
+        // Only select quotes that are NOT saved/bookmarked (isSaved = 0)
+        // - Maybe add a checker where is saved quotes wont appear?
+        // WHERE ${DbReferences.COLUMN_IS_SAVED} = 0 to ensure only unsaved quotes are shown.
         val cursor = db.rawQuery(
-            "SELECT * FROM ${DbReferences.TABLE_QUOTE} ORDER BY RANDOM() LIMIT 1", null
+            "SELECT * FROM ${DbReferences.TABLE_QUOTE} WHERE ${DbReferences.COLUMN_IS_SAVED} = 0 ORDER BY RANDOM() LIMIT 1",
+            null
         )
 
         var quote: Quote? = null
