@@ -11,57 +11,17 @@ class UserQuestActivityDataHelper {
             if (userQuestActs.isEmpty()) {
                 userQuestActs.addAll(
                     listOf(
-                        UserQuestActivity(
-                            userQuestActID = 1,
-                            questStatus = "Completed",
-                            userLogs = "Morning run felt energizing.",
-                            dateCompleted = "2025-07-15",
-                            questID = 0,
-                            quoteID = 1,
-                            userID = 1
-                        ),
-                        UserQuestActivity(
-                            userQuestActID = 2,
-                            questStatus = "Aborted",
-                            userLogs = "Had to skip due to illness.",
-                            dateCompleted = "2025-07-16",
-                            questID = 1,
-                            quoteID = 1,
-                            userID = 1
-                        ),
-                        UserQuestActivity(
-                            userQuestActID = 3,
-                            questStatus = "Completed",
-                            userLogs = "Finished reading a full chapter.",
-                            dateCompleted = "2025-07-17",
-                            questID = 2,
-                            quoteID = 1,
-                            userID = 1
-                        ),
-                        UserQuestActivity(
-                            userQuestActID = 4,
-                            questStatus = "Aborted",
-                            userLogs = "Overwhelmed with work, will retry later.",
-                            dateCompleted = "2025-07-18",
-                            questID = 3,
-                            quoteID = 1,
-                            userID = 1
-                        ),
-                        UserQuestActivity(
-                            userQuestActID = 5,
-                            questStatus = "Completed",
-                            userLogs = "Nailed the meditation challenge.",
-                            dateCompleted = "2025-07-19",
-                            questID = 4,
-                            quoteID = 1,
-                            userID = 1
-                        )
+                        UserQuestActivity(1, "Completed", "Morning run felt energizing.", "2025-07-15", 0, 1, 1),
+                        UserQuestActivity(2, "Aborted", "Had to skip due to illness.", "2025-07-16", 1, 1, 1),
+                        UserQuestActivity(3, "Completed", "Finished reading a full chapter.", "2025-07-17", 2, 1, 1),
+                        UserQuestActivity(4, "Aborted", "Overwhelmed with work, will retry later.", "2025-07-18", 3, 1, 1),
+                        UserQuestActivity(5, "Completed", "Nailed the meditation challenge.", "2025-07-19", 4, 1, 1)
                     )
                 )
             }
-
             return ArrayList(userQuestActs)
         }
+
 
         fun getByUserId(userId: Int): List<UserQuestActivity> {
             return userQuestActs.filter { it.userID == userId }

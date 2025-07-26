@@ -33,21 +33,20 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     // Step 0: All constants for structure, columns, and SQL
     private object DbReferences {
         const val DATABASE_NAME = "quest_app.db"
-        const val DATABASE_VERSION = 2      // change if u wanna change smth in the table
+        const val DATABASE_VERSION = 3  // Bumped up to 3 to reflect schema change
 
         // Quest Table
         const val TABLE_QUEST = "quest_table"
         const val COLUMN_QUEST_ID = "quest_id"
-        const val COLUMN_TITLE = "title"
+        const val COLUMN_QUEST_NAME = "quest_name"            // updated
         const val COLUMN_DESCRIPTION = "description"
-        const val COLUMN_TAG = "tag"
-        const val COLUMN_ADD_ON_TAGS = "add_on_tags"
+        const val COLUMN_QUEST_TYPE = "quest_type"            // updated
+        const val COLUMN_EXTRA_TAGS = "extra_tags"            // updated
         const val COLUMN_DIFFICULTY = "difficulty"
         const val COLUMN_XP_REWARD = "xp_reward"
         const val COLUMN_STAT_REWARD = "stat_reward"
-        const val COLUMN_ICON = "icon"
 
-        // Quote Table
+        // Quote Table (unchanged)
         const val TABLE_QUOTE = "quote_table"
         const val COLUMN_QUOTE_ID = "quote_id"
         const val COLUMN_QUOTE_TEXT = "quote_text"
@@ -57,6 +56,9 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         // User Table
         const val TABLE_USER = "user_table"
         const val COLUMN_USER_ID = "user_id"
+        const val COLUMN_USERNAME = "username"               // new
+        const val COLUMN_PFP = "pfp"                         // new
+        const val COLUMN_USER_TITLE = "user_title"           // new
         const val COLUMN_LEVEL = "level"
         const val COLUMN_EXP = "current_exp"
         const val COLUMN_LEVEL_CAP = "level_cap"
@@ -69,40 +71,31 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         const val COLUMN_UQA_ID = "user_quest_act_id"
         const val COLUMN_QUEST_STATUS = "quest_status"
         const val COLUMN_USER_LOGS = "user_logs"
-        const val COLUMN_DATE_COMPLETED = "date_completed"
+        const val COLUMN_DATE_CREATED = "date_created"       // updated
         const val COLUMN_UQA_QUEST_ID = "quest_id"
         const val COLUMN_UQA_QUOTE_ID = "quote_id"
         const val COLUMN_UQA_USER_ID = "user_id"
 
-        // SQL: Quest Table
+        // --- SQL Create Table Statements ---
         const val CREATE_TABLE_QUEST = """
         CREATE TABLE $TABLE_QUEST (
             $COLUMN_QUEST_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            $COLUMN_TITLE TEXT,
+            $COLUMN_QUEST_NAME TEXT,
             $COLUMN_DESCRIPTION TEXT,
-            $COLUMN_TAG TEXT,
-            $COLUMN_ADD_ON_TAGS TEXT,
+            $COLUMN_QUEST_TYPE TEXT,
+            $COLUMN_EXTRA_TAGS TEXT,
             $COLUMN_DIFFICULTY TEXT,
             $COLUMN_XP_REWARD INTEGER,
-            $COLUMN_STAT_REWARD INTEGER,
-            $COLUMN_ICON INTEGER
+            $COLUMN_STAT_REWARD INTEGER     
         );
     """
 
-        // SQL: Quote Table
-        const val CREATE_TABLE_QUOTE = """
-        CREATE TABLE $TABLE_QUOTE (
-            $COLUMN_QUOTE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            $COLUMN_QUOTE_TEXT TEXT,
-            $COLUMN_QUOTE_AUTHOR TEXT,
-            $COLUMN_IS_SAVED INTEGER
-        );
-    """
-
-        // SQL: User Table
         const val CREATE_TABLE_USER = """
         CREATE TABLE $TABLE_USER (
             $COLUMN_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            $COLUMN_USERNAME TEXT,
+            $COLUMN_PFP INTEGER,
+            $COLUMN_USER_TITLE TEXT,
             $COLUMN_LEVEL INTEGER,
             $COLUMN_EXP INTEGER,
             $COLUMN_LEVEL_CAP INTEGER,
@@ -112,13 +105,12 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         );
     """
 
-        // SQL: UserQuestActivity Table
         const val CREATE_TABLE_UQA = """
         CREATE TABLE $TABLE_UQA (
             $COLUMN_UQA_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             $COLUMN_QUEST_STATUS TEXT,
             $COLUMN_USER_LOGS TEXT,
-            $COLUMN_DATE_COMPLETED TEXT,
+            $COLUMN_DATE_CREATED TEXT,
             $COLUMN_UQA_QUEST_ID INTEGER,
             $COLUMN_UQA_QUOTE_ID INTEGER,
             $COLUMN_UQA_USER_ID INTEGER,
@@ -128,7 +120,16 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         );
     """
 
-        // SQL: Drop all tables
+        const val CREATE_TABLE_QUOTE = """
+        CREATE TABLE $TABLE_QUOTE (
+            $COLUMN_QUOTE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            $COLUMN_QUOTE_TEXT TEXT,
+            $COLUMN_QUOTE_AUTHOR TEXT,
+            $COLUMN_IS_SAVED INTEGER
+        );
+    """
+
+        // Drop statements (unchanged)
         const val DROP_TABLE_QUEST = "DROP TABLE IF EXISTS $TABLE_QUEST"
         const val DROP_TABLE_QUOTE = "DROP TABLE IF EXISTS $TABLE_QUOTE"
         const val DROP_TABLE_USER = "DROP TABLE IF EXISTS $TABLE_USER"
@@ -169,10 +170,10 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
         for (q in quests) {
             val values = ContentValues().apply {
-                put(DbReferences.COLUMN_TITLE, q.title)
+                put(DbReferences.COLUMN_QUEST_NAME, q.questName)
                 put(DbReferences.COLUMN_DESCRIPTION, q.description)
-                put(DbReferences.COLUMN_TAG, q.tag)
-                put(DbReferences.COLUMN_ADD_ON_TAGS, q.addOnTags)
+                put(DbReferences.COLUMN_QUEST_TYPE, q.questType)
+                put(DbReferences.COLUMN_EXTRA_TAGS, q.extraTags)
                 put(DbReferences.COLUMN_DIFFICULTY, q.difficulty)
                 put(DbReferences.COLUMN_XP_REWARD, q.xpReward)
                 put(DbReferences.COLUMN_STAT_REWARD, q.statReward)
@@ -180,6 +181,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             db.insert(DbReferences.TABLE_QUEST, null, values)
         }
     }
+
 
     // CRUD FOR QUEST
     /* 🟢 Read: Returns all quests in a list */
@@ -201,10 +203,10 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             quests.add(
                 Quest(
                     id = c.getInt(c.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_ID)),
-                    title = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_TITLE)),
+                    questName = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_NAME)),
                     description = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_DESCRIPTION)),
-                    tag = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_TAG)),
-                    addOnTags = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_ADD_ON_TAGS)),
+                    questType = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_TYPE)),
+                    extraTags = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_EXTRA_TAGS)),
                     difficulty = c.getString(c.getColumnIndexOrThrow(DbReferences.COLUMN_DIFFICULTY)),
                     xpReward = c.getInt(c.getColumnIndexOrThrow(DbReferences.COLUMN_XP_REWARD)),
                     statReward = c.getInt(c.getColumnIndexOrThrow(DbReferences.COLUMN_STAT_REWARD))
@@ -224,20 +226,20 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         val database = this.writableDatabase
 
         val values = ContentValues().apply {
-            put(DbReferences.COLUMN_TITLE, q.title)
+            put(DbReferences.COLUMN_QUEST_NAME, q.questName)
             put(DbReferences.COLUMN_DESCRIPTION, q.description)
-            put(DbReferences.COLUMN_TAG, q.tag)
-            put(DbReferences.COLUMN_ADD_ON_TAGS, q.addOnTags)
+            put(DbReferences.COLUMN_QUEST_TYPE, q.questType)
+            put(DbReferences.COLUMN_EXTRA_TAGS, q.extraTags)
             put(DbReferences.COLUMN_DIFFICULTY, q.difficulty)
             put(DbReferences.COLUMN_XP_REWARD, q.xpReward)
             put(DbReferences.COLUMN_STAT_REWARD, q.statReward)
         }
 
         val id = database.insert(DbReferences.TABLE_QUEST, null, values)
-
         database.close()
         return id
     }
+
 
     /* 🟡 Update: Modify an existing quest */
     /* 🟡 Update: Modify an existing quest and return number of rows updated */
@@ -245,29 +247,24 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         val database = this.writableDatabase
 
         val values = ContentValues().apply {
-            put(DbReferences.COLUMN_TITLE, q.title)
+            put(DbReferences.COLUMN_QUEST_NAME, q.questName)
             put(DbReferences.COLUMN_DESCRIPTION, q.description)
-            put(DbReferences.COLUMN_TAG, q.tag)
-            put(DbReferences.COLUMN_ADD_ON_TAGS, q.addOnTags)
+            put(DbReferences.COLUMN_QUEST_TYPE, q.questType)
+            put(DbReferences.COLUMN_EXTRA_TAGS, q.extraTags)
             put(DbReferences.COLUMN_DIFFICULTY, q.difficulty)
             put(DbReferences.COLUMN_XP_REWARD, q.xpReward)
             put(DbReferences.COLUMN_STAT_REWARD, q.statReward)
         }
 
+        val selection = DbReferences.COLUMN_QUEST_ID + " = ?"
+        val selectionArgs = arrayOf(q.id.toString())
 
-
-        // This builds the WHERE clause for the update:
-        val selection = DbReferences.COLUMN_QUEST_ID + " = ?" //where clause with a placeholder "?"
-        val selectionArgs = arrayOf(q.id.toString()) //fills the placeholder
-
-        // Executes the update. Updates the row that matches the id.
-        // Closes the database after the operation.
-  
         val rowsUpdated = database.update(DbReferences.TABLE_QUEST, values, selection, selectionArgs)
         database.close()
 
         return rowsUpdated
     }
+
 
 
     /* 🔴 Delete: Remove a quest by its ID */
@@ -284,6 +281,119 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
     }
 
+    // helper function to get Quest ID
+    fun getQuestById(id: Int): Quest? {
+        val database = this.readableDatabase
+
+        val cursor = database.query(
+            DbReferences.TABLE_QUEST,
+            null,
+            "${DbReferences.COLUMN_QUEST_ID} = ?",
+            arrayOf(id.toString()),
+            null,
+            null,
+            null
+        )
+
+        var quest: Quest? = null
+        if (cursor.moveToFirst()) {
+            quest = Quest(
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_ID)),
+                questName = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_NAME)),
+                description = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_DESCRIPTION)),
+                questType = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_TYPE)),
+                extraTags = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXTRA_TAGS)),
+                difficulty = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_DIFFICULTY)),
+                xpReward = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_XP_REWARD)),
+                statReward = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_STAT_REWARD))
+            )
+        }
+
+        cursor.close()
+        database.close()
+        return quest
+    }
+
+    // Step 1: Get 5 random quests from the quest table
+    fun getRandomQuests(limit: Int = 5): List<Quest> {
+        val database = this.readableDatabase
+        val cursor = database.rawQuery(
+            "SELECT * FROM ${DbReferences.TABLE_QUEST} ORDER BY RANDOM() LIMIT $limit",
+            null
+        )
+        val quests = mutableListOf<Quest>()
+        while (cursor.moveToNext()) {
+            quests.add(
+                Quest(
+                    id = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_ID)),
+                    questName = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_NAME)),
+                    description = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_DESCRIPTION)),
+                    questType = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_TYPE)),
+                    extraTags = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXTRA_TAGS)),
+                    difficulty = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_DIFFICULTY)),
+                    xpReward = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_XP_REWARD)),
+                    statReward = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_STAT_REWARD))
+                )
+            )
+        }
+        cursor.close()
+        database.close()
+        return quests
+    }
+
+    // Step 2: Get UserQuestActivities by status and date
+    fun getUserQuestsByStatusAndDate(status: String, date: String): List<UserQuestActivity> {
+        val database = this.readableDatabase
+        val cursor = database.query(
+            DbReferences.TABLE_UQA,
+            null,
+            "${DbReferences.COLUMN_QUEST_STATUS} = ? AND ${DbReferences.COLUMN_DATE_CREATED} = ?",
+            arrayOf(status, date),
+            null,
+            null,
+            null
+        )
+
+        val result = mutableListOf<UserQuestActivity>()
+        while (cursor.moveToNext()) {
+            result.add(
+                UserQuestActivity(
+                    userQuestActID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_ID)),
+                    questStatus = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_STATUS)),
+                    userLogs = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_LOGS)),
+                    dateCreated = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_DATE_CREATED)),
+                    questID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_QUEST_ID)),
+                    quoteID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_QUOTE_ID)),
+                    userID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_USER_ID))
+                )
+            )
+        }
+
+        cursor.close()
+        database.close()
+        return result
+    }
+
+    // Step 3: Automatically cancel unfinished quests from past days
+    fun autoCancelOldUnfinishedQuests(today: String) {
+        val database = this.writableDatabase
+        val values = ContentValues().apply {
+            put(DbReferences.COLUMN_QUEST_STATUS, "CANCELLED")
+        }
+
+        val rowsUpdated = database.update(
+            DbReferences.TABLE_UQA,
+            values,
+            "${DbReferences.COLUMN_QUEST_STATUS} = ? AND ${DbReferences.COLUMN_DATE_CREATED} < ?",
+            arrayOf("CREATED", today)
+        )
+
+        Log.d("AutoCancel", "Auto-cancelled $rowsUpdated old quests")
+        database.close()
+    }
+
+
+
 
     // TODO: The other 3 tables' CRUD operations
 
@@ -293,7 +403,8 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         val values = ContentValues().apply {
             put(DbReferences.COLUMN_QUOTE_TEXT, quote.quoteText)
             put(DbReferences.COLUMN_QUOTE_AUTHOR, quote.quoteAuthor)
-            put(DbReferences.COLUMN_IS_SAVED, if (quote.isSaved) 1 else 0)
+            put(DbReferences.COLUMN_IS_SAVED, 0) // false by default
+            // put(DbReferences.COLUMN_IS_SAVED, if (quote.isSaved) 1 else 0) // convert Boolean to Int
         }
         val id = database.insert(DbReferences.TABLE_QUOTE, null, values)
         database.close()
@@ -341,10 +452,54 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
     }
 
+    // Helper function
+    fun getRandomQuote(): Quote? {
+        val db = this.readableDatabase
+
+        // Only select quotes that are NOT saved/bookmarked (isSaved = 0)
+        // - Maybe add a checker where is saved quotes wont appear?
+        // WHERE ${DbReferences.COLUMN_IS_SAVED} = 0 to ensure only unsaved quotes are shown.
+        val cursor = db.rawQuery(
+            "SELECT * FROM ${DbReferences.TABLE_QUOTE} WHERE ${DbReferences.COLUMN_IS_SAVED} = 0 ORDER BY RANDOM() LIMIT 1",
+            null
+        )
+
+        var quote: Quote? = null
+        if (cursor.moveToFirst()) {
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_ID))
+            val text = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_TEXT))
+            val author = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_AUTHOR))
+            val isSaved = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_IS_SAVED)) == 1
+            quote = Quote(id, text, author, isSaved)
+        }
+
+        cursor.close()
+        db.close()
+        return quote
+    }
+
+    fun updateQuoteSaveStatus(quoteID: Int, isSaved: Boolean): Int {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(DbReferences.COLUMN_IS_SAVED, if (isSaved) 1 else 0)
+        }
+        return db.update(
+            DbReferences.TABLE_QUOTE,
+            values,
+            "${DbReferences.COLUMN_QUOTE_ID} = ?",
+            arrayOf(quoteID.toString())
+        )
+    }
+
+
+
     /* USER TABLE CRUD */
     fun insertUser(user: User): Long {
         val database = this.writableDatabase
         val values = ContentValues().apply {
+            put(DbReferences.COLUMN_USERNAME, user.username)
+            put(DbReferences.COLUMN_PFP, user.pfp)
+            put(DbReferences.COLUMN_USER_TITLE, user.userTitle)
             put(DbReferences.COLUMN_LEVEL, user.level)
             put(DbReferences.COLUMN_EXP, user.currentExp)
             put(DbReferences.COLUMN_LEVEL_CAP, user.levelCap)
@@ -356,6 +511,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
         return id
     }
+
 
     fun getUserById(id: Int): User? {
         val database = this.readableDatabase
@@ -373,6 +529,9 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         if (cursor.moveToFirst()) {
             user = User(
                 userID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_ID)),
+                username = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USERNAME)),
+                pfp = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_PFP)),
+                userTitle = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_TITLE)),
                 level = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL)),
                 currentExp = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXP)),
                 levelCap = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL_CAP)),
@@ -386,9 +545,13 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         return user
     }
 
+
     fun updateUser(user: User) {
         val database = this.writableDatabase
         val values = ContentValues().apply {
+            put(DbReferences.COLUMN_USERNAME, user.username)
+            put(DbReferences.COLUMN_PFP, user.pfp)
+            put(DbReferences.COLUMN_USER_TITLE, user.userTitle)
             put(DbReferences.COLUMN_LEVEL, user.level)
             put(DbReferences.COLUMN_EXP, user.currentExp)
             put(DbReferences.COLUMN_LEVEL_CAP, user.levelCap)
@@ -401,6 +564,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.update(DbReferences.TABLE_USER, values, selection, selectionArgs)
         database.close()
     }
+
 
     fun deleteUser(id: Int) {
         val database = this.writableDatabase
@@ -416,7 +580,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         val values = ContentValues().apply {
             put(DbReferences.COLUMN_QUEST_STATUS, uqa.questStatus)
             put(DbReferences.COLUMN_USER_LOGS, uqa.userLogs)
-            put(DbReferences.COLUMN_DATE_COMPLETED, uqa.dateCompleted)
+            put(DbReferences.COLUMN_DATE_CREATED, uqa.dateCreated)  // updated
             put(DbReferences.COLUMN_UQA_QUEST_ID, uqa.questID)
             put(DbReferences.COLUMN_UQA_QUOTE_ID, uqa.quoteID)
             put(DbReferences.COLUMN_UQA_USER_ID, uqa.userID)
@@ -425,6 +589,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
         return id
     }
+
 
     fun getAllUserQuestActivities(): ArrayList<UserQuestActivity> {
         val activities = ArrayList<UserQuestActivity>()
@@ -437,7 +602,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                     userQuestActID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_ID)),
                     questStatus = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_STATUS)),
                     userLogs = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_LOGS)),
-                    dateCompleted = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_DATE_COMPLETED)),
+                    dateCreated = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_DATE_CREATED)),  // updated
                     questID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_QUEST_ID)),
                     quoteID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_QUOTE_ID)),
                     userID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_USER_ID))
@@ -449,12 +614,13 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         return activities
     }
 
+
     fun updateUserQuestActivity(uqa: UserQuestActivity) {
         val database = this.writableDatabase
         val values = ContentValues().apply {
             put(DbReferences.COLUMN_QUEST_STATUS, uqa.questStatus)
             put(DbReferences.COLUMN_USER_LOGS, uqa.userLogs)
-            put(DbReferences.COLUMN_DATE_COMPLETED, uqa.dateCompleted)
+            put(DbReferences.COLUMN_DATE_CREATED, uqa.dateCreated)  // updated
             put(DbReferences.COLUMN_UQA_QUEST_ID, uqa.questID)
             put(DbReferences.COLUMN_UQA_QUOTE_ID, uqa.quoteID)
             put(DbReferences.COLUMN_UQA_USER_ID, uqa.userID)
@@ -464,6 +630,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.update(DbReferences.TABLE_UQA, values, selection, selectionArgs)
         database.close()
     }
+
 
     fun deleteUserQuestActivity(id: Int) {
         val database = this.writableDatabase

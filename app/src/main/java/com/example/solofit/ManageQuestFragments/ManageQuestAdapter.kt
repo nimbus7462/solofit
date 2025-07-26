@@ -52,7 +52,7 @@ class ManageQuestAdapter(
             }
         }
         // Switch case for icon
-        when (questItem.tag) {
+        when (questItem.questType) {
             "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
             "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)
             "Vitality" -> holder.setQuestIcon(R.drawable.icon_vit)

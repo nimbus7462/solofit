@@ -47,17 +47,17 @@ class QuestSummaryAdapter(private val questList: ArrayList<Quest>, private val u
                 matchingQuest?.let { questItem ->
                     val intent = Intent(holder.itemView.context, QuestInfoViewOnlyActivity::class.java).apply {
                         // From Quest
-                        putExtra(EXTRA_QUEST_TITLE, questItem.title)
+                        putExtra(EXTRA_QUEST_TITLE, questItem.questName)
                         putExtra(EXTRA_DESC, questItem.description)
-                        putExtra(EXTRA_TAG, questItem.tag)
-                        putExtra(EXTRA_ADD_ON_TAGS, questItem.addOnTags)
+                        putExtra(EXTRA_TAG, questItem.questType)
+                        putExtra(EXTRA_ADD_ON_TAGS, questItem.extraTags)
                         putExtra(EXTRA_DIFFICULTY, questItem.difficulty)
                         putExtra(EXTRA_XP_REWARD, questItem.xpReward)
                         putExtra(EXTRA_STAT_REWARD, questItem.statReward)
 
 
                         // From UQA
-                        putExtra(EXTRA_DATE_COMPLETED, uqa.dateCompleted)
+                        putExtra(EXTRA_DATE_COMPLETED, uqa.dateCreated)
                         putExtra(EXTRA_QUEST_STATUS, uqa.questStatus)
                     }
                     holder.itemView.context.startActivity(intent)
@@ -86,7 +86,7 @@ class QuestSummaryAdapter(private val questList: ArrayList<Quest>, private val u
             }
         }
         // Switch case for icon
-        when (questItem.tag) {
+        when (questItem.questType) {
             "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
             "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)
             "Vitality" -> holder.setQuestIcon(R.drawable.icon_vit)
@@ -97,7 +97,7 @@ class QuestSummaryAdapter(private val questList: ArrayList<Quest>, private val u
         matchingUQA?.let {
             val xpValue = questItem.xpReward.toString()
             val statValue = questItem.statReward.toString()
-            val questType = questItem.tag.take(3).uppercase()
+            val questType = questItem.questType.take(3).uppercase()
             when (it.questStatus) {
                 "Completed" -> {
                     holder.binding.txvQSummExp.text = "+ $xpValue EXP"

@@ -38,11 +38,11 @@ class ManageQuest : Fragment() {
                 val action = ManageQuestDirections.actionManageQuestToAddEditQuest(
                     quest.id,
                     "EDIT QUEST",
-                    quest.title,
+                    quest.questName,
                     quest.description,
-                    quest.tag,
+                    quest.questType,
                     quest.difficulty,
-                    quest.addOnTags,
+                    quest.extraTags,
                     quest.xpReward,
                     quest.statReward
                 )

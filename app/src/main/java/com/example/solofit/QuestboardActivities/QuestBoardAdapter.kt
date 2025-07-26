@@ -8,21 +8,14 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
 
-class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestBoardViewHolder>() {
+class QuestBoardAdapter(private val questList: ArrayList<Quest>) : Adapter<QuestBoardViewHolder>() {
 
-    // These are static keys that you can use for the passing data around.
     companion object {
-        const val titleKey : String = "TITLE_KEY"
-        const val descKey : String = "DESC_KEY"
-        const val tagKey : String = "TAG_KEY"
-        const val addOnTagsKey : String = "ADD_ON_TAGS_KEY"
-        const val difficultyKey: String = "DIFFICULTY_KEY"
-        const val xpRewardKey: String = "XP_REWARD_KEY"
-        const val statRewardKey: String = "STAT_REWARD_KEY"
+        const val QUEST_ID_KEY = "quest_id"
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestBoardViewHolder {
-        val itemViewBinding: QuestItemLayoutBinding = QuestItemLayoutBinding.inflate(
+        val itemViewBinding = QuestItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -34,7 +27,7 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
         val questItem = questList[position]
         holder.bindData(questItem)
 
-        // Switch case for colors based on difficulty
+        // Difficulty-based styling
         when (questItem.difficulty) {
             "Easy" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_easy)
@@ -53,30 +46,23 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>): Adapter<QuestB
                 holder.setQuestNameTextShadow(R.color.bright_purple)
             }
         }
-        // Switch case for icon
-        when (questItem.tag) {
+
+        // Icon by type
+        when (questItem.questType) {
             "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
             "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)
             "Vitality" -> holder.setQuestIcon(R.drawable.icon_vit)
         }
 
-        // Set up click listener on the whole itemView
+        // Pass only the quest ID
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, QuestInfoActivity::class.java).apply {
-                putExtra(titleKey, questItem.title)
-                putExtra(descKey, questItem.description)
-                putExtra(tagKey, questItem.tag)
-                putExtra(addOnTagsKey, questItem.addOnTags)
-                putExtra(difficultyKey, questItem.difficulty)
-                putExtra(xpRewardKey, questItem.xpReward)
-                putExtra(statRewardKey, questItem.statReward)
+                putExtra(QUEST_ID_KEY, questItem.id)
             }
             holder.itemView.context.startActivity(intent)
         }
     }
 
-    override fun getItemCount(): Int {
-        return questList.size
-    }
-
+    override fun getItemCount(): Int = questList.size
 }
+

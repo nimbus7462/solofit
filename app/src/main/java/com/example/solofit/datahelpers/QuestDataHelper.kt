@@ -28,66 +28,64 @@ class QuestDataHelper {
 
 
         fun findQuestByTitle(title: String): Int? {
-            return quests.indexOfFirst { it.title == title }.takeIf { it >= 0 }
+            return quests.indexOfFirst { it.questName == title }.takeIf { it >= 0 }
         }
         fun findQuestIndexById(id: Int): Int? {
             return quests.indexOfFirst { it.id == id }.takeIf { it != -1 }
         }
         fun generateNewId(): Int {
             return (quests.maxOfOrNull { it.id } ?: 0) + 1
-        }fun initializeQuests(): ArrayList<Quest> {
-            // Only populate the list once
+        }
+        fun initializeQuests(): ArrayList<Quest> {
             if (quests.isEmpty()) {
                 quests.addAll(
                     listOf(
                         Quest(
                             id = 0,
-                            title = "3 x 15 Push-ups",
+                            questName = "3 x 15 Push-ups",
                             description = "Do 3 sets of 15 push-ups to strengthen your chest and triceps.",
-                            tag = "Strength",
-                            addOnTags = "Chest, Triceps",
+                            questType = "Strength",
+                            extraTags = "Chest, Triceps",
                             difficulty = "Normal",
                             xpReward = 50,
                             statReward = 1
                         ),
                         Quest(
                             id = 1,
-                            title = "3 x 10 Pull-ups",
+                            questName = "3 x 10 Pull-ups",
                             description = "Do 3 sets of 10 pull-ups for upper body power.",
-                            tag = "Strength",
-                            addOnTags = "Chest, Triceps",
+                            questType = "Strength",
+                            extraTags = "Chest, Triceps",
                             difficulty = "Hard",
                             xpReward = 80,
                             statReward = 1
-
                         ),
                         Quest(
                             id = 2,
-                            title = "15 min. Meditation",
+                            questName = "15 min. Meditation",
                             description = "Mindfulness exercise for 15 minutes.",
-                            tag = "Vitality",
-                            addOnTags = "Box Breathe",
+                            questType = "Vitality",
+                            extraTags = "Box Breathe",
                             difficulty = "Normal",
                             xpReward = 60,
                             statReward = 2
-
                         ),
                         Quest(
                             id = 3,
-                            title = "10km Jog",
+                            questName = "10km Jog",
                             description = "Jog 10 kilometers to build endurance and stamina.",
-                            tag = "Endurance",
-                            addOnTags = "High Intensity",
+                            questType = "Endurance",
+                            extraTags = "High Intensity",
                             difficulty = "Extreme",
                             xpReward = 120,
                             statReward = 10
                         ),
                         Quest(
                             id = 4,
-                            title = "3 x 30 Jumping Jacks",
+                            questName = "3 x 30 Jumping Jacks",
                             description = "Do 3 sets of 30 jumping jacks to warm up and activate full body.",
-                            tag = "Endurance",
-                            addOnTags = "Chest, Triceps",
+                            questType = "Endurance",
+                            extraTags = "Chest, Triceps",
                             difficulty = "Easy",
                             xpReward = 30,
                             statReward = 5
@@ -96,8 +94,9 @@ class QuestDataHelper {
                 )
             }
 
-            return ArrayList(quests) // return a copy of the up-to-date list
+            return ArrayList(quests) // Return a copy of the up-to-date list
         }
+
     }
 
 }

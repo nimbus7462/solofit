@@ -9,7 +9,7 @@ import com.example.solofit.model.Quest
 
 class QuestBoardViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bindData(quest: Quest) {
-        binding.txvQuestName.text = quest.title
+        binding.txvQuestName.text = quest.questName
     }
 
     fun setQuestIcon(iconResId: Int) {

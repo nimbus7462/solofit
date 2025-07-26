@@ -204,15 +204,16 @@ class AddEditQuest : Fragment() {
         return if (isValid) {
             Quest(
                 id = if (questId == -1) 0 else questId,
-                title = name,
+                questName = name,
                 description = desc,
-                tag = questType,
-                addOnTags = extraTags,
+                questType = questType,
+                extraTags = extraTags,
                 difficulty = difficulty,
-                xpReward = xp!!.toInt(),
-                statReward = stat!!.toInt()
+                xpReward = xp!!,
+                statReward = stat!!
             )
-        } else {
+        }
+        else {
             null
         }
     }
