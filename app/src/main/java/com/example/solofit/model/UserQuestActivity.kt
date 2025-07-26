@@ -59,6 +59,16 @@ class UserQuestActivity : Parcelable {
         userID = parcel.readInt()
     }
 
+    constructor() {
+        this.userQuestActID = 0
+        this.questStatus = ""
+        this.userLogs = ""
+        this.dateCreated = ""
+        this.questID = 0
+        this.quoteID = 0
+        this.userID = 0
+    }
+
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(userQuestActID)
         dest.writeString(questStatus)

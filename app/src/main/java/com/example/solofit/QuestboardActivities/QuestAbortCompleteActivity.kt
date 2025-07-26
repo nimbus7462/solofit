@@ -3,6 +3,7 @@ package com.example.solofit.QuestboardActivities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.R
@@ -16,46 +17,70 @@ import com.example.solofit.utilities.UserStreakManager
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.activity.OnBackPressedCallback
+import com.example.solofit.model.User
 
 class QuestAbortCompleteActivity : AppCompatActivity() {
 
     private lateinit var viewBinding: AbortCompleteQuestBinding
     private var isSaved = false
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     // Store the selected quote for use when saving to UQA
     private var selectedQuote: Quote? = null
 
-    private lateinit var dbHelper: MyDatabaseHelper
-    private var questId: Int = -1
+    val dbHelper = MyDatabaseHelper.getInstance(this)!!
+    private lateinit var todaysSelectedUQA: UserQuestActivity
     private var questStatus: String? = null
     private lateinit var quest: Quest
+    private lateinit var user: User
     private var hasSavedStatus = false // Track if save was already done
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = AbortCompleteQuestBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+        // Load quote
+        loadAndDisplayQuote()
+        Log.d("QUOTE_DEBUG", dbHelper.getAllQuotes().toString())
+
+        val uqa = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+                intent.getParcelableExtra(Extras.EXTRA_UQA, UserQuestActivity::class.java)
+            else ->
+                @Suppress("DEPRECATION")
+                intent.getParcelableExtra(Extras.EXTRA_UQA)
+        } ?: run {
+            finish()
+            return
+        }
+
+        // Get quest info from intent
+        questStatus = intent.getStringExtra(Extras.EXTRA_QUEST_STATUS)
+
+
+        if (uqa.questID == -1 || questStatus == null) {
+            finish() // invalid id, exit early
+            return
+        } else {
+            this.todaysSelectedUQA = uqa
+        }
+
+        user = dbHelper.getUserById(todaysSelectedUQA.userID) ?: run {
+            finish()
+            return
+        }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                saveQuestStatusAndQuote()
+                saveQuestStatusAndQuote(todaysSelectedUQA)
                 setResult(RESULT_OK)
                 finish()
             }
         })
 
-        // Get quest info from intent
-        questId = intent.getIntExtra(Extras.QUEST_ID_KEY, -1)
-        questStatus = intent.getStringExtra(Extras.EXTRA_QUEST_STATUS)
 
 
-        if (questId == -1 || questStatus == null) {
-            finish()
-            return
-        }
-
-        dbHelper = MyDatabaseHelper.getInstance(this)!!
-        quest = dbHelper.getQuestById(questId) ?: run {
+        quest = dbHelper.getQuestById(todaysSelectedUQA.questID) ?: run {
             finish()
             return
         }
@@ -63,8 +88,11 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         // Quest name shown at the top
         viewBinding.txvQStatusQuestName.text = quest.questName
 
-        // Load quote
-        loadAndDisplayQuote()
+        viewBinding.txvTotalUserExp.text = user.currentExp.toString()
+        viewBinding.txvStrValHere.text = user.strengthPts.toString()
+        viewBinding.txvEndValHere.text = user.endurancePts.toString()
+        viewBinding.txvVitValHere.text = user.vitalityPts.toString()
+
 
         // Display completion or abortion visuals
         when (questStatus) {
@@ -77,6 +105,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
 
                 viewBinding.txvExpChanges.text = "( +${quest.xpReward} ) EXP"
                 viewBinding.txvExpChanges.setShadowLayer(10f, 0f, 0f, getColor(R.color.bright_green))
+                viewBinding.txvExpChanges.setTextColor(getColor(R.color.bright_green))
                 viewBinding.imvExpIcon.setImageResource(R.drawable.icon_exp_gain)
 
                 val statTextView = when (quest.questType) {
@@ -106,83 +135,114 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
             }
         }
 
+        viewBinding.imbSaveQuote.setOnClickListener {
+            isSaved = !isSaved
+            val updatedIcon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
+            viewBinding.imbSaveQuote.setImageResource(updatedIcon)
+
+            selectedQuote?.let { quote ->
+                dbHelper.updateQuoteSaveStatus(quote.quoteID, isSaved)
+            }
+        }
+
         // Log thoughts button
         viewBinding.btnLogThoughts.setOnClickListener {
             val intent = Intent(applicationContext, QuestLoggingActivity::class.java)
-            intent.putExtra(Extras.QUEST_ID_KEY, quest.id)
+            saveQuestStatusAndQuote(todaysSelectedUQA) // Save on manual click
+            setResult(RESULT_OK) // Let QuestBoardActivity know to refresh
+            intent.putExtra(Extras.EXTRA_UQA, todaysSelectedUQA)
             startActivity(intent)
             finish()
         }
 
         // Finish Quest button — Save status + quote
         viewBinding.btnFinishQuest.setOnClickListener {
-            saveQuestStatusAndQuote() // Save on manual click
+            saveQuestStatusAndQuote(todaysSelectedUQA) // Save on manual click
             setResult(RESULT_OK) // Let QuestBoardActivity know to refresh
             finish()
         }
     }
 
     // Load a random quote and update UI
-    private fun loadAndDisplayQuote() {
+    private fun loadAndDisplayQuote(){
         val quote = dbHelper.getRandomQuote()
+        if (quote == null) {
+            Log.d("QUOTE_DEBUG", "No quote was retrieved from the database.")
+        } else {
+            Log.d("QUOTE_DEBUG", "Retrieved quote: ID=${quote.quoteID}, Text=${quote.quoteText}") }
         quote?.let {
             selectedQuote = it
 
             viewBinding.txvQuoteContent.text = "“${it.quoteText}”"
             viewBinding.txvQuoteAuthor.text = "- ${it.quoteAuthor}"
 
-            isSaved = it.isSaved
-            val icon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
-            viewBinding.imbSaveQuote.setImageResource(icon)
-
-            viewBinding.imbSaveQuote.setOnClickListener {
-                isSaved = !isSaved
-                val updatedIcon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
-                viewBinding.imbSaveQuote.setImageResource(updatedIcon)
-
-                selectedQuote?.let { q ->
-                    dbHelper.updateQuoteSaveStatus(q.quoteID, isSaved)
-                }
-            }
         }
     }
 
     // Reusable method that updates the quest status and saves the quote ID into the UQA
-    private fun saveQuestStatusAndQuote() {
-        if (hasSavedStatus) return // 🔁 Don't save multiple times
+    private fun saveQuestStatusAndQuote(userQuestActivity: UserQuestActivity) {
+        if (hasSavedStatus) return // Don't save multiple times
         hasSavedStatus = true
 
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        val matchingUQAs = dbHelper.getUserQuestsByStatusAndDate("CREATED", today)
-        val uqa = matchingUQAs.find { it.questID == questId }
-
-        if (uqa != null && questStatus != null) {
+        if (questStatus != null) {
             val newStatus = when (questStatus) {
                  Extras.STATUS_COMPLETED -> "COMPLETED"
                  Extras.STATUS_ABORTED -> "ABORTED"
-                else -> uqa.questStatus
+                else -> userQuestActivity.questStatus
             }
 
             val updatedUQA = UserQuestActivity(
-                userQuestActID = uqa.userQuestActID,
+                userQuestActID = userQuestActivity.userQuestActID,
                 questStatus = newStatus,
-                userLogs = uqa.userLogs,
-                dateCreated = uqa.dateCreated,
-                questID = uqa.questID,
-                quoteID = selectedQuote?.quoteID ?: uqa.quoteID,
-                userID = uqa.userID
+                userLogs = userQuestActivity.userLogs,
+                dateCreated = userQuestActivity.dateCreated,
+                questID = userQuestActivity.questID,
+                quoteID = selectedQuote?.quoteID ?: userQuestActivity.quoteID,
+                userID = userQuestActivity.userID
             )
 
             dbHelper.updateUserQuestActivity(updatedUQA)
             if (newStatus == "COMPLETED") {
                     UserStreakManager.updateStreakIfNeeded(this)
                 }
+            this.todaysSelectedUQA = updatedUQA
+
+
+            calculateUserExpGainAndStatsGain(user, quest, todaysSelectedUQA)
+            val updatedUser = user
+            dbHelper.updateUser(updatedUser)
+
+            Log.d("SAVING_DEBUG", "UPDATED UQA")
+        }
+    }
+
+    // TODO Still need to add level and levelcap logic
+    private fun calculateUserExpGainAndStatsGain(user: User, quest: Quest, uqa: UserQuestActivity) {
+        val streakCount = maxOf(0, UserStreakManager.getStreakCount(this))
+        val base = if (streakCount >= 3) 0.02 else 0.0
+        val stepBonus = (streakCount / 5) * 0.05
+        val streakMultiplier = 1.0 + base + stepBonus
+
+        when (uqa.questStatus) {
+            "COMPLETED" -> {
+                user.currentExp += quest.xpReward * streakMultiplier.toFloat()
+
+                when (quest.questType) {
+                    "Strength" -> user.strengthPts += quest.statReward
+                    "Endurance" -> user.endurancePts += quest.statReward
+                    "Vitality" -> user.vitalityPts += quest.statReward
+                }
+            }
+
+            "ABORTED" -> {
+                user.currentExp -= (quest.xpReward / 2).toFloat()
+            }
         }
     }
 
     // Optionally: if you want to double-check saving before destruction
     override fun onDestroy() {
-        saveQuestStatusAndQuote()
+        saveQuestStatusAndQuote(todaysSelectedUQA)
         super.onDestroy()
     }
 }

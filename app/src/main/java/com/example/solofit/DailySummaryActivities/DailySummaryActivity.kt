@@ -1,13 +1,11 @@
 package com.example.solofit.DailySummaryActivities
 
 import android.content.Intent
-import com.example.solofit.R
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.DailySummaryPageBinding
+import com.example.solofit.utilities.Extras
 import com.example.solofit.utilities.UserStreakManager
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -24,10 +22,11 @@ class DailySummaryActivity: AppCompatActivity() {
         viewBinding = DailySummaryPageBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        val todaysUQAs = dbHelper.getUserQuestsByStatusAndDate(null, today)
+        val todaysUQAs = dbHelper.getUserQuestsByStatusDateAndUserID(null, today, Extras.DEFAULT_USER_ID)
 
-        val completedUQAs = dbHelper.getUserQuestsByStatusAndDate("COMPLETED", today)
-        val abortedUQAs = dbHelper.getUserQuestsByStatusAndDate("ABORTED", today)
+        var user = dbHelper.getUserById(Extras.DEFAULT_USER_ID)
+        val completedUQAs = dbHelper.getUserQuestsByStatusDateAndUserID("COMPLETED", today, Extras.DEFAULT_USER_ID)
+        val abortedUQAs = dbHelper.getUserQuestsByStatusDateAndUserID("ABORTED", today, Extras.DEFAULT_USER_ID)
 
         val completedQuests = completedUQAs.mapNotNull { dbHelper.getQuestById(it.questID) }
         val abortedQuests = abortedUQAs.mapNotNull { dbHelper.getQuestById(it.questID) }
@@ -78,9 +77,12 @@ class DailySummaryActivity: AppCompatActivity() {
         val endGain = statTotals["Endurance"] ?: 0
         val vitGain = statTotals["Vitality"] ?: 0
 
-        viewBinding.txvSummGainedStr.text = if (strGain != 0) "( +$strGain )" else ""
-        viewBinding.txvSummGainedEnd.text = if (endGain != 0) "( +$endGain )" else ""
-        viewBinding.txvSummGainedVit.text = if (vitGain != 0) "( +$vitGain )" else ""
+        viewBinding.txvSummStrValHere.text = user!!.strengthPts.toString()
+        viewBinding.txvSummEndValHere.text = user.endurancePts.toString()
+        viewBinding.txvSummVitValHere.text = user.vitalityPts.toString()
+        viewBinding.txvSummGainedStr.text = if (strGain != 0) "( +$strGain From Today )" else ""
+        viewBinding.txvSummGainedEnd.text = if (endGain != 0) "( +$endGain From Today )" else ""
+        viewBinding.txvSummGainedVit.text = if (vitGain != 0) "( +$vitGain From Today )" else ""
 
 
         val base = if (streakCount >= 3) 0.02 else 0.0

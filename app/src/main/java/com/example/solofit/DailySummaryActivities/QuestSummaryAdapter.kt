@@ -15,9 +15,8 @@ import com.example.solofit.utilities.Extras
 
 class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity>, private val dbHelper: MyDatabaseHelper): Adapter<QuestSummaryViewHolder>(){
 
-
-
-    private val todaysQuestList = todaysUQAList.mapNotNull { dbHelper.getQuestById(it.questID) }
+    private val reversedUQAList = todaysUQAList.asReversed()
+    private val todaysQuestList = reversedUQAList.mapNotNull { dbHelper.getQuestById(it.questID) }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestSummaryViewHolder {
         val itemViewBinding: QuestSummaryItemLayoutBinding = QuestSummaryItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -29,7 +28,7 @@ class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity
 
     override fun onBindViewHolder(holder: QuestSummaryViewHolder, position: Int) {
 
-        val uqaItem = todaysUQAList[position]
+        val uqaItem = reversedUQAList[position]
         val questItem = todaysQuestList[position]
         holder.bindData(questItem)
 

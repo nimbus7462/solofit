@@ -33,7 +33,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     // Step 0: All constants for structure, columns, and SQL
     private object DbReferences {
         const val DATABASE_NAME = "quest_app.db"
-        const val DATABASE_VERSION = 5  // Bumped up to 4 ; Changed User Table, pfp -> pfpUri (String), currentlevel int -> float
+        const val DATABASE_VERSION = 7  // Bumped up to 4 ; Changed User Table, pfp -> pfpUri (String), currentlevel int -> float
 
         // Quest Table
         const val TABLE_QUEST = "quest_table"
@@ -185,7 +185,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
     private fun insertInitialUser(db: SQLiteDatabase) {
         val values = ContentValues().apply {
-            put(DbReferences.COLUMN_USERNAME, "New Hunter")
+            put(DbReferences.COLUMN_USERNAME, "Player")
             put(DbReferences.COLUMN_PFP_URI, null as String?) // default no profile picture
             put(DbReferences.COLUMN_USER_TITLE, "Novice")
             put(DbReferences.COLUMN_LEVEL, 1)
@@ -359,21 +359,32 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         return quests
     }
 
-    // Step 2: Get UserQuestActivities by status and date
-    fun getUserQuestsByStatusAndDate(status: String?, date: String): List<UserQuestActivity> {
+    // Step 2: Get UserQuestActivities by status, date, and userID
+    fun getUserQuestsByStatusDateAndUserID(
+        status: String?,
+        date: String,
+        userID: Int? = null
+    ): List<UserQuestActivity> {
         val database = this.readableDatabase
 
-        val (selection, selectionArgs) = if (status != null) {
-            Pair(
-                "${DbReferences.COLUMN_QUEST_STATUS} = ? AND ${DbReferences.COLUMN_DATE_CREATED} = ?",
-                arrayOf(status, date)
-            )
-        } else {
-            Pair(
-                "${DbReferences.COLUMN_DATE_CREATED} = ?",
-                arrayOf(date)
-            )
+        val conditions = mutableListOf<String>()
+        val args = mutableListOf<String>()
+
+        if (status != null) {
+            conditions.add("${DbReferences.COLUMN_QUEST_STATUS} = ?")
+            args.add(status)
         }
+
+        conditions.add("${DbReferences.COLUMN_DATE_CREATED} = ?")
+        args.add(date)
+
+        if (userID != null) {
+            conditions.add("${DbReferences.COLUMN_UQA_USER_ID} = ?")
+            args.add(userID.toString())
+        }
+
+        val selection = conditions.joinToString(" AND ")
+        val selectionArgs = args.toTypedArray()
 
         val cursor = database.query(
             DbReferences.TABLE_UQA,
@@ -424,6 +435,37 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
     }
 
+    fun getUserQuestActivityById(uqaId: Int): UserQuestActivity? {
+        val database = this.readableDatabase
+
+        val cursor = database.query(
+            DbReferences.TABLE_UQA,
+            null,
+            "${DbReferences.COLUMN_UQA_ID} = ?",
+            arrayOf(uqaId.toString()),
+            null,
+            null,
+            null
+        )
+
+        val result = if (cursor.moveToFirst()) {
+            UserQuestActivity(
+                userQuestActID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_ID)),
+                questStatus = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_STATUS)),
+                userLogs = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_LOGS)),
+                dateCreated = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_DATE_CREATED)),
+                questID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_QUEST_ID)),
+                quoteID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_QUOTE_ID)),
+                userID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UQA_USER_ID))
+            )
+        } else {
+            null
+        }
+
+        cursor.close()
+        database.close()
+        return result
+    }
 
 
 

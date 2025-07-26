@@ -1,10 +1,13 @@
 package com.example.solofit.QuestboardActivities
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.InitialLoggingBinding
 import com.example.solofit.utilities.Extras
@@ -16,47 +19,61 @@ import com.example.solofit.model.UserQuestActivity
 class QuestLoggingActivity : AppCompatActivity() {
 
     private lateinit var viewBinding: InitialLoggingBinding
-
+    private lateinit var uqa: UserQuestActivity
+    val dbHelper = MyDatabaseHelper.getInstance(this)!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = InitialLoggingBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                saveLogIfNeeded()
+                finish()
+            }
+        })
+
         // Step 1: Get Quest ID from intent
-        val questId = intent.getIntExtra(Extras.QUEST_ID_KEY, -1)
-        if (questId == -1) {
+        val todaysSelectedUQA = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+                intent.getParcelableExtra(Extras.EXTRA_UQA, UserQuestActivity::class.java)
+            else ->
+                @Suppress("DEPRECATION")
+                intent.getParcelableExtra(Extras.EXTRA_UQA)
+        } ?: UserQuestActivity()
+
+        if (todaysSelectedUQA.questID == -1) {
             finish() // invalid quest
             return
         }
 
         // Step 2: Load Quest and DB Helper
-        val dbHelper = MyDatabaseHelper.getInstance(this)!!
-        val quest = dbHelper.getQuestById(questId) ?: run {
+        val quest = dbHelper.getQuestById(todaysSelectedUQA.questID) ?: run {
             finish() // quest not found
             return
         }
+
+        this.uqa = todaysSelectedUQA
 
         // Step 3: Display quest name and today's date
         viewBinding.txvInitLoggingQuestName.text = quest.questName
         val currentDate = SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(Date())
         viewBinding.txvInitLoggingCompletedDate.text = currentDate
 
-        // tep 4: Enable logging input and fetch UQA Data
+        val statusText = when (uqa.questStatus) {
+            "ABORTED" -> getString(R.string.aborted)
+            "COMPLETED" -> getString(R.string.completed)
+            else -> {"INVALID"}
+        }
+        viewBinding.txvInitLoggingQuestStatus.text = statusText
+
+        // Step 4: Enable logging input and fetch UQA Data
         val logEditText = viewBinding.addLog
         val finishButton = viewBinding.btnFinishLog
         logEditText.isEnabled = true
 
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        val matchingUQAs = dbHelper.getUserQuestsByStatusAndDate("COMPLETED", today) +
-                dbHelper.getUserQuestsByStatusAndDate("ABORTED", today)
-        val uqa = matchingUQAs.find { it.questID == quest.id }
-
-        if (uqa != null) {
-            logEditText.setText(uqa.userLogs ?: "")
-            finishButton.isEnabled = !uqa.userLogs.isNullOrBlank()
-        } else {
-            finishButton.isEnabled = false
-        }
+        logEditText.setText(todaysSelectedUQA.userLogs ?: "")
+        finishButton.isEnabled = todaysSelectedUQA.userLogs.isNotBlank()
 
         // Step 5: TextWatcher to enable/disable Finish button
         // Must type smth first to click
@@ -79,15 +96,15 @@ class QuestLoggingActivity : AppCompatActivity() {
         finishButton.setOnClickListener {
             val logText = logEditText.text.toString().trim()
 
-            if (uqa != null) {
+            if (todaysSelectedUQA != null) {
                 val updatedUQA = UserQuestActivity(
-                    userQuestActID = uqa.userQuestActID,
-                    questStatus = uqa.questStatus,
+                    userQuestActID = todaysSelectedUQA.userQuestActID,
+                    questStatus = todaysSelectedUQA.questStatus,
                     userLogs = logText,
-                    dateCreated = uqa.dateCreated,
-                    questID = uqa.questID,
-                    quoteID = uqa.quoteID,
-                    userID = uqa.userID
+                    dateCreated = todaysSelectedUQA.dateCreated,
+                    questID = todaysSelectedUQA.questID,
+                    quoteID = todaysSelectedUQA.quoteID,
+                    userID = todaysSelectedUQA.userID
                 )
                 dbHelper.updateUserQuestActivity(updatedUQA)
                 Toast.makeText(this, "Log saved!", Toast.LENGTH_SHORT).show()
@@ -98,4 +115,22 @@ class QuestLoggingActivity : AppCompatActivity() {
             finish()
         }
     }
+
+    private fun saveLogIfNeeded() {
+        val newLog = viewBinding.addLog.text.toString().trim()
+        if (newLog.isNotBlank()) {
+            val updatedUQA = UserQuestActivity(
+                userQuestActID = uqa.userQuestActID,
+                questStatus = uqa.questStatus,
+                userLogs = newLog,
+                dateCreated = uqa.dateCreated,
+                questID = uqa.questID,
+                quoteID = uqa.quoteID,
+                userID = uqa.userID
+            )
+            dbHelper.updateUserQuestActivity(updatedUQA)
+            Toast.makeText(this, "Log saved!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }

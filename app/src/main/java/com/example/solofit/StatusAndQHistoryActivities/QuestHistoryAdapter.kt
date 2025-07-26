@@ -14,9 +14,9 @@ import com.example.solofit.utilities.Extras
 
 class QuestHistoryAdapter(private val allUQAList: ArrayList<UserQuestActivity>, private val dbHelper: MyDatabaseHelper): Adapter<QuestHistoryViewHolder>() {
 
+    private val reversedUQAList = allUQAList.asReversed()
+    private val allQuestList = reversedUQAList.mapNotNull { dbHelper.getQuestById(it.questID) }
 
-
-    private val allQuestList = allUQAList.mapNotNull { dbHelper.getQuestById(it.questID) }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestHistoryViewHolder {
 
@@ -29,7 +29,7 @@ class QuestHistoryAdapter(private val allUQAList: ArrayList<UserQuestActivity>, 
     }
 
     override fun onBindViewHolder(holder: QuestHistoryViewHolder, position: Int) {
-        val uqaItem = allUQAList[position]
+        val uqaItem = reversedUQAList[position]
         val questItem = allQuestList[position]
         holder.bindData(questItem)
 
@@ -80,8 +80,6 @@ class QuestHistoryAdapter(private val allUQAList: ArrayList<UserQuestActivity>, 
             val intent = Intent(holder.itemView.context, EditLogActivity::class.java).apply {
                 putExtra(Extras.EXTRA_QUEST_TITLE, questItem.questName)
                 putExtra(Extras.EXTRA_DATE_COMPLETED, uqaItem.dateCreated)
-                putExtra(Extras.EXTRA_USER_LOG, uqaItem.userLogs)
-                putExtra(Extras.EXTRA_QUEST_STATUS, uqaItem.questStatus)
                 putExtra(Extras.EXTRA_UQA_ID, uqaItem.userQuestActID)
             }
             holder.itemView.context.startActivity(intent)

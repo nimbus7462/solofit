@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.SettingsPageBinding
 import com.example.solofit.model.User
+import com.example.solofit.utilities.Extras
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var viewBinding: SettingsPageBinding
@@ -32,7 +33,7 @@ class SettingsActivity : AppCompatActivity() {
             viewBinding.imvSettingsPfp.setImageURI(imageUri)
 
             // Optionally: Save image URI to the database
-            val user = dbHelper.getUserById(1)
+            val user = dbHelper.getUserById(Extras.DEFAULT_USER_ID)
             user?.pfpUri = imageUri.toString()
             dbHelper.updateUser(user!!)
         }
@@ -43,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
 
         viewBinding = SettingsPageBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
-        currentUser = dbHelper.getUserById(1)!!
+        currentUser = dbHelper.getUserById(Extras.DEFAULT_USER_ID)!!
         viewBinding.edtSettingsIgn.setText(currentUser?.username ?: "Player")
         viewBinding.imvSettingsPfp.setImageURI(currentUser.pfpUri?.let { Uri.parse(it) })
 
@@ -64,10 +65,9 @@ class SettingsActivity : AppCompatActivity() {
             viewBinding.btnEditIgn.visibility = View.VISIBLE
             viewBinding.lloHiddenRow.visibility = View.GONE
             val newIgn = viewBinding.edtSettingsIgn.text
-            currentUser // Default, using 1 for now since app only has 1 user
             currentUser.username = newIgn.toString()
             Log.d("USER_LOG", "Updated user: $currentUser")
-            dbHelper.updateUser(currentUser!!)
+            dbHelper.updateUser(currentUser)
         }
 
         viewBinding.btnChangePfp.setOnClickListener {

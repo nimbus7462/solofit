@@ -8,6 +8,7 @@ import com.example.solofit.databinding.QuestBoardActivityBinding
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.model.Quest
 import com.example.solofit.model.UserQuestActivity
+import com.example.solofit.utilities.Extras
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,7 +17,7 @@ class QuestBoardActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var questList: ArrayList<Quest>
     private lateinit var viewBinding: QuestBoardActivityBinding
-
+    val dbHelper = MyDatabaseHelper.getInstance(this)!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = QuestBoardActivityBinding.inflate(layoutInflater)
@@ -33,14 +34,13 @@ class QuestBoardActivity : AppCompatActivity() {
     }
 
     private fun loadTodayCreatedQuests() {
-        val dbHelper = MyDatabaseHelper.getInstance(this)!!
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
         // Cancel previous day's uncompleted quests
         dbHelper.autoCancelOldUnfinishedQuests(today)
 
         // Check if today's CREATED quests already exist
-        val existingCreatedQuests = dbHelper.getUserQuestsByStatusAndDate("CREATED", today)
+        val existingCreatedQuests = dbHelper.getUserQuestsByStatusDateAndUserID("CREATED", today, Extras.DEFAULT_USER_ID)
 
         if (existingCreatedQuests.isEmpty()) {
             val randomQuests = dbHelper.getRandomQuests(5)
@@ -51,17 +51,17 @@ class QuestBoardActivity : AppCompatActivity() {
                     dateCreated = today,
                     questID = quest.id,
                     quoteID = 0, // placeholder, can be updated after completion
-                    userID = 1 // replace if dynamic user handling is added
+                    userID = Extras.DEFAULT_USER_ID // replace if dynamic user handling is added
                 )
                 dbHelper.insertUserQuestActivity(uqa)
             }
         }
 
         // Fetch the newly created (or already existing) quests for today
-        val todaysUQAs = dbHelper.getUserQuestsByStatusAndDate("CREATED", today)
+        val todaysUQAs = dbHelper.getUserQuestsByStatusDateAndUserID("CREATED", today, Extras.DEFAULT_USER_ID)
         val fullQuestDetails = todaysUQAs.mapNotNull { dbHelper.getQuestById(it.questID) }
 
         questList = ArrayList(fullQuestDetails)
-        recyclerView.adapter = QuestBoardAdapter(questList)
+        recyclerView.adapter = QuestBoardAdapter(todaysUQAs, dbHelper)
     }
 }

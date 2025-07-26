@@ -14,7 +14,7 @@ object UserStreakManager {
         val db = MyDatabaseHelper.getInstance(context)!!
         val today = LocalDate.now()
         val todayStr = today.format(DateTimeFormatter.ISO_DATE)
-        val completedToday = db.getUserQuestsByStatusAndDate("COMPLETED", todayStr)
+        val completedToday = db.getUserQuestsByStatusDateAndUserID("COMPLETED", todayStr, Extras.DEFAULT_USER_ID)
 
         val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val lastStreakDateStr = prefs.getString("last_streak_date", null)

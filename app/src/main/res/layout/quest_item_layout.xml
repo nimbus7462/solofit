@@ -55,7 +55,7 @@
             android:background="@android:color/transparent"
             android:contentDescription="@string/log_icon"
             android:scaleType="fitCenter"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:srcCompat="@android:color/transparent" />
 
     </LinearLayout>

@@ -65,13 +65,14 @@
             android:ems="10"
             android:fontFamily="@font/play"
             android:gravity="start|top"
-            android:hint="hint"
+            android:hint="@string/hint_inputlog"
             android:inputType="textMultiLine"
             android:padding="20dp"
             android:shadowColor="@color/cyan"
 
             android:shadowRadius="10"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textColorHint="#D7D7D7" />
 
         <TextView
             android:id="@+id/txvInitLoggingQuestStatus"
