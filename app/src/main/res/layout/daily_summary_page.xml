@@ -391,68 +391,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/thirdrow_summ"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/txvSummExp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/schibsted_grotesk"
-                            android:paddingStart="5dp"
-                            android:paddingEnd="5dp"
-                            android:shadowColor="@color/cyan"
-                            android:shadowRadius="10"
-                            android:text="@string/exp"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
-                            android:textStyle="italic" />
-
-                    </LinearLayout>
-
-                    <ProgressBar
-                        android:id="@+id/progBarSummLevel"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_outer_progbar"
-                        android:max="150"
-                        android:paddingStart="5dp"
-                        android:paddingTop="2dp"
-                        android:paddingEnd="5dp"
-                        android:progress="67"
-                        android:progressTint="@color/white"
-                        android:progressTintMode="add" />
-
-                    <TextView
-                        android:id="@+id/txvSummExpValues"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/schibsted_grotesk"
-                        android:gravity="end"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
-                        android:shadowColor="@color/cyan"
-                        android:shadowRadius="10"
-                        android:text="67 / 150"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="italic" />
-
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/fourthrow_summ"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

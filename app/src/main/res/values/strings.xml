@@ -62,7 +62,8 @@
     <string name="change_pfp">Change PFP</string>
     <string name="change_ign">Change IGN</string>
     <string name="back">Back</string>
-    <string name="hint_changeIgn">Input New IGN Here</string>
+    <string name="hint_changeIgn">Input IGN Here</string>
+    <string name="hint_inputlog">Input Personal Log Here</string>
     <string-array name="quest_difficulties">
         <item />
         <item>Easy</item>

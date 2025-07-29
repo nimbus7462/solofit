@@ -76,6 +76,7 @@
                             android:layout_height="70dp"
                             android:layout_marginBottom="5dp"
                             android:contentDescription="@string/profile_pic"
+                            android:scaleType="centerCrop"
                             app:srcCompat="@drawable/pfp" />
 
                         <TextView

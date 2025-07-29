@@ -1,6 +1,7 @@
 package com.example.solofit.QuestboardActivities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestInfoBinding
 import com.example.solofit.model.Quest
+import com.example.solofit.model.UserQuestActivity
 import com.example.solofit.utilities.Extras
 
 class QuestInfoActivity : AppCompatActivity() {
@@ -18,14 +20,21 @@ class QuestInfoActivity : AppCompatActivity() {
         val viewBinding: QuestInfoBinding = QuestInfoBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        val questId = intent.getIntExtra(Extras.QUEST_ID_KEY, -1)
-        if (questId == -1) {
+        val todaysSelectedUQA = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+                intent.getParcelableExtra(Extras.EXTRA_UQA, UserQuestActivity::class.java)
+            else ->
+                @Suppress("DEPRECATION")
+                intent.getParcelableExtra(Extras.EXTRA_UQA)
+        } ?: UserQuestActivity()
+
+        if (todaysSelectedUQA.questID == -1) {
             finish() // invalid id, exit early
             return
         }
 
         val dbHelper = MyDatabaseHelper.getInstance(this)!!
-        val quest: Quest = dbHelper.getQuestById(questId) ?: run {
+        val quest: Quest = dbHelper.getQuestById(todaysSelectedUQA.questID) ?: run {
             finish() // quest not found, exit early
             return
         }
@@ -68,7 +77,7 @@ class QuestInfoActivity : AppCompatActivity() {
         viewBinding.btnAbortQuest.setOnClickListener {
             val intentAbortQuest = Intent(applicationContext, QuestAbortCompleteActivity::class.java).apply {
                 putExtra(Extras.EXTRA_QUEST_STATUS, Extras.STATUS_ABORTED)
-                putExtra(Extras.QUEST_ID_KEY, quest.id)
+                putExtra(Extras.EXTRA_UQA, todaysSelectedUQA)
             }
             startActivity(intentAbortQuest)
             finish()
@@ -78,7 +87,7 @@ class QuestInfoActivity : AppCompatActivity() {
         viewBinding.btnCompleteQuest.setOnClickListener {
             val intentCompletedQuest = Intent(applicationContext, QuestAbortCompleteActivity::class.java).apply {
                 putExtra(Extras.EXTRA_QUEST_STATUS, Extras.STATUS_COMPLETED)
-                putExtra(Extras.QUEST_ID_KEY, quest.id)
+                putExtra(Extras.EXTRA_UQA, todaysSelectedUQA)
             }
             startActivity(intentCompletedQuest)
             finish()

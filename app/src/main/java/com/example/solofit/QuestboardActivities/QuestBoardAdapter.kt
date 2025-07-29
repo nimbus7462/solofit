@@ -5,12 +5,14 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
+import com.example.solofit.model.UserQuestActivity
 import com.example.solofit.utilities.Extras
 
-class QuestBoardAdapter(private val questList: ArrayList<Quest>) : Adapter<QuestBoardViewHolder>() {
-
+class QuestBoardAdapter(private val todaysUQAList: List<UserQuestActivity>,  private val dbHelper: MyDatabaseHelper) : Adapter<QuestBoardViewHolder>() {
+    private val todaysQuestList = todaysUQAList.mapNotNull { dbHelper.getQuestById(it.questID) }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestBoardViewHolder {
         val itemViewBinding = QuestItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -21,7 +23,8 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>) : Adapter<Quest
     }
 
     override fun onBindViewHolder(holder: QuestBoardViewHolder, position: Int) {
-        val questItem = questList[position]
+        val uqaItem = todaysUQAList[position]
+        val questItem = todaysQuestList[position]
         holder.bindData(questItem)
 
         // Difficulty-based styling
@@ -54,12 +57,12 @@ class QuestBoardAdapter(private val questList: ArrayList<Quest>) : Adapter<Quest
         // Pass only the quest ID
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, QuestInfoActivity::class.java).apply {
-                putExtra(Extras.QUEST_ID_KEY, questItem.id)
+                putExtra(Extras.EXTRA_UQA, uqaItem)
             }
             holder.itemView.context.startActivity(intent)
         }
     }
 
-    override fun getItemCount(): Int = questList.size
+    override fun getItemCount(): Int = todaysQuestList.size
 }
 

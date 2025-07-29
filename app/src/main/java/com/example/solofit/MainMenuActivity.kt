@@ -11,6 +11,8 @@ import com.example.solofit.QuestboardActivities.QuestBoardActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.MainMenuBinding
 import com.example.solofit.model.User
+import com.example.solofit.utilities.Extras
+import androidx.core.net.toUri
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -59,12 +61,12 @@ class MainMenuActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
        // dbHelper.logAllUsers()
-        val currentUser = dbHelper.getUserById(1)!! // Default User
-        val displayName = if (currentUser?.username.isNullOrBlank()) "Player" else currentUser?.username
+        val currentUser = dbHelper.getUserById(Extras.DEFAULT_USER_ID)!! // Default User
+        val displayName = if (currentUser.username.isNullOrBlank()) "Player" else currentUser.username
         binding.txvIgn.text = displayName
 
-        currentUser?.pfpUri?.let {
-            binding.imvPfp.setImageURI(Uri.parse(it))
+        currentUser.pfpUri?.let {
+            binding.imvPfp.setImageURI(it.toUri())
         }
 
     }
