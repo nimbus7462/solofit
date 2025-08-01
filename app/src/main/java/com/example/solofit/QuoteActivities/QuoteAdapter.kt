@@ -1,14 +1,17 @@
 package com.example.solofit.QuoteActivities
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.solofit.QuestboardActivities.QuestBoardViewHolder
+import com.example.solofit.QuestboardActivities.QuestInfoActivity
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.databinding.SavedQuotesItemLayoutBinding
 import com.example.solofit.model.Quote
+import com.example.solofit.utilities.Extras
 
 class QuoteAdapter (private val quotelist: ArrayList<Quote>, private val dbHelper: MyDatabaseHelper): Adapter<QuoteViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuoteViewHolder {
@@ -26,7 +29,13 @@ class QuoteAdapter (private val quotelist: ArrayList<Quote>, private val dbHelpe
         holder.setQuoteBackground(R.drawable.bg_quest_item_normal)
         holder.setQuotePreviewTextShadow(R.color.cyan)
         holder.setQuoteAuthorTextShadow(R.color.cyan)
-
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, ViewSavedQuote::class.java).apply {
+                putExtra(Extras.QUOTE_ID, quoteItemList.quoteID) // assuming `id` is the field
+            }
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int = quotelist.size

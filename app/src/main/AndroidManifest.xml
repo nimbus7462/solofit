@@ -101,7 +101,10 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.Solofit">
         </activity>
-
+        <activity
+            android:name=".QuoteActivities.ViewSavedQuote"
+            android:exported="true"
+            android:theme="@style/Theme.Solofit" />
         <activity
             android:name=".StartingPageActivity"
             android:exported="true"

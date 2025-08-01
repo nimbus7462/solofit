@@ -767,5 +767,29 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
         return quotes
     }
+    fun getQuoteById(id: Int): Quote? {
+        val database = this.readableDatabase
+        val cursor = database.query(
+            DbReferences.TABLE_QUOTE,
+            null,
+            "${DbReferences.COLUMN_QUOTE_ID} = ?",
+            arrayOf(id.toString()),
+            null,
+            null,
+            null
+        )
+        var quote: Quote? = null
+        if (cursor.moveToFirst()) {
+            quote = Quote(
+                quoteID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_ID)),
+                quoteText = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_TEXT)),
+                quoteAuthor = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_AUTHOR)),
+                isSaved = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_IS_SAVED)) == 1
+            )
+        }
+        cursor.close()
+        database.close()
+        return quote
+    }
 }
 
