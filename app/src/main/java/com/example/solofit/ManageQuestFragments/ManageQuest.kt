@@ -25,7 +25,7 @@ class ManageQuest : Fragment() {
     private lateinit var dbHelper: MyDatabaseHelper
 
     // Store the quest pending deletion (to know which quest to delete when confirmed)
-    private var questPendingDelete: Quest? = null
+    private var questPendingDelete: git addQuest? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
