@@ -95,8 +95,6 @@ class QuestLoggingActivity : AppCompatActivity() {
         // - if the finish logging button is clicked, save the log text to the userLogs UserQuestActivity attribute
         finishButton.setOnClickListener {
             val logText = logEditText.text.toString().trim()
-
-            if (todaysSelectedUQA != null) {
                 val updatedUQA = UserQuestActivity(
                     userQuestActID = todaysSelectedUQA.userQuestActID,
                     questStatus = todaysSelectedUQA.questStatus,
@@ -108,9 +106,7 @@ class QuestLoggingActivity : AppCompatActivity() {
                 )
                 dbHelper.updateUserQuestActivity(updatedUQA)
                 Toast.makeText(this, "Log saved!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "No matching quest found today.", Toast.LENGTH_SHORT).show()
-            }
+
 
             finish()
         }

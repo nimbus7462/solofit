@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.DailySummaryPageBinding
 import com.example.solofit.utilities.Extras
-import com.example.solofit.utilities.UserStreakManager
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -65,7 +64,7 @@ class DailySummaryActivity: AppCompatActivity() {
             statTotals[quest.questType] = statTotals.getOrDefault(quest.questType, 0) + quest.statReward
         }
 
-        val streakCount = UserStreakManager.getStreakCount(this)
+        val streakCount = user!!.streakCount
 
         viewBinding.txvAbortedQuestsVal.text = abortedUQAs.count().toString()
         viewBinding.txvCompletedQuestsVal.text = completedUQAs.count().toString()
@@ -77,7 +76,7 @@ class DailySummaryActivity: AppCompatActivity() {
         val endGain = statTotals["Endurance"] ?: 0
         val vitGain = statTotals["Vitality"] ?: 0
 
-        viewBinding.txvSummStrValHere.text = user!!.strengthPts.toString()
+        viewBinding.txvSummStrValHere.text = user.strengthPts.toString()
         viewBinding.txvSummEndValHere.text = user.endurancePts.toString()
         viewBinding.txvSummVitValHere.text = user.vitalityPts.toString()
         viewBinding.txvSummGainedStr.text = if (strGain != 0) "( +$strGain From Today )" else ""
@@ -97,7 +96,7 @@ class DailySummaryActivity: AppCompatActivity() {
         viewBinding.txvStreakVal.text = streakMultiplier.toString()
         viewBinding.txvPenaltyVal.text = totalExpPenalty.toString()
         viewBinding.txvFinalExpValue.text = "$totalNetExpGained EXP"
-        viewBinding.txvDateToday.text = "$today :"
+        viewBinding.txvDateToday.text = "$today"
 
 
         viewBinding.btnQuestSummary.setOnClickListener {

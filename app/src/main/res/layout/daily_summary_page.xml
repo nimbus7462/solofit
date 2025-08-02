@@ -55,7 +55,7 @@
                     android:id="@+id/firstrow_summ"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="10dp"
                     android:baselineAligned="false"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -80,7 +80,7 @@
                                 android:shadowRadius="10"
                                 android:text="@string/completed_quests"
                                 android:textColor="@color/white"
-                                android:textSize="20sp" />
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/txvCompletedQuestsVal"
@@ -91,7 +91,7 @@
                                 android:shadowRadius="10"
                                 android:text="10"
                                 android:textColor="@color/white"
-                                android:textSize="20sp" />
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -109,7 +109,7 @@
                                 android:shadowRadius="10"
                                 android:text="@string/aborted_quests"
                                 android:textColor="@color/white"
-                                android:textSize="20sp" />
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:id="@+id/txvAbortedQuestsVal"
@@ -121,7 +121,7 @@
                                 android:shadowRadius="10"
                                 android:text="2"
                                 android:textColor="@color/white"
-                                android:textSize="20sp" />
+                                android:textSize="18sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -163,7 +163,7 @@
                             android:shadowRadius="10"
                             android:text="5"
                             android:textColor="@color/white"
-                            android:textSize="28sp" />
+                            android:textSize="26sp" />
 
                         <TextView
                             android:id="@+id/txvCurrDaysSumm"
@@ -206,7 +206,7 @@
                             android:shadowRadius="10"
                             android:text="30"
                             android:textColor="@color/white"
-                            android:textSize="28sp" />
+                            android:textSize="26sp" />
 
                     </LinearLayout>
 
@@ -232,7 +232,7 @@
                             android:id="@+id/txvExpGained"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_marginEnd="5dp"
                             android:fontFamily="@font/schibsted_grotesk"
                             android:gravity="center"
                             android:shadowColor="@color/cyan"
@@ -245,6 +245,7 @@
                             android:id="@+id/txvDateToday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/schibsted_grotesk"
                             android:gravity="center"
@@ -388,6 +389,64 @@
 
                     </LinearLayout>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txvGainedExpVal2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/schibsted_grotesk"
+                        android:gravity="center"
+                        android:shadowColor="@color/bright_green"
+                        android:shadowRadius="10"
+                        android:text="@string/total_exp_gained"
+                        android:textColor="@color/bright_green"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txvStreakVal2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/schibsted_grotesk"
+                        android:gravity="center"
+                        android:shadowColor="@color/cyan"
+                        android:shadowRadius="10"
+                        android:text="@string/streak_multiplier"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txvPenaltyVal2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/schibsted_grotesk"
+                        android:gravity="center"
+                        android:shadowColor="@color/bright_red"
+                        android:shadowRadius="10"
+                        android:text="@string/total_exp_penalty"
+                        android:textColor="@color/bright_red"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txvFinalExpValue2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/schibsted_grotesk"
+                        android:gravity="center"
+                        android:shadowColor="#FFC107"
+                        android:shadowRadius="10"
+                        android:text="@string/total_net_exp"
+                        android:textColor="@color/gold"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout

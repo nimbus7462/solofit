@@ -13,6 +13,7 @@ import com.example.solofit.databinding.MainMenuBinding
 import com.example.solofit.model.User
 import com.example.solofit.utilities.Extras
 import androidx.core.net.toUri
+import com.example.solofit.SettingsActivities.SettingsActivity
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -64,7 +65,7 @@ class MainMenuActivity : AppCompatActivity() {
         val currentUser = dbHelper.getUserById(Extras.DEFAULT_USER_ID)!! // Default User
         val displayName = if (currentUser.username.isNullOrBlank()) "Player" else currentUser.username
         binding.txvIgn.text = displayName
-
+        binding.txvUserTitle.text = currentUser.selectedTitle
         currentUser.pfpUri?.let {
             binding.imvPfp.setImageURI(it.toUri())
         }
