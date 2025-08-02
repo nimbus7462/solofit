@@ -167,8 +167,19 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             Quest("3 x 10 Pull-ups", "Do 3 sets of 10 pull-ups for upper body power.", "Strength", "Back, Biceps", "Hard", 80, 1),
             Quest("60s Plank", "Hold a plank for 60 seconds for core strength.", "Vitality", "Core, Balance", "Normal", 60, 2),
             Quest("10km Jog", "Jog 10 kilometers to build endurance and stamina.", "Endurance", "Cardio, Stamina", "Hard", 120, 3),
-            Quest("3 x 30 Jumping Jacks", "Do 3 sets of 30 jumping jacks to warm up and activate full body.", "Endurance", "Warm-up, Cardio", "Easy", 30, 1)
+            Quest("3 x 30 Jumping Jacks", "Do 3 sets of 30 jumping jacks to warm up and activate full body.", "Endurance", "Warm-up, Cardio", "Easy", 30, 1),
+            Quest("5 Min Wall Sit", "Hold a wall sit position for 5 minutes to improve lower body endurance.", "Vitality", "Legs, Core", "Hard", 90, 2),
+            Quest("3 x 20 Bodyweight Squats", "Perform 3 sets of 20 bodyweight squats for leg strength.", "Strength", "Legs, Glutes", "Normal", 60, 1),
+            Quest("5 x 1 Min Jump Rope", "Jump rope for 1 minute, 5 rounds, to improve cardio and coordination.", "Endurance", "Cardio, Footwork", "Normal", 45, 2),
+            Quest("3 x 20 Mountain Climbers", "Do 3 sets of 20 mountain climbers to work your core and agility.", "Vitality", "Core, Full Body", "Normal", 55, 1),
+            Quest("1 Min High Knees", "Do high knees for 1 minute to elevate heart rate and warm up.", "Endurance", "Legs, Cardio", "Easy", 20, 1),
+            Quest("3 x 15 Dips", "Use parallel bars or a bench to perform dips for triceps and chest.", "Strength", "Triceps, Chest", "Normal", 60, 1),
+            Quest("10 Min Yoga Flow", "Perform a 10-minute yoga session to improve flexibility and balance.", "Vitality", "Flexibility, Balance", "Easy", 40, 1),
+            Quest("3 x 12 Lunges", "Alternate legs for 3 sets of 12 lunges to strengthen lower body.", "Strength", "Legs, Glutes", "Normal", 55, 1),
+            Quest("3 x 10 Burpees", "Do 3 sets of 10 burpees for full body explosive movement.", "Endurance", "Full Body, Cardio", "Hard", 90, 2),
+            Quest("15 Min Walk", "Take a 15-minute brisk walk to stay active and refreshed.", "Endurance", "Cardio, Light Activity", "Easy", 15, 1)
         )
+
 
         for (q in quests) {
             val values = ContentValues().apply {

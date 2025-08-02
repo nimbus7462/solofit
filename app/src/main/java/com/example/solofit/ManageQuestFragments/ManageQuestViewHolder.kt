@@ -7,6 +7,7 @@ import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
 
 class ManageQuestViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+
     fun bindData(quest: Quest) {
         binding.txvQuestName.text = quest.questName
     }
@@ -23,7 +24,6 @@ class ManageQuestViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.
         binding.imbQuestAction.setOnClickListener { onClick() }
     }
 
-
     fun setActionBtnVisibility(isVisible: Boolean) {
         binding.imbQuestAction.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
     }
@@ -37,7 +37,7 @@ class ManageQuestViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.
             10f,
             0f,
             0f,
-            ContextCompat.getColor(binding.root.context, colorResId))
+            ContextCompat.getColor(binding.root.context, colorResId)
+        )
     }
-
 }
