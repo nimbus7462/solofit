@@ -103,6 +103,7 @@ class DailySummaryActivity: AppCompatActivity() {
 
     }
 
+    /*
     private fun showDailyQuotePopUp() {
         val popupBinding = PopupDailyQuoteBinding.inflate(layoutInflater)
         val rootView = findViewById<ViewGroup>(android.R.id.content)
@@ -113,10 +114,50 @@ class DailySummaryActivity: AppCompatActivity() {
             isSaved = !isSaved
             val updatedIcon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
             popupBinding.imbSaveQuote.setImageResource(updatedIcon)
-            //TODO: Add quote logic here
+            // TODO: Add quote logic here
+            // chuck a random quote, must also have the save and unsave feature
         }
         popupBinding.btnGoBack.setOnClickListener {
             rootView.removeView(popupBinding.root)
         }
     }
+     */
+    private fun showDailyQuotePopUp() {
+        val popupBinding = PopupDailyQuoteBinding.inflate(layoutInflater)
+        val rootView = findViewById<ViewGroup>(android.R.id.content)
+        rootView.addView(popupBinding.root)
+
+        val quote = dbHelper.getRandomQuote()
+        var isSaved = quote?.isSaved ?: false
+
+        if (quote != null) {
+            popupBinding.tvQuoteContent.text = "“${quote.quoteText}”"
+            popupBinding.tvQuoteAuthor.text = "- ${quote.quoteAuthor}"
+            popupBinding.imbSaveQuote.visibility = View.VISIBLE
+            popupBinding.imbSaveQuote.setImageResource(
+                if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
+            )
+        } else {
+            popupBinding.tvQuoteContent.text = "No available quotes."
+            popupBinding.tvQuoteAuthor.text = ""
+            popupBinding.imbSaveQuote.visibility = View.GONE
+        }
+
+        popupBinding.txvQuoteDateToday.text = today
+
+        popupBinding.imbSaveQuote.setOnClickListener {
+            if (quote != null) {
+                isSaved = !isSaved
+                dbHelper.updateQuoteSaveStatus(quote.quoteID, isSaved)
+                popupBinding.imbSaveQuote.setImageResource(
+                    if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
+                )
+            }
+        }
+
+        popupBinding.btnGoBack.setOnClickListener {
+            rootView.removeView(popupBinding.root)
+        }
+    }
+
 }

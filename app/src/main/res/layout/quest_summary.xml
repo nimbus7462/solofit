@@ -6,6 +6,7 @@
     android:background="@drawable/bg_main">
 
     <LinearLayout
+        android:id="@+id/lllquest_summary"
         android:layout_width="350dp"
         android:layout_height="650dp"
         android:background="@drawable/bg_main_frame"
@@ -48,10 +49,10 @@
                 android:layout_height="45dp"
                 android:layout_gravity="start"
                 android:background="@drawable/bg_sort"
-                android:popupBackground="@drawable/bg_inner_panel"
-                android:textColor="@android:color/transparent"
                 android:padding="8dp"
-                android:spinnerMode="dropdown" />
+                android:popupBackground="@drawable/bg_inner_panel"
+                android:spinnerMode="dropdown"
+                android:textColor="@android:color/transparent" />
 
             <!-- Filter Spinner (Right-Aligned) -->
             <Spinner
@@ -60,10 +61,10 @@
                 android:layout_height="45dp"
                 android:layout_gravity="end"
                 android:background="@drawable/bg_filter"
-                android:popupBackground="@drawable/bg_inner_panel"
-                android:textColor="@android:color/transparent"
                 android:padding="8dp"
-                android:spinnerMode="dropdown" />
+                android:popupBackground="@drawable/bg_inner_panel"
+                android:spinnerMode="dropdown"
+                android:textColor="@android:color/transparent" />
 
             <ImageButton
                 android:id="@+id/imbLegend"

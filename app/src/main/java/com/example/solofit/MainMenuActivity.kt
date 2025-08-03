@@ -20,12 +20,15 @@ import com.example.solofit.utilities.getTitleColorCategory
 class MainMenuActivity : AppCompatActivity() {
 
     private lateinit var binding: MainMenuBinding
-    val dbHelper = MyDatabaseHelper.getInstance(this)!!
+    private lateinit var dbHelper: MyDatabaseHelper
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = MainMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        dbHelper = MyDatabaseHelper.getInstance(this)!!
+
 
         binding.btnManageQuests.setOnClickListener {
             val intent = Intent(this, NavHostManageQuest::class.java)
