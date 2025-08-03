@@ -1,49 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bg_main">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="350dp"
         android:layout_height="650dp"
+        android:background="@drawable/bg_sidepage_frame"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_sidepage_frame"
-            android:orientation="vertical"
-            android:paddingBottom="16dp">
+        <TextView
+            android:id="@+id/txvViewSavedQuotesTitle"
+            android:layout_width="315dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_page_title"
+            android:backgroundTintMode="add"
+            android:fontFamily="@font/schibsted_grotesk"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="@string/saved_quotes"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/white"
+            android:textSize="34sp" />
 
-            <TextView
-                android:id="@+id/txvViewSavedQuotesTitle"
-                android:layout_width="315dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/bg_page_title"
-                android:backgroundTintMode="add"
-                android:fontFamily="@font/schibsted_grotesk"
-                android:gravity="center"
-                android:paddingBottom="5dp"
-                android:shadowColor="@color/cyan"
-                android:shadowRadius="10"
-                android:text="@string/saved_quotes"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textColor="@color/white"
-                android:textSize="34sp" />
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="315dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:background="@drawable/bg_quote"
                 android:orientation="vertical"
                 android:padding="20dp">
@@ -65,7 +66,7 @@
                     android:shadowRadius="10"
                     android:text="What doesn't kill you makes you stronger"
                     android:textColor="@color/white"
-                    android:textSize="30sp"
+                    android:textSize="26sp"
                     android:textStyle="italic" />
 
                 <TextView
@@ -79,11 +80,12 @@
                     android:shadowRadius="10"
                     android:text="-Friedrich Nietzsche"
                     android:textColor="@color/white"
-                    android:textSize="26sp" />
-            </LinearLayout>
+                    android:textSize="24sp" />
 
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
 
     <View
         android:id="@+id/viewBackgroundBlocker"
@@ -95,6 +97,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cloConfirmation"
         android:layout_width="0dp"
@@ -131,53 +134,47 @@
                 android:shadowRadius="10"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textColor="@color/white"
-                android:textSize="30sp"
-                tools:layout_editor_absoluteX="43dp"
-                tools:layout_editor_absoluteY="80dp" />
+                android:textSize="30sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fillViewport="true">
 
-                <Button
-                    android:id="@+id/btnGoBack"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="40dp"
-                    android:background="@drawable/bg_return_btn"
-                    android:contentDescription="@string/go_back_btn"
-                    android:fontFamily="@font/play"
-                    android:paddingStart="30dp"
-                    android:paddingEnd="30dp"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@+id/tvConfirmation"
-                    tools:layout_editor_absoluteX="24dp" />
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnConfirm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:background="@drawable/bg_complete_btn"
-                    android:contentDescription="@string/confirm_btn"
-                    android:fontFamily="@font/play"
-                    android:paddingStart="30dp"
-                    android:paddingEnd="30dp"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@+id/tvConfirmation"
-                    tools:ignore="UnknownId"
-                    tools:layout_editor_absoluteX="261dp" />
+                    <Button
+                        android:id="@+id/btnGoBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="40dp"
+                        android:background="@drawable/bg_return_btn"
+                        android:contentDescription="@string/go_back_btn"
+                        android:fontFamily="@font/play"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
 
-            </LinearLayout>
-
+                    <Button
+                        android:id="@+id/btnConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:background="@drawable/bg_complete_btn"
+                        android:contentDescription="@string/confirm_btn"
+                        android:fontFamily="@font/play"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
