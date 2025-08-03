@@ -69,7 +69,7 @@ class ManageQuestAdapter(
             }
             "Normal" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_normal)
-                holder.setQuestNameTextShadow(R.color.cyan)
+                holder.setQuestNameTextShadow(R.color.orange)
             }
             "Hard" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_hard)

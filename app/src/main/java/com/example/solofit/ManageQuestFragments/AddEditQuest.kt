@@ -134,6 +134,7 @@ class AddEditQuest : Fragment() {
         binding.btnCloseMsg.setOnClickListener {
             binding.cloErrorMessages.visibility = View.INVISIBLE
             binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+            binding.lloMainLayout.visibility = View.VISIBLE
         }
 
 
@@ -172,6 +173,7 @@ class AddEditQuest : Fragment() {
         binding.btnGoBack.setOnClickListener {
             binding.cloConfirmation.visibility = View.INVISIBLE
             binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+            binding.lloMainLayout.visibility = View.VISIBLE
         }
         binding.spnDifficulty.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
@@ -276,10 +278,12 @@ class AddEditQuest : Fragment() {
 
         binding.cloErrorMessages.visibility = View.VISIBLE
         binding.viewBackgroundBlocker.visibility = View.VISIBLE
+        binding.lloMainLayout.visibility = View.INVISIBLE
     }
 
     private fun handleConfirmationMsg() {
         binding.viewBackgroundBlocker.visibility = View.VISIBLE
         binding.cloConfirmation.visibility = View.VISIBLE
+        binding.lloMainLayout.visibility = View.INVISIBLE
     }
 }

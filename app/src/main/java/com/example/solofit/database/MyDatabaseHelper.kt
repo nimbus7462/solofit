@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.solofit.database.MyDatabaseHelper.DbReferences.COLUMN_DATE_CREATED
+import com.example.solofit.database.MyDatabaseHelper.DbReferences.COLUMN_QUEST_STATUS
 import com.example.solofit.model.Quest
 import com.example.solofit.model.Quote
 import com.example.solofit.model.User
@@ -80,10 +82,13 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         const val COLUMN_UQA_ID = "user_quest_act_id"
         const val COLUMN_QUEST_STATUS = "quest_status"
         const val COLUMN_USER_LOGS = "user_logs"
-        const val COLUMN_DATE_CREATED = "date_created"       // updated
+        const val COLUMN_DATE_CREATED = "date_created"
         const val COLUMN_UQA_QUEST_ID = "quest_id"
         const val COLUMN_UQA_QUOTE_ID = "quote_id"
         const val COLUMN_UQA_USER_ID = "user_id"
+
+        // Status Constants
+        const val STATUS_CREATED = "CREATED"
 
         // --- SQL Create Table Statements ---
         const val CREATE_TABLE_QUEST = """
@@ -879,6 +884,28 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         cursor.close()
         database.close()
         return quote
+    }
+    fun getTodayCreatedQuestIds(userId: Int): List<Int> {
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val questIds = mutableListOf<Int>()
+
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(
+            """
+        SELECT ${DbReferences.COLUMN_QUEST_ID} FROM ${DbReferences.TABLE_UQA}
+        WHERE $COLUMN_QUEST_STATUS = ? AND $COLUMN_DATE_CREATED = ? AND ${DbReferences.COLUMN_USER_ID} = ?
+        """.trimIndent(),
+            arrayOf(DbReferences.STATUS_CREATED, today, userId.toString())        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                val questId = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUEST_ID))
+                questIds.add(questId)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+
+        return questIds
     }
 }
 
