@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -80,10 +81,16 @@ class ManageQuest : Fragment() {
                 }
 
                 binding.btnConfirm.setOnClickListener {
-                    questPendingDelete?.let {
-                        dbHelper.deleteQuest(it.id)
-                        originalQuestList = dbHelper.getAllQuests()
-                        applySortAndFilter()
+                    // Only delete if there are more than 5 quests
+                    if (originalQuestList.size > 5) {
+                        questPendingDelete?.let {
+                            dbHelper.deleteQuest(it.id)
+                            originalQuestList = dbHelper.getAllQuests()
+                            applySortAndFilter()
+                        }
+                    } else {
+                        // Optional: Show a message or disable the confirmation UI
+                        Toast.makeText(requireContext(), "At least 5 quests must remain.", Toast.LENGTH_SHORT).show()
                     }
 
 
