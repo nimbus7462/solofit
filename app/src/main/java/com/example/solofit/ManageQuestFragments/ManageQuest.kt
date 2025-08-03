@@ -15,6 +15,14 @@ import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.FragmentManageQuestBinding
 import com.example.solofit.databinding.PopupLegendBinding
 import com.example.solofit.model.Quest
+import com.example.solofit.model.UserQuestActivity
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
+import android.util.Log
+import com.example.solofit.utilities.Extras
 
 
 class ManageQuest : Fragment() {
@@ -82,22 +90,30 @@ class ManageQuest : Fragment() {
 
                 binding.btnConfirm.setOnClickListener {
                     // Only delete if there are more than 5 quests
+
+                    val createdTodayQuestIds = dbHelper.getTodayCreatedQuestIds(Extras.DEFAULT_USER_ID)
+
                     if (originalQuestList.size > 5) {
-                        questPendingDelete?.let {
-                            dbHelper.deleteQuest(it.id)
-                            originalQuestList = dbHelper.getAllQuests()
-                            applySortAndFilter()
+                        questPendingDelete?.let { quest ->
+                            if (quest.id in createdTodayQuestIds) {
+                                Toast.makeText(requireContext(), "You can't delete a quest created today.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                dbHelper.deleteQuest(quest.id)
+                                originalQuestList = dbHelper.getAllQuests()
+                                applySortAndFilter()
+                            }
                         }
                     } else {
-                        // Optional: Show a message or disable the confirmation UI
                         Toast.makeText(requireContext(), "At least 5 quests must remain.", Toast.LENGTH_SHORT).show()
                     }
-
 
                     binding.cloConfirmation.visibility = View.INVISIBLE
                     binding.viewBackgroundBlocker.visibility = View.INVISIBLE
                     questPendingDelete = null
                 }
+
+
+
             }
         )
 
