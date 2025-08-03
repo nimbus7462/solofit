@@ -5,10 +5,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.StatusPageBinding
 import com.example.solofit.model.User
 import androidx.core.net.toUri
+import com.example.solofit.R
 import com.example.solofit.SettingsActivities.SettingsActivity
 import com.example.solofit.utilities.Extras
 
@@ -48,7 +50,7 @@ class StatusActivity : AppCompatActivity() {
         android.util.Log.d("USER_TITLES", "Unlocked Titles (${unlockedTitles.size}): $unlockedTitles")
         viewBinding.txvLevelValue.text = user.level.toString()
         if (user.selectedTitle.isNullOrBlank()) {
-            viewBinding.txvUserTitle.text = "[ NONE ]"
+            viewBinding.txvUserTitle.text = "NONE"
         } else {
             viewBinding.txvUserTitle.text = user.selectedTitle
         }
