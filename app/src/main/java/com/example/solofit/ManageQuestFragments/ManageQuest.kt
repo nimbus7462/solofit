@@ -67,7 +67,7 @@ class ManageQuest : Fragment() {
             onDeleteClick = { quest ->
                 questPendingDelete = quest
 
-                binding.txvConfirmationMsg.text = "Are you sure you want to delete ${quest.questName}?"
+                binding.txvConfirmationMsg.text = "Are you sure you want to delete ${quest.questName}? All user records with this quest will be deleted as well."
                 binding.btnGoBack.text = NO
                 binding.btnConfirm.text = YES
                 binding.viewBackgroundBlocker.visibility = View.VISIBLE
@@ -81,7 +81,7 @@ class ManageQuest : Fragment() {
 
                 binding.btnConfirm.setOnClickListener {
                     questPendingDelete?.let {
-                        dbHelper.deleteQuest(it.id)
+                        dbHelper.deleteQuestAndMarkUQAs(it.id)
                         originalQuestList = dbHelper.getAllQuests()
                         applySortAndFilter()
                     }

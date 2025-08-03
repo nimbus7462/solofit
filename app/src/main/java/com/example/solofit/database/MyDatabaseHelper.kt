@@ -318,6 +318,19 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.close()
     }
 
+    fun deleteQuestAndMarkUQAs(questId: Int) {
+        val db = writableDatabase
+
+        // Mark all related UserQuestActivity entries as "DELETED"
+        val contentValues = ContentValues().apply {
+            put("quest_status", "DELETED")
+        }
+        db.update("user_quest_activity", contentValues, "quest_id = ?", arrayOf(questId.toString()))
+
+        // Now delete the quest itself
+        db.delete("quest_table", "quest_id = ?", arrayOf(questId.toString()))
+    }
+
     // helper function to get Quest ID
     fun getQuestById(id: Int): Quest? {
         val database = this.readableDatabase

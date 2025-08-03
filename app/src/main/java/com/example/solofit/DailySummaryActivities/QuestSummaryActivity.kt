@@ -39,7 +39,10 @@ class QuestSummaryActivity : AppCompatActivity() {
         } ?: arrayListOf()
 
         // Only show completed/cancelled quests, not fresh CREATED
-        fullUQAList = rawList.filterNot { it.questStatus.equals("CREATED", ignoreCase = true) }
+        fullUQAList = rawList.filterNot {
+            it.questStatus.equals("CREATED", ignoreCase = true) ||
+                    it.questStatus.equals("DELETED", ignoreCase = true)
+        }
 
         adapter = QuestSummaryAdapter(fullUQAList, dbHelper)
         recyclerView.adapter = adapter
