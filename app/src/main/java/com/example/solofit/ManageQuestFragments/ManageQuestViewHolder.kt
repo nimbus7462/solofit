@@ -40,4 +40,10 @@ class ManageQuestViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.
             ContextCompat.getColor(binding.root.context, colorResId)
         )
     }
+
+    fun setQuestNameTextColor(colorResId: Int) {
+        binding.txvQuestName.setTextColor(
+            ContextCompat.getColor(binding.root.context, colorResId)
+        )
+    }
 }
