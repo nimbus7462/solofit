@@ -22,6 +22,8 @@ import com.example.solofit.utilities.Extras
 import android.widget.PopupWindow
 import android.view.ViewGroup
 import com.example.solofit.databinding.PopupCongratsBinding
+import com.example.solofit.utilities.getColorForCategory
+import com.example.solofit.utilities.getTitleColorCategory
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var viewBinding: SettingsPageBinding
@@ -60,10 +62,14 @@ class SettingsActivity : AppCompatActivity() {
         viewBinding.edtSettingsIgn.gravity = Gravity.CENTER
         viewBinding.edtSettingsIgn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f)
         if (currentUser.selectedTitle.isNullOrBlank()) {
-            viewBinding.txvUserTitle.text = "[No Title Selected]"
+            viewBinding.txvUserTitle.text = "No Title Selected"
             viewBinding.txvUserTitle.setTextColor(ContextCompat.getColor(this, R.color.gray))
         } else {
             viewBinding.txvUserTitle.text = currentUser.selectedTitle
+            val category = getTitleColorCategory(currentUser.selectedTitle)
+            val color = this.getColorForCategory(category)
+            viewBinding.txvUserTitle.setTextColor(color)
+            viewBinding.txvUserTitle.setShadowLayer(10f, 0f, 0f, color)
         }
 
         viewBinding.btnEditIgn.setOnClickListener {
@@ -94,6 +100,9 @@ class SettingsActivity : AppCompatActivity() {
             showTitlePopup()
         }
 
+        if (intent.getBooleanExtra(Extras.SHOULD_OPEN_TITLE_POPUP, false)) {
+            showTitlePopup()
+        }
     }
     private fun enableIgnEditMode() {
         viewBinding.edtSettingsIgn.apply {
@@ -143,11 +152,15 @@ class SettingsActivity : AppCompatActivity() {
             if (selectedTitle != null) {
                 currentUser.selectedTitle = selectedTitle.toString()
                 dbHelper.updateUser(currentUser)
-                if (selectedTitle.isNullOrBlank()) {
-                    viewBinding.txvUserTitle.text = "[No Title Selected]"
+                if (currentUser.selectedTitle.isNullOrBlank()) {
+                    viewBinding.txvUserTitle.text = "No Title Selected"
                     viewBinding.txvUserTitle.setTextColor(ContextCompat.getColor(this, R.color.gray))
                 } else {
-                    viewBinding.txvUserTitle.text = selectedTitle
+                    viewBinding.txvUserTitle.text = currentUser.selectedTitle
+                    val category = getTitleColorCategory(currentUser.selectedTitle)
+                    val color = this.getColorForCategory(category)
+                    viewBinding.txvUserTitle.setTextColor(color)
+                    viewBinding.txvUserTitle.setShadowLayer(10f, 0f, 0f, color)
                 }
                 rootView.removeView(popupBinding.root)
             }

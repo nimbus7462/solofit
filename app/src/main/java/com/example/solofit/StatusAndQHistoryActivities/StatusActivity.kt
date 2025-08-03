@@ -9,6 +9,8 @@ import com.example.solofit.model.User
 import androidx.core.net.toUri
 import com.example.solofit.SettingsActivities.SettingsActivity
 import com.example.solofit.utilities.Extras
+import com.example.solofit.utilities.getColorForCategory
+import com.example.solofit.utilities.getTitleColorCategory
 
 class StatusActivity : AppCompatActivity() {
     private lateinit var viewBinding: StatusPageBinding
@@ -49,6 +51,10 @@ class StatusActivity : AppCompatActivity() {
             viewBinding.txvUserTitle.text = "NONE"
         } else {
             viewBinding.txvUserTitle.text = user.selectedTitle
+            val category = getTitleColorCategory(user.selectedTitle)
+            val color = this.getColorForCategory(category)
+            viewBinding.txvUserTitle.setTextColor(color)
+            viewBinding.txvUserTitle.setShadowLayer(10f, 0f, 0f, color)
         }
         viewBinding.progBarStatusLevel.progress = user.currentExp.toInt()
         viewBinding.progBarStatusLevel.max = user.expCap

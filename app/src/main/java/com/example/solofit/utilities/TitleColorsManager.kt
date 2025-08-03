@@ -3,11 +3,14 @@ import android.content.Context
 import com.example.solofit.R
 
 enum class TitleColorCategory {
-    BEGINNER_COLOR_CYAN, NOVICE_COLOR_GREEN, INTERMEDIATE_COLOR_ORANGE, ADVANCED_COLOR_RED, ELITE_COLOR_PURPLE, LEGEND_COLOR_GOLD
+    DEFAULT_COLOR_GRAY, BEGINNER_COLOR_CYAN, NOVICE_COLOR_GREEN, INTERMEDIATE_COLOR_ORANGE, ADVANCED_COLOR_RED, ELITE_COLOR_PURPLE, LEGEND_COLOR_GOLD
 }
 
 fun getTitleColorCategory(title: String): TitleColorCategory {
     return when (title) {
+        // GRAY - Starting Rank
+        "E Rank Hunter" -> TitleColorCategory.DEFAULT_COLOR_GRAY
+
         // BLUE – 10
         "Beginner Brute", "Breather", "Rookie Defender", "D Rank Hunter" -> TitleColorCategory.BEGINNER_COLOR_CYAN
 
@@ -29,6 +32,7 @@ fun getTitleColorCategory(title: String): TitleColorCategory {
 
 fun Context.getColorForCategory(category: TitleColorCategory): Int {
     return when (category) {
+        TitleColorCategory.DEFAULT_COLOR_GRAY -> getColor(R.color.light_gray)
         TitleColorCategory.BEGINNER_COLOR_CYAN -> getColor(R.color.cyan)
         TitleColorCategory.NOVICE_COLOR_GREEN -> getColor(R.color.bright_green)
         TitleColorCategory.INTERMEDIATE_COLOR_ORANGE -> getColor(R.color.orange)

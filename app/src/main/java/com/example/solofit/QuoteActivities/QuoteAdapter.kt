@@ -23,9 +23,6 @@ class QuoteAdapter (private val quotelist: ArrayList<Quote>, private val dbHelpe
     override fun onBindViewHolder(holder: QuoteViewHolder, position: Int) {
         val quoteItemList = quotelist[position]
         holder.bindData(quoteItemList)
-        holder.setQuoteBackground(R.drawable.bg_quest_item_normal)
-        holder.setQuotePreviewTextShadow(R.color.cyan)
-        holder.setQuoteAuthorTextShadow(R.color.cyan)
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, ViewSavedQuote::class.java).apply {
