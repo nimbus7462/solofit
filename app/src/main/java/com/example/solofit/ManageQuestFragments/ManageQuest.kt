@@ -93,7 +93,7 @@ class ManageQuest : Fragment() {
         binding.recViewManageQuest.layoutManager = LinearLayoutManager(requireContext())
         binding.recViewManageQuest.adapter = adapter
 
-        binding.fabAddQuest.setOnClickListener {
+        binding.ibAddQuest.setOnClickListener {
             val action = ManageQuestDirections
                 .actionManageQuestToAddEditQuest(-1, "ADD QUEST", "", "", "", "", "", 0, 0)
             findNavController().navigate(action)

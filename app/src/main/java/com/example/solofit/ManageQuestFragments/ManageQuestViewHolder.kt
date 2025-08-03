@@ -3,6 +3,7 @@ package com.example.solofit.ManageQuestFragments
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.solofit.R
 import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
 
