@@ -134,11 +134,13 @@ class QuestBoardActivity : AppCompatActivity() {
 
 
     private fun showDifficultyLegendPopup() {
+        viewBinding.lloQuestboard.visibility = View.INVISIBLE
         val popupBinding = PopupLegendBinding.inflate(layoutInflater)
         val rootView = findViewById<ViewGroup>(android.R.id.content)
         rootView.addView(popupBinding.root)
 
         popupBinding.btnGoBack.setOnClickListener {
+            viewBinding.lloQuestboard.visibility = View.VISIBLE
             rootView.removeView(popupBinding.root)
         }
     }

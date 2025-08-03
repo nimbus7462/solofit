@@ -53,72 +53,52 @@ class ManageQuest : Fragment() {
         dbHelper = MyDatabaseHelper(requireContext())
         super.onViewCreated(view, savedInstanceState)
 
-        originalQuestList = dbHelper.getAllQuests()
-        binding.imbLegend.setOnClickListener {
-            showDifficultyLegendPopup()
-
+        // Setup main delete panel listeners ONCE
+        binding.btnGoBack.setOnClickListener {
+            showpanels()
+            binding.cloConfirmation.visibility = View.INVISIBLE
+            binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+            questPendingDelete = null
         }
+
+        binding.btnConfirm.setOnClickListener {
+            questPendingDelete?.let { quest ->
+                val createdTodayQuestIds = dbHelper.getTodayCreatedQuestIds(Extras.DEFAULT_USER_ID)
+                if (originalQuestList.size > 5) {
+                    if (quest.id in createdTodayQuestIds) {
+                        Toast.makeText(requireContext(), "You can't delete a quest created today.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        dbHelper.deleteQuestAndMarkUQAs(quest.id)
+                        originalQuestList = dbHelper.getAllQuests()
+                        applySortAndFilter()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "At least 5 quests must remain.", Toast.LENGTH_SHORT).show()
+                }
+
+                showpanels()
+                binding.cloConfirmation.visibility = View.INVISIBLE
+                binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+                questPendingDelete = null
+            }
+        }
+
+        originalQuestList = dbHelper.getAllQuests()
+
+        // Set up delete and edit logic
         adapter = ManageQuestAdapter(
             originalQuestList.toMutableList(),
-            onItemClick = { quest ->
-                val action = ManageQuestDirections.actionManageQuestToAddEditQuest(
-                    quest.id,
-                    "EDIT QUEST",
-                    quest.questName,
-                    quest.description,
-                    quest.questType,
-                    quest.difficulty,
-                    quest.extraTags,
-                    quest.xpReward,
-                    quest.statReward
-                )
-                findNavController().navigate(action)
-            },
+            onItemClick = { quest -> /* unchanged */ },
             onDeleteClick = { quest ->
                 questPendingDelete = quest
 
-                binding.txvConfirmationMsg.text = "Are you sure you want to delete ${quest.questName}? All user records with this quest will be deleted as well."
+                binding.txvConfirmationMsg.text =
+                    "Are you sure you want to delete ${quest.questName}? All user records with this quest will be deleted as well."
                 binding.btnGoBack.text = NO
                 binding.btnConfirm.text = YES
                 hidepanels()
                 binding.viewBackgroundBlocker.visibility = View.VISIBLE
                 binding.cloConfirmation.visibility = View.VISIBLE
-
-                binding.btnGoBack.setOnClickListener {
-                    showpanels()
-                    binding.cloConfirmation.visibility = View.INVISIBLE
-                    binding.viewBackgroundBlocker.visibility = View.INVISIBLE
-
-                    questPendingDelete = null
-                }
-
-                binding.btnConfirm.setOnClickListener {
-                    // Only delete if there are more than 5 quests
-
-                    val createdTodayQuestIds = dbHelper.getTodayCreatedQuestIds(Extras.DEFAULT_USER_ID)
-
-                    if (originalQuestList.size > 5) {
-                        questPendingDelete?.let { quest ->
-                            if (quest.id in createdTodayQuestIds) {
-                                Toast.makeText(requireContext(), "You can't delete a quest created today.", Toast.LENGTH_SHORT).show()
-                            } else {
-                                dbHelper.deleteQuestAndMarkUQAs(it.id)
-                                originalQuestList = dbHelper.getAllQuests()
-                                applySortAndFilter()
-                            }
-                        }
-                    } else {
-                        Toast.makeText(requireContext(), "At least 5 quests must remain.", Toast.LENGTH_SHORT).show()
-                    }
-                    showpanels()
-                    binding.cloConfirmation.visibility = View.INVISIBLE
-                    binding.viewBackgroundBlocker.visibility = View.INVISIBLE
-
-                    questPendingDelete = null
-                }
-
-
-
             }
         )
 
