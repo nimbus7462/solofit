@@ -56,6 +56,7 @@ class ManageQuest : Fragment() {
         originalQuestList = dbHelper.getAllQuests()
         binding.imbLegend.setOnClickListener {
             showDifficultyLegendPopup()
+
         }
         adapter = ManageQuestAdapter(
             originalQuestList.toMutableList(),
@@ -79,12 +80,15 @@ class ManageQuest : Fragment() {
                 binding.txvConfirmationMsg.text = "Are you sure you want to delete ${quest.questName}?"
                 binding.btnGoBack.text = NO
                 binding.btnConfirm.text = YES
+                hidepanels()
                 binding.viewBackgroundBlocker.visibility = View.VISIBLE
                 binding.cloConfirmation.visibility = View.VISIBLE
 
                 binding.btnGoBack.setOnClickListener {
+                    showpanels()
                     binding.cloConfirmation.visibility = View.INVISIBLE
                     binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+
                     questPendingDelete = null
                 }
 
@@ -106,9 +110,10 @@ class ManageQuest : Fragment() {
                     } else {
                         Toast.makeText(requireContext(), "At least 5 quests must remain.", Toast.LENGTH_SHORT).show()
                     }
-
+                    showpanels()
                     binding.cloConfirmation.visibility = View.INVISIBLE
                     binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+
                     questPendingDelete = null
                 }
 
@@ -206,10 +211,29 @@ class ManageQuest : Fragment() {
     private fun showDifficultyLegendPopup() {
         val popupBinding = PopupLegendBinding.inflate(layoutInflater)
         val rootView = requireActivity().findViewById<ViewGroup>(android.R.id.content)
+        hidepanels()
         rootView.addView(popupBinding.root)
 
         popupBinding.btnGoBack.setOnClickListener {
+            showpanels()
             rootView.removeView(popupBinding.root)
+
         }
+    }
+    private fun hidepanels(){
+        binding.txvManageQuestTitle.visibility = View.INVISIBLE
+        binding.frameSpinnerContainer.visibility = View.INVISIBLE
+        binding.recViewManageQuest.visibility = View.INVISIBLE
+        binding.ibAddQuest.visibility = View.INVISIBLE
+
+
+    }
+    private fun showpanels(){
+        binding.txvManageQuestTitle.visibility = View.VISIBLE
+        binding.frameSpinnerContainer.visibility = View.VISIBLE
+        binding.recViewManageQuest.visibility = View.VISIBLE
+        binding.ibAddQuest.visibility = View.VISIBLE
+
+
     }
 }
