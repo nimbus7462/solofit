@@ -8,6 +8,8 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,9 +21,6 @@ import com.example.solofit.databinding.PopupTitlesListBinding
 import com.example.solofit.databinding.SettingsPageBinding
 import com.example.solofit.model.User
 import com.example.solofit.utilities.Extras
-import android.widget.PopupWindow
-import android.view.ViewGroup
-import com.example.solofit.databinding.PopupCongratsBinding
 import com.example.solofit.utilities.getColorForCategory
 import com.example.solofit.utilities.getTitleColorCategory
 
@@ -32,19 +31,18 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var currentUser: User
     private var selectedTitle: String? = null
     private lateinit var titleAdapter: TitleGridAdapter
+
     private val pfpResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        enableOnly(viewBinding.btnEditIgn, viewBinding.btnChangePfp, viewBinding.btnEditTitle)
         if (result.resultCode == RESULT_OK && result.data != null) {
             imageUri = result.data!!.data
-
             contentResolver.takePersistableUriPermission(
                 imageUri!!,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
-
             viewBinding.imvSettingsPfp.setImageURI(imageUri)
-
             val user = dbHelper.getUserById(Extras.DEFAULT_USER_ID)
             user?.pfpUri = imageUri.toString()
             dbHelper.updateUser(user!!)
@@ -56,11 +54,13 @@ class SettingsActivity : AppCompatActivity() {
 
         viewBinding = SettingsPageBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+
         currentUser = dbHelper.getUserById(Extras.DEFAULT_USER_ID)!!
-        viewBinding.edtSettingsIgn.setText(currentUser?.username ?: "Player")
+        viewBinding.edtSettingsIgn.setText(currentUser.username ?: "Player")
         viewBinding.imvSettingsPfp.setImageURI(currentUser.pfpUri?.let { Uri.parse(it) })
         viewBinding.edtSettingsIgn.gravity = Gravity.CENTER
         viewBinding.edtSettingsIgn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f)
+
         if (currentUser.selectedTitle.isNullOrBlank()) {
             viewBinding.txvUserTitle.text = "No Title Selected"
             viewBinding.txvUserTitle.setTextColor(ContextCompat.getColor(this, R.color.gray))
@@ -88,6 +88,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         viewBinding.btnChangePfp.setOnClickListener {
+            enableOnly(viewBinding.btnChangePfp)
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 type = "image/*"
                 addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
@@ -97,6 +98,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         viewBinding.btnEditTitle.setOnClickListener {
+            enableOnly(viewBinding.btnEditTitle)
             showTitlePopup()
         }
 
@@ -104,6 +106,7 @@ class SettingsActivity : AppCompatActivity() {
             showTitlePopup()
         }
     }
+
     private fun enableIgnEditMode() {
         viewBinding.edtSettingsIgn.apply {
             isEnabled = true
@@ -115,6 +118,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         viewBinding.btnEditIgn.visibility = View.GONE
         viewBinding.lloHiddenRow.visibility = View.VISIBLE
+        enableOnly(viewBinding.btnChangeSave, viewBinding.btnChangeBack)
     }
 
     private fun disableIgnEditMode() {
@@ -127,6 +131,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         viewBinding.btnEditIgn.visibility = View.VISIBLE
         viewBinding.lloHiddenRow.visibility = View.GONE
+        enableOnly(viewBinding.btnEditIgn, viewBinding.btnChangePfp, viewBinding.btnEditTitle)
     }
 
     private fun showTitlePopup() {
@@ -146,6 +151,7 @@ class SettingsActivity : AppCompatActivity() {
 
         popupBinding.btnGoBack.setOnClickListener {
             rootView.removeView(popupBinding.root)
+            enableOnly(viewBinding.btnEditIgn, viewBinding.btnChangePfp, viewBinding.btnEditTitle)
         }
 
         popupBinding.btnSaveTitle.setOnClickListener {
@@ -163,10 +169,18 @@ class SettingsActivity : AppCompatActivity() {
                     viewBinding.txvUserTitle.setShadowLayer(10f, 0f, 0f, color)
                 }
                 rootView.removeView(popupBinding.root)
+                enableOnly(viewBinding.btnEditIgn, viewBinding.btnChangePfp, viewBinding.btnEditTitle)
             }
         }
-
     }
 
-
+    private fun enableOnly(vararg enableBtn: View) {
+        val all = listOf(
+            viewBinding.btnEditIgn,
+            viewBinding.btnChangePfp,
+            viewBinding.btnEditTitle
+        )
+        all.forEach { it.isEnabled = it in enableBtn }
+        all.forEach { it.alpha = if (it.isEnabled) 1f else 0.4f }
+    }
 }
