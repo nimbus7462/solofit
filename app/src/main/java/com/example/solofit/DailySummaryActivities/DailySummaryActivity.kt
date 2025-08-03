@@ -14,6 +14,7 @@ import com.example.solofit.utilities.Extras
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.solofit.model.Quote
 
 class DailySummaryActivity: AppCompatActivity() {
     private lateinit var viewBinding: DailySummaryPageBinding
@@ -103,31 +104,24 @@ class DailySummaryActivity: AppCompatActivity() {
 
     }
 
-    /*
     private fun showDailyQuotePopUp() {
+        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val savedQuoteId = prefs.getInt("daily_quote_id_$today", -1)
+
         val popupBinding = PopupDailyQuoteBinding.inflate(layoutInflater)
         val rootView = findViewById<ViewGroup>(android.R.id.content)
         rootView.addView(popupBinding.root)
 
-        popupBinding.txvQuoteDateToday.text = today
-        popupBinding.imbSaveQuote.setOnClickListener {
-            isSaved = !isSaved
-            val updatedIcon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
-            popupBinding.imbSaveQuote.setImageResource(updatedIcon)
-            // TODO: Add quote logic here
-            // chuck a random quote, must also have the save and unsave feature
+        val quote: Quote? = if (savedQuoteId != -1) {
+            dbHelper.getQuoteById(savedQuoteId)
+        } else {
+            val newQuote = dbHelper.getRandomQuote()
+            newQuote?.let {
+                prefs.edit().putInt("daily_quote_id_$today", it.quoteID).apply()
+            }
+            newQuote
         }
-        popupBinding.btnGoBack.setOnClickListener {
-            rootView.removeView(popupBinding.root)
-        }
-    }
-     */
-    private fun showDailyQuotePopUp() {
-        val popupBinding = PopupDailyQuoteBinding.inflate(layoutInflater)
-        val rootView = findViewById<ViewGroup>(android.R.id.content)
-        rootView.addView(popupBinding.root)
 
-        val quote = dbHelper.getRandomQuote()
         var isSaved = quote?.isSaved ?: false
 
         if (quote != null) {
@@ -159,5 +153,6 @@ class DailySummaryActivity: AppCompatActivity() {
             rootView.removeView(popupBinding.root)
         }
     }
+
 
 }
