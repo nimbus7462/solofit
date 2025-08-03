@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -55,7 +57,8 @@ class AddEditQuest : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
         super.onViewCreated(view, savedInstanceState)
         dbHelper = MyDatabaseHelper(requireContext())
 
@@ -68,10 +71,35 @@ class AddEditQuest : Fragment() {
         typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown)
         questTypeSpinner.adapter = typeAdapter
 
-        val difficultyAdapter = ArrayAdapter(requireContext(), R.layout.selected_spinner_item, questDiff)
+//        val difficultyAdapter = ArrayAdapter(requireContext(), R.layout.selected_spinner_item, questDiff)
+//        difficultyAdapter.setDropDownViewResource(R.layout.spinner_dropdown)
+//        questDiffSpinner.adapter = difficultyAdapter
+
+        val difficultyAdapter = object : ArrayAdapter<String>(
+            requireContext(),
+            R.layout.selected_spinner_item,
+            questDiff
+        ) {
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val textView = view.findViewById<TextView>(R.id.text1)
+                applyDrawableBasedOnDifficulty(textView, getItem(position))
+                return view
+            }
+
+            private fun applyDrawableBasedOnDifficulty(textView: TextView, difficulty: String?) {
+                when (difficulty) {
+                    "Easy" -> textView.setBackgroundResource(R.drawable.bg_dropdown_item_easy)
+                    "Normal" -> textView.setBackgroundResource(R.drawable.bg_dropdown_item_normal)
+                    "Hard" -> textView.setBackgroundResource(R.drawable.bg_dropdown_item_hard)
+                    "Extreme" -> textView.setBackgroundResource(R.drawable.bg_dropdown_item_extreme)
+                    else -> textView.setBackgroundResource(R.drawable.bg_dropdown_item_default)
+                }
+            }
+        }
         difficultyAdapter.setDropDownViewResource(R.layout.spinner_dropdown)
         questDiffSpinner.adapter = difficultyAdapter
-
         binding.txvAddEditQuestHeader.text = pageHeader
         binding.edtQuestName.setText(questTitle)
         binding.edtExtraTags.setText(questExtraTags)
@@ -144,6 +172,19 @@ class AddEditQuest : Fragment() {
         binding.btnGoBack.setOnClickListener {
             binding.cloConfirmation.visibility = View.INVISIBLE
             binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+        }
+        binding.spnDifficulty.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                when (binding.spnDifficulty.selectedItem.toString()) {
+                    "Easy" -> binding.spnDifficulty.setBackgroundResource(R.drawable.bg_dropdown_easy)
+                    "Normal" -> binding.spnDifficulty.setBackgroundResource(R.drawable.bg_dropdown_normal)
+                    "Hard" -> binding.spnDifficulty.setBackgroundResource(R.drawable.bg_dropdown_hard)
+                    "Extreme" -> binding.spnDifficulty.setBackgroundResource(R.drawable.bg_dropdown_extreme)
+                    else -> binding.spnDifficulty.setBackgroundResource(R.drawable.bg_dropdown)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
