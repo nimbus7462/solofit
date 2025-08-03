@@ -3,6 +3,7 @@ package com.example.solofit.DailySummaryActivities
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
+import com.example.solofit.databinding.PopupLegendBinding
 import com.example.solofit.databinding.QuestSummaryBinding
 import com.example.solofit.model.UserQuestActivity
 
@@ -43,10 +45,14 @@ class QuestSummaryActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         setupSpinners()
+
+        viewBinding.imbLegend.setOnClickListener {
+            showDifficultyLegendPopup()
+        }
     }
 
     private fun setupSpinners() {
-        val sortOptions = listOf("Easy->Extreme", "Extreme->Easy")
+        val sortOptions = listOf("Easiest First", "Hardest First")
         val filterOptions = listOf("All", "Easy", "Normal", "Hard", "Extreme", "Strength", "Endurance", "Vitality")
 
         val sortAdapter = ArrayAdapter(this, R.layout.spinner_selected_blank, sortOptions)
@@ -86,11 +92,22 @@ class QuestSummaryActivity : AppCompatActivity() {
         }
 
         filtered = when (sortOption) {
-            "Easy->Extreme" -> filtered.sortedBy { dbHelper.getQuestById(it.questID)?.questName ?: "" }
-            "Extreme->Easy" -> filtered.sortedByDescending { dbHelper.getQuestById(it.questID)?.questName ?: "" }
+            "Easiest First" -> filtered.sortedBy { dbHelper.getQuestById(it.questID)?.questName ?: "" }
+            "Hardest First" -> filtered.sortedByDescending { dbHelper.getQuestById(it.questID)?.questName ?: "" }
             else -> filtered
         }
 
         adapter.updateData(filtered)
+    }
+
+
+    private fun showDifficultyLegendPopup() {
+        val popupBinding = PopupLegendBinding.inflate(layoutInflater)
+        val rootView = findViewById<ViewGroup>(android.R.id.content)
+        rootView.addView(popupBinding.root)
+
+        popupBinding.btnGoBack.setOnClickListener {
+            rootView.removeView(popupBinding.root)
+        }
     }
 }

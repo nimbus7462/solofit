@@ -2,6 +2,7 @@ package com.example.solofit.QuestboardActivities
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.solofit.R
 import com.example.solofit.databinding.QuestBoardActivityBinding
 import com.example.solofit.database.MyDatabaseHelper
-import com.example.solofit.model.Quest
+import com.example.solofit.databinding.PopupLegendBinding
 import com.example.solofit.model.UserQuestActivity
 import com.example.solofit.utilities.Extras
 import java.text.SimpleDateFormat
@@ -39,6 +40,10 @@ class QuestBoardActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         setupSpinners()
+
+        viewBinding.imbLegend.setOnClickListener {
+            showDifficultyLegendPopup()
+        }
     }
 
     override fun onResume() {
@@ -47,7 +52,7 @@ class QuestBoardActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners() {
-        val sortOptions = listOf("Easy->Extreme", "Extreme->Easy")
+        val sortOptions = listOf("Easiest First", "Hardest First")
         val filterOptions = listOf("All", "Easy", "Normal", "Hard", "Extreme", "Strength", "Endurance", "Vitality")
 
         val sortAdapter = ArrayAdapter(this, R.layout.spinner_selected_blank, sortOptions)
@@ -85,7 +90,7 @@ class QuestBoardActivity : AppCompatActivity() {
             else -> filtered
         }
 
-        if (sortOption == "Easy->Extreme") {
+        if (sortOption == "Easiest First") {
             filtered = filtered.sortedBy { dbHelper.getQuestById(it.questID)?.questName ?: "" }
         } else {
             filtered = filtered.sortedByDescending { dbHelper.getQuestById(it.questID)?.questName ?: "" }
@@ -124,5 +129,17 @@ class QuestBoardActivity : AppCompatActivity() {
             "CREATED", today, Extras.DEFAULT_USER_ID
         )
         applySortAndFilter()
+    }
+
+
+
+    private fun showDifficultyLegendPopup() {
+        val popupBinding = PopupLegendBinding.inflate(layoutInflater)
+        val rootView = findViewById<ViewGroup>(android.R.id.content)
+        rootView.addView(popupBinding.root)
+
+        popupBinding.btnGoBack.setOnClickListener {
+            rootView.removeView(popupBinding.root)
+        }
     }
 }

@@ -64,6 +64,14 @@
                 android:textColor="@android:color/transparent"
                 android:padding="8dp"
                 android:spinnerMode="dropdown" />
+
+            <ImageButton
+                android:id="@+id/imbLegend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/icon_help" />
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView

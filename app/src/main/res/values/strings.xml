@@ -79,6 +79,7 @@
     <string name="hard">Hard</string>
     <string name="extreme">Extreme</string>
     <string name="available_titles">Available Titles</string>
+    <string name="qhist_legend">Quest History Legend</string>
     <string-array name="quest_difficulties">
         <item />
         <item>Easy</item>

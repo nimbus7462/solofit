@@ -436,7 +436,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     fun autoCancelOldUnfinishedQuests(today: String) {
         val database = this.writableDatabase
         val values = ContentValues().apply {
-            put(DbReferences.COLUMN_QUEST_STATUS, "CANCELLED")
+            put(DbReferences.COLUMN_QUEST_STATUS, "ABORTED")
         }
 
         val rowsUpdated = database.update(
