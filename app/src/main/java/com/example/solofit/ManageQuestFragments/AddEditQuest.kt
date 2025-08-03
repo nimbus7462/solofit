@@ -83,7 +83,7 @@ class AddEditQuest : Fragment() {
 
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = super.getDropDownView(position, convertView, parent)
-                val textView = view.findViewById<TextView>(R.id.text1)
+                val textView = view.findViewById<TextView>(R.id.tvDropdownText)
                 applyDrawableBasedOnDifficulty(textView, getItem(position))
                 return view
             }
