@@ -64,6 +64,15 @@
     <string name="back">Back</string>
     <string name="hint_changeIgn">Input IGN Here</string>
     <string name="hint_inputlog">Input Personal Log Here</string>
+    <string name="total_exp_gained">Total Exp Gained</string>
+    <string name="streak_multiplier">Streak Multipler</string>
+    <string name="total_exp_penalty">Total Exp Penalty</string>
+    <string name="total_net_exp">Total Net Exp</string>
+    <string name="change_title">Change Title</string>
+    <string name="user_title">Title:</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="done">Done</string>
+    <string name="view_titles">View Titles</string>
     <string-array name="quest_difficulties">
         <item />
         <item>Easy</item>

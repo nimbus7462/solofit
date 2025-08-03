@@ -55,7 +55,7 @@
             android:theme="@style/Theme.Solofit">
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".SettingsActivities.SettingsActivity"
             android:exported="true"
             android:theme="@style/Theme.Solofit">
         </activity>

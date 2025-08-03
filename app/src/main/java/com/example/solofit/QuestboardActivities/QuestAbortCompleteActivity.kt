@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.R
@@ -13,11 +16,12 @@ import com.example.solofit.model.Quest
 import com.example.solofit.model.Quote
 import com.example.solofit.model.UserQuestActivity
 import com.example.solofit.utilities.Extras
-import com.example.solofit.utilities.UserStreakManager
-import java.text.SimpleDateFormat
-import java.util.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
+import com.example.solofit.SettingsActivities.SettingsActivity
+import com.example.solofit.databinding.PopupCongratsBinding
 import com.example.solofit.model.User
+import com.example.solofit.utilities.TitleManager
 
 class QuestAbortCompleteActivity : AppCompatActivity() {
 
@@ -73,8 +77,10 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 saveQuestStatusAndQuote(todaysSelectedUQA)
-                setResult(RESULT_OK)
-                finish()
+                updateUserStatsAndLevel {
+                    setResult(RESULT_OK)
+                    finish()
+                }
             }
         })
 
@@ -147,19 +153,23 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
 
         // Log thoughts button
         viewBinding.btnLogThoughts.setOnClickListener {
-            val intent = Intent(applicationContext, QuestLoggingActivity::class.java)
-            saveQuestStatusAndQuote(todaysSelectedUQA) // Save on manual click
-            setResult(RESULT_OK) // Let QuestBoardActivity know to refresh
-            intent.putExtra(Extras.EXTRA_UQA, todaysSelectedUQA)
-            startActivity(intent)
-            finish()
+            saveQuestStatusAndQuote(todaysSelectedUQA)
+            updateUserStatsAndLevel {
+                setResult(RESULT_OK)
+                val intent = Intent(applicationContext, QuestLoggingActivity::class.java)
+                intent.putExtra(Extras.EXTRA_UQA, todaysSelectedUQA)
+                startActivity(intent)
+                finish()
+            }
         }
 
         // Finish Quest button — Save status + quote
         viewBinding.btnFinishQuest.setOnClickListener {
-            saveQuestStatusAndQuote(todaysSelectedUQA) // Save on manual click
-            setResult(RESULT_OK) // Let QuestBoardActivity know to refresh
-            finish()
+            saveQuestStatusAndQuote(todaysSelectedUQA)
+            updateUserStatsAndLevel {
+                setResult(RESULT_OK)
+                finish()
+            }
         }
     }
 
@@ -203,42 +213,149 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
 
             dbHelper.updateUserQuestActivity(updatedUQA)
             if (newStatus == "COMPLETED") {
-                    UserStreakManager.updateStreakIfNeeded(this)
-                }
+                user = dbHelper.updateUserStreakIfNeeded(user)
+            }
+            dbHelper.updateUser(user)
             this.todaysSelectedUQA = updatedUQA
-
-
-            calculateUserExpGainAndStatsGain(user, quest, todaysSelectedUQA)
-            val updatedUser = user
-            dbHelper.updateUser(updatedUser)
 
             Log.d("SAVING_DEBUG", "UPDATED UQA")
         }
     }
 
-    // TODO Still need to add level and levelcap logic
+    private fun updateUserStatsAndLevel(onDone: () -> Unit) {
+        val oldLevel = user.level
+        calculateUserExpGainAndStatsGain(user, quest, todaysSelectedUQA)
+
+        val newLevel = user.level
+        val leveledUp = newLevel > oldLevel
+
+        val unlockedTitles = TitleManager.getNewlyUnlockedTitles(user)
+        if (unlockedTitles.isNotEmpty()) {
+            TitleManager.checkAndUnlockTitles(user)
+        }
+
+        dbHelper.updateUser(user)
+
+        if (leveledUp || unlockedTitles.isNotEmpty()) {
+            showLevelAndTitlePopups(
+                leveledUp = leveledUp,
+                oldLevel = oldLevel,
+                newLevel = newLevel,
+                unlockedTitles = unlockedTitles,
+                onDone = onDone
+            )
+        } else {
+            onDone()
+        }
+    }
+
+
     private fun calculateUserExpGainAndStatsGain(user: User, quest: Quest, uqa: UserQuestActivity) {
-        val streakCount = maxOf(0, UserStreakManager.getStreakCount(this))
+        val streakCount = maxOf(0, user.streakCount)
         val base = if (streakCount >= 3) 0.02 else 0.0
         val stepBonus = (streakCount / 5) * 0.05
         val streakMultiplier = 1.0 + base + stepBonus
 
+        val expGained: Float
+        val statGained: Int
+
         when (uqa.questStatus) {
             "COMPLETED" -> {
-                user.currentExp += quest.xpReward * streakMultiplier.toFloat()
+                expGained = quest.xpReward * streakMultiplier.toFloat()
+                statGained = quest.statReward
 
+                user.currentExp += expGained
+
+                //For stat gains
                 when (quest.questType) {
-                    "Strength" -> user.strengthPts += quest.statReward
-                    "Endurance" -> user.endurancePts += quest.statReward
-                    "Vitality" -> user.vitalityPts += quest.statReward
+                    "Strength" -> user.strengthPts += statGained
+                    "Endurance" -> user.endurancePts += statGained
+                    "Vitality" -> user.vitalityPts += statGained
+                }
+
+                //For Level-ups
+                while (user.currentExp >= user.expCap) {
+                    user.currentExp -= user.expCap
+                    user.level += 1
+                    user.expCap = (user.expCap * 1.2f).toInt()
                 }
             }
 
             "ABORTED" -> {
-                user.currentExp -= (quest.xpReward / 2).toFloat()
+                user.currentExp = maxOf(0f, user.currentExp - (quest.xpReward / 2f))
             }
         }
     }
+
+    private fun showLevelAndTitlePopups(
+        leveledUp: Boolean,
+        oldLevel: Int,
+        newLevel: Int,
+        unlockedTitles: List<String>,
+        onDone: () -> Unit,
+    ) {
+        fun showCongratsPopup(
+            upperMsg: String,
+            lowerMsg: String,
+            isAboutTitles: Boolean,
+            onPopupDone: () -> Unit
+        ) {
+            val popupBinding = PopupCongratsBinding.inflate(LayoutInflater.from(this))
+
+            popupBinding.txvUpperMsg.text = upperMsg
+            popupBinding.txvLowerMsg.text = lowerMsg
+
+            val rootView = findViewById<ViewGroup>(android.R.id.content)
+            rootView.addView(popupBinding.root)
+
+            if (isAboutTitles) {
+                popupBinding.btnViewTitles.visibility = View.VISIBLE
+                popupBinding.btnViewTitles.setOnClickListener {
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    intent.putExtra(Extras.EXTRA_SRC, "Quest_Abort_Complete") // optional
+                    startActivity(intent)
+                    finish()
+                }
+            }
+
+            popupBinding.btnDone.setOnClickListener {
+                rootView.removeView(popupBinding.root)
+                onPopupDone()
+            }
+        }
+
+        if (leveledUp && unlockedTitles.isNotEmpty()) {
+            showCongratsPopup(
+                upperMsg = "You leveled up!",
+                lowerMsg = "LEVEL $oldLevel -> $newLevel",
+                isAboutTitles = false,
+                onPopupDone = {
+                    showCongratsPopup(
+                        upperMsg = "You unlocked new title(s)!",
+                        lowerMsg = unlockedTitles.joinToString("\n"),
+                        isAboutTitles = true,
+                        onPopupDone = onDone
+                    )
+                },
+
+            )
+        } else if (leveledUp) {
+            showCongratsPopup(
+                upperMsg = "You leveled up!",
+                lowerMsg = "LEVEL $oldLevel -> $newLevel",
+                onPopupDone = onDone,
+                isAboutTitles = false
+            )
+        } else {
+            showCongratsPopup(
+                upperMsg = "You unlocked new title(s)!",
+                lowerMsg = unlockedTitles.joinToString("\n"),
+                onPopupDone = onDone,
+                isAboutTitles = true
+            )
+        }
+    }
+
 
     // Optionally: if you want to double-check saving before destruction
     override fun onDestroy() {

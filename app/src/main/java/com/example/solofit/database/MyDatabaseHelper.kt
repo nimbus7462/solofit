@@ -10,6 +10,8 @@ import com.example.solofit.model.Quest
 import com.example.solofit.model.Quote
 import com.example.solofit.model.User
 import com.example.solofit.model.UserQuestActivity
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     context, DbReferences.DATABASE_NAME, null, DbReferences.DATABASE_VERSION
@@ -34,7 +36,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     // Step 0: All constants for structure, columns, and SQL
     private object DbReferences {
         const val DATABASE_NAME = "quest_app.db"
-        const val DATABASE_VERSION = 7  // Bumped up to 4 ; Changed User Table, pfp -> pfpUri (String), currentlevel int -> float
+        const val DATABASE_VERSION = 10 // Added Streaks to user
 
         // Quest Table
         const val TABLE_QUEST = "quest_table"
@@ -57,15 +59,20 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         // User Table
         const val TABLE_USER = "user_table"
         const val COLUMN_USER_ID = "user_id"
-        const val COLUMN_USERNAME = "username"               // new
-        const val COLUMN_PFP_URI = "pfp_uri"                 // new
-        const val COLUMN_USER_TITLE = "user_title"           // new
+        const val COLUMN_USERNAME = "username"
+        const val COLUMN_PFP_URI = "pfp_uri"
+        const val COLUMN_SELECTED_TITLE = "selected_title"
         const val COLUMN_LEVEL = "level"
         const val COLUMN_EXP = "current_exp"
-        const val COLUMN_LEVEL_CAP = "level_cap"
+        const val COLUMN_EXP_CAP = "exp_cap"
         const val COLUMN_STR = "strength_pts"
         const val COLUMN_END = "endurance_pts"
         const val COLUMN_VIT = "vitality_pts"
+        const val COLUMN_STREAK_COUNT = "streak_count"
+        const val COLUMN_LONGEST_STREAK = "longest_streak"
+        const val COLUMN_LAST_STREAK_DATE = "last_streak_date"
+        const val COLUMN_UNLOCKED_TITLES = "unlocked_titles"
+
 
         // UserQuestActivity Table
         const val TABLE_UQA = "user_quest_activity"
@@ -90,21 +97,25 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             $COLUMN_STAT_REWARD INTEGER     
         );
     """
-
-        const val CREATE_TABLE_USER = """
+            const val CREATE_TABLE_USER = """
         CREATE TABLE $TABLE_USER (
             $COLUMN_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             $COLUMN_USERNAME TEXT,
             $COLUMN_PFP_URI TEXT,
-            $COLUMN_USER_TITLE TEXT,
+            $COLUMN_SELECTED_TITLE TEXT,       -- renamed
             $COLUMN_LEVEL INTEGER,
             $COLUMN_EXP REAL,
-            $COLUMN_LEVEL_CAP INTEGER,
+            $COLUMN_EXP_CAP INTEGER,
             $COLUMN_STR INTEGER,
             $COLUMN_END INTEGER,
-            $COLUMN_VIT INTEGER
+            $COLUMN_VIT INTEGER,
+            $COLUMN_LAST_STREAK_DATE TEXT,
+            $COLUMN_STREAK_COUNT INTEGER,
+            $COLUMN_LONGEST_STREAK INTEGER,
+            $COLUMN_UNLOCKED_TITLES TEXT
         );
     """
+
 
         const val CREATE_TABLE_UQA = """
         CREATE TABLE $TABLE_UQA (
@@ -199,18 +210,21 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         val values = ContentValues().apply {
             put(DbReferences.COLUMN_USERNAME, "Player")
             put(DbReferences.COLUMN_PFP_URI, null as String?) // default no profile picture
-            put(DbReferences.COLUMN_USER_TITLE, "Novice")
+            put(DbReferences.COLUMN_SELECTED_TITLE, "")
             put(DbReferences.COLUMN_LEVEL, 1)
             put(DbReferences.COLUMN_EXP, 0.0f)
-            put(DbReferences.COLUMN_LEVEL_CAP, 100)
+            put(DbReferences.COLUMN_EXP_CAP, 10)
             put(DbReferences.COLUMN_STR, 0)
             put(DbReferences.COLUMN_END, 0)
             put(DbReferences.COLUMN_VIT, 0)
+            put(DbReferences.COLUMN_STREAK_COUNT, 0)
+            put(DbReferences.COLUMN_LONGEST_STREAK, 0)
+            put(DbReferences.COLUMN_LAST_STREAK_DATE, null as String?)
+            put(DbReferences.COLUMN_UNLOCKED_TITLES, "")
         }
 
         db.insert(DbReferences.TABLE_USER, null, values)
     }
-
 
 
     fun getAllQuests(): ArrayList<Quest> {
@@ -577,18 +591,25 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         val values = ContentValues().apply {
             put(DbReferences.COLUMN_USERNAME, user.username)
             put(DbReferences.COLUMN_PFP_URI, user.pfpUri)
-            put(DbReferences.COLUMN_USER_TITLE, user.userTitle)
+            put(DbReferences.COLUMN_SELECTED_TITLE, user.selectedTitle)
             put(DbReferences.COLUMN_LEVEL, user.level)
             put(DbReferences.COLUMN_EXP, user.currentExp)
-            put(DbReferences.COLUMN_LEVEL_CAP, user.levelCap)
+            put(DbReferences.COLUMN_EXP_CAP, user.expCap)
             put(DbReferences.COLUMN_STR, user.strengthPts)
             put(DbReferences.COLUMN_END, user.endurancePts)
             put(DbReferences.COLUMN_VIT, user.vitalityPts)
+            put(DbReferences.COLUMN_STREAK_COUNT, user.streakCount)
+            put(DbReferences.COLUMN_LONGEST_STREAK, user.longestStreak)
+            put(DbReferences.COLUMN_LAST_STREAK_DATE, user.lastStreakDate)
+            put(DbReferences.COLUMN_UNLOCKED_TITLES, user.unlockedTitles)
         }
         val id = database.insert(DbReferences.TABLE_USER, null, values)
         database.close()
         return id
     }
+
+
+
 
     fun logAllUsers() {
         val database = this.readableDatabase
@@ -598,15 +619,22 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 val userID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_ID))
                 val username = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USERNAME))
                 val pfpUri = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_PFP_URI))
-                val title = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_TITLE))
+                val selectedTitle = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_SELECTED_TITLE))
                 val level = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL))
                 val exp = cursor.getFloat(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXP))
-                val cap = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL_CAP))
+                val cap = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXP_CAP))
                 val str = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_STR))
                 val end = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_END))
                 val vit = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_VIT))
+                val streak = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_STREAK_COUNT))
+                val longest = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LONGEST_STREAK))
+                val lastDate = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LAST_STREAK_DATE))
+                val unlockedTitles = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UNLOCKED_TITLES))
 
-                android.util.Log.d("USER_LOG", "User($userID, $username, $pfpUri, $title, level=$level, exp=$exp/$cap, STR=$str, END=$end, VIT=$vit)")
+                android.util.Log.d(
+                    "USER_LOG",
+                    "User($userID, $username, $pfpUri, selectedTitle=$selectedTitle, unlocked=[$unlockedTitles], level=$level, exp=$exp/$cap, STR=$str, END=$end, VIT=$vit, streak=$streak, longest=$longest, last=$lastDate)"
+                )
             } while (cursor.moveToNext())
         } else {
             android.util.Log.d("USER_LOG", "No users found in the table.")
@@ -633,14 +661,18 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
                 userID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_ID)),
                 username = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USERNAME)),
                 pfpUri = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_PFP_URI)),
-                userTitle = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_USER_TITLE)),
+                selectedTitle = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_SELECTED_TITLE)),
                 level = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL)),
                 currentExp = cursor.getFloat(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXP)),
-                levelCap = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LEVEL_CAP)),
+                expCap = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_EXP_CAP)),
                 strengthPts = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_STR)),
                 endurancePts = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_END)),
-                vitalityPts = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_VIT))
-            )
+                vitalityPts = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_VIT)),
+                streakCount = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_STREAK_COUNT)),
+                longestStreak = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LONGEST_STREAK)),
+                lastStreakDate = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_LAST_STREAK_DATE)),
+                unlockedTitles = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_UNLOCKED_TITLES)) ?: "",
+                )
         }
         cursor.close()
         database.close()
@@ -648,24 +680,55 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
 
+    fun updateUserStreakIfNeeded(user: User): User {
+        val today = LocalDate.now()
+        val todayStr = today.format(DateTimeFormatter.ISO_DATE)
+
+        val lastDate = user.lastStreakDate?.let {
+            try {
+                LocalDate.parse(it)
+            } catch (e: Exception) {
+                null
+            }
+        }
+        val yesterday = today.minusDays(1)
+
+        if (lastDate != today) {
+            user.lastStreakDate = todayStr
+            user.streakCount = if (lastDate == yesterday) user.streakCount + 1 else 1
+            user.longestStreak = maxOf(user.longestStreak, user.streakCount)
+            updateUser(user) // Persist changes to DB
+        }
+
+        return user
+    }
+
+
+
+
     fun updateUser(user: User) {
         val database = this.writableDatabase
         val values = ContentValues().apply {
             put(DbReferences.COLUMN_USERNAME, user.username)
             put(DbReferences.COLUMN_PFP_URI, user.pfpUri)
-            put(DbReferences.COLUMN_USER_TITLE, user.userTitle)
+            put(DbReferences.COLUMN_SELECTED_TITLE, user.selectedTitle)
             put(DbReferences.COLUMN_LEVEL, user.level)
             put(DbReferences.COLUMN_EXP, user.currentExp)
-            put(DbReferences.COLUMN_LEVEL_CAP, user.levelCap)
+            put(DbReferences.COLUMN_EXP_CAP, user.expCap)
             put(DbReferences.COLUMN_STR, user.strengthPts)
             put(DbReferences.COLUMN_END, user.endurancePts)
             put(DbReferences.COLUMN_VIT, user.vitalityPts)
+            put(DbReferences.COLUMN_STREAK_COUNT, user.streakCount)
+            put(DbReferences.COLUMN_LONGEST_STREAK, user.longestStreak)
+            put(DbReferences.COLUMN_LAST_STREAK_DATE, user.lastStreakDate)
+            put(DbReferences.COLUMN_UNLOCKED_TITLES, user.unlockedTitles)
         }
         val selection = "${DbReferences.COLUMN_USER_ID} = ?"
         val selectionArgs = arrayOf(user.userID.toString())
         database.update(DbReferences.TABLE_USER, values, selection, selectionArgs)
         database.close()
     }
+
 
 
     fun deleteUser(id: Int) {

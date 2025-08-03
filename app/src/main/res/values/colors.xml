@@ -12,5 +12,7 @@
     <color name="bright_red">#FF0000</color>
     <color name="bright_purple">#4C00F1</color>
     <color name="light_gray">#C6C6C6</color>
+    <color name="gray">#5F5E5E</color>
     <color name="gold">#FFC107</color>
+    <color name="orange">#AF6010</color>
 </resources>

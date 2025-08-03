@@ -7,6 +7,7 @@
     android:background="@drawable/bg_main">
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
@@ -111,7 +112,7 @@
                             android:shadowRadius="10"
                             android:text="30"
                             android:textColor="@color/white"
-                            android:textSize="45sp" />
+                            android:textSize="40sp" />
 
                         <TextView
                             android:id="@+id/txvStatusLevel"
@@ -125,6 +126,16 @@
                             android:textColor="@color/white"
                             android:textSize="16sp" />
                     </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/imbSettings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/icon_settings" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -186,6 +197,7 @@
                                 android:text="TextView"
                                 android:textColor="@color/white"
                                 android:textSize="12sp" />
+
                         </LinearLayout>
 
                     </LinearLayout>
