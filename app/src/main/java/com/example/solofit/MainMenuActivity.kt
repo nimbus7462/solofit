@@ -3,6 +3,7 @@ package com.example.solofit
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.DailySummaryActivities.DailySummaryActivity
 import com.example.solofit.ManageQuestFragments.NavHostManageQuest
@@ -65,7 +66,11 @@ class MainMenuActivity : AppCompatActivity() {
         val currentUser = dbHelper.getUserById(Extras.DEFAULT_USER_ID)!! // Default User
         val displayName = if (currentUser.username.isNullOrBlank()) "Player" else currentUser.username
         binding.txvIgn.text = displayName
-        binding.txvUserTitle.text = currentUser.selectedTitle
+        if (currentUser.selectedTitle.isNullOrBlank()) {
+            binding.txvUserTitle.visibility = View.GONE
+        } else {
+            binding.txvUserTitle.text = currentUser.selectedTitle
+        }
         currentUser.pfpUri?.let {
             binding.imvPfp.setImageURI(it.toUri())
         }

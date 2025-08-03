@@ -62,7 +62,12 @@ class SettingsActivity : AppCompatActivity() {
         viewBinding.imvSettingsPfp.setImageURI(currentUser.pfpUri?.let { Uri.parse(it) })
         viewBinding.edtSettingsIgn.gravity = Gravity.CENTER
         viewBinding.edtSettingsIgn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f)
-        viewBinding.txvUserTitle.text = currentUser.selectedTitle
+        if (currentUser.selectedTitle.isNullOrBlank()) {
+            viewBinding.txvUserTitle.text = "[No Title Selected]"
+            viewBinding.txvUserTitle.setTextColor(ContextCompat.getColor(this, R.color.gray)) // or use a color resource
+        } else {
+            viewBinding.txvUserTitle.text = currentUser.selectedTitle
+        }
 
         viewBinding.btnEditIgn.setOnClickListener {
             enableIgnEditMode()
@@ -141,7 +146,12 @@ class SettingsActivity : AppCompatActivity() {
             if (selectedTitle != null) {
                 currentUser.selectedTitle = selectedTitle.toString()
                 dbHelper.updateUser(currentUser)
-                viewBinding.txvUserTitle.text = selectedTitle
+                if (selectedTitle.isNullOrBlank()) {
+                    viewBinding.txvUserTitle.text = "[No Title Selected]"
+                    viewBinding.txvUserTitle.setTextColor(ContextCompat.getColor(this, R.color.gray))
+                } else {
+                    viewBinding.txvUserTitle.text = selectedTitle
+                }
                 rootView.removeView(popupBinding.root)
             }
         }

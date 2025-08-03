@@ -3,6 +3,7 @@ package com.example.solofit.StatusAndQHistoryActivities
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.StatusPageBinding
@@ -46,7 +47,11 @@ class StatusActivity : AppCompatActivity() {
 
         android.util.Log.d("USER_TITLES", "Unlocked Titles (${unlockedTitles.size}): $unlockedTitles")
         viewBinding.txvLevelValue.text = user.level.toString()
-        viewBinding.txvUserTitle.text = user.selectedTitle
+        if (user.selectedTitle.isNullOrBlank()) {
+            viewBinding.txvUserTitle.text = "[ NONE ]"
+        } else {
+            viewBinding.txvUserTitle.text = user.selectedTitle
+        }
         viewBinding.progBarStatusLevel.progress = user.currentExp.toInt()
         viewBinding.progBarStatusLevel.max = user.expCap
         val expString = String.format("%.1f", user.currentExp)

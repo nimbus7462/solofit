@@ -55,7 +55,7 @@
             android:shadowRadius="10"
             android:text="TextView"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <Button
