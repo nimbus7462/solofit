@@ -73,6 +73,15 @@
     <string name="congratulations">Congratulations!</string>
     <string name="done">Done</string>
     <string name="view_titles">View Titles</string>
+    <string name="diff_legend">Difficulty Legend</string>
+    <string name="easy">Easy</string>
+    <string name="normal">Normal</string>
+    <string name="hard">Hard</string>
+    <string name="extreme">Extreme</string>
+    <string name="available_titles">Available Titles</string>
+    <string name="qhist_legend">Quest History Legend</string>
+    <string name="view_daily_quote">VIEW DAILY QUOTE</string>
+    <string name="qotd">Quote for :</string>
     <string-array name="quest_difficulties">
         <item />
         <item>Easy</item>

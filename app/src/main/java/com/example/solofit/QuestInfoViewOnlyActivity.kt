@@ -61,7 +61,7 @@ class QuestInfoViewOnlyActivity : AppCompatActivity() {
 
         val (bgRes, shadowColorRes) = when (difficulty) {
             "Easy" -> R.drawable.bg_diff_text_easy to R.color.bright_green
-            "Normal" -> R.drawable.bg_diff_text_normal to R.color.cyan
+            "Normal" -> R.drawable.bg_diff_text_normal to R.color.orange
             "Hard" -> R.drawable.bg_diff_text_hard to R.color.bright_red
             "Extreme" -> R.drawable.bg_diff_text_extreme to R.color.bright_purple
             else -> R.drawable.bg_diff_text_easy to R.color.bright_green // default fallback

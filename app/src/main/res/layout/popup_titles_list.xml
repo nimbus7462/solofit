@@ -37,25 +37,45 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/txvTitleListHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_margin="10dp"
+                android:fontFamily="@font/play"
+                android:gravity="center"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/available_titles"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recView_TitlesList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:foregroundGravity="center" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingHorizontal="50dp">
 
                 <Button
                     android:id="@+id/btnGoBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_add_quest_cancel"
                     android:fontFamily="@font/play"
-                    android:paddingStart="30dp"
-                    android:paddingEnd="30dp"
                     android:shadowColor="@color/light_gray"
                     android:shadowRadius="10"
                     android:text="@string/return_quest"
@@ -66,11 +86,12 @@
                     android:id="@+id/btnSaveTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_complete_btn"
                     android:contentDescription="@string/confirm_btn"
                     android:fontFamily="@font/play"
-                    android:paddingStart="30dp"
-                    android:paddingEnd="30dp"
                     android:shadowColor="@color/bright_green"
                     android:shadowRadius="10"
                     android:text="@string/done"

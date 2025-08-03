@@ -20,6 +20,22 @@ class QuestHistoryViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView
         binding.lloQuest.background = ContextCompat.getDrawable(binding.root.context, bgResId)
     }
 
+    fun setQuestNameTextShadow(colorResId: Int) {
+        binding.txvQuestName.setShadowLayer(
+            10f,
+            0f,
+            0f,
+            ContextCompat.getColor(binding.root.context, colorResId)
+        )
+    }
+
+    fun setQuestNameTextColor(colorResId: Int) {
+        binding.txvQuestName.setTextColor(
+            ContextCompat.getColor(binding.root.context, colorResId)
+        )
+    }
+
+    // Optional: keep this only if you still need it for log actions
     fun setActionBtnClickListenerAsLog(onClick: () -> Unit) {
         binding.imbQuestAction.setOnClickListener { onClick() }
     }
@@ -30,13 +46,5 @@ class QuestHistoryViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView
 
     fun setActionBtnIcon(iconResId: Int) {
         binding.imbQuestAction.setImageResource(iconResId)
-    }
-
-    fun setQuestNameTextShadow(colorResId: Int) {
-        binding.txvQuestName.setShadowLayer(
-            10f,
-            0f,
-            0f,
-            ContextCompat.getColor(binding.root.context, colorResId))
     }
 }

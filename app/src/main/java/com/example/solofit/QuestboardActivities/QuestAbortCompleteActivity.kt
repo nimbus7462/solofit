@@ -304,7 +304,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
                 popupBinding.btnViewTitles.visibility = View.VISIBLE
                 popupBinding.btnViewTitles.setOnClickListener {
                     val intent = Intent(this, SettingsActivity::class.java)
-                    intent.putExtra(Extras.EXTRA_SRC, "Quest_Abort_Complete") // optional
+                    intent.putExtra(Extras.SHOULD_OPEN_TITLE_POPUP, true)
                     startActivity(intent)
                     finish()
                 }

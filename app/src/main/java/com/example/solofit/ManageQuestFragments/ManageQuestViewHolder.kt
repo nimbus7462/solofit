@@ -3,6 +3,7 @@ package com.example.solofit.ManageQuestFragments
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.solofit.R
 import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
 
@@ -37,6 +38,12 @@ class ManageQuestViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.
             10f,
             0f,
             0f,
+            ContextCompat.getColor(binding.root.context, colorResId)
+        )
+    }
+
+    fun setQuestNameTextColor(colorResId: Int) {
+        binding.txvQuestName.setTextColor(
             ContextCompat.getColor(binding.root.context, colorResId)
         )
     }

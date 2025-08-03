@@ -36,13 +36,59 @@
             android:textColor="@color/white"
             android:textSize="34sp" />
 
+        <!-- Sort & Filter Buttons at Far Edges -->
+
+        <FrameLayout
+            android:layout_width="315dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <!-- Sort Spinner (Left-Aligned) -->
+            <Spinner
+                android:id="@+id/spinner_sort"
+                android:layout_width="120dp"
+                android:layout_height="45dp"
+                android:layout_gravity="start"
+                android:background="@drawable/bg_sort"
+                android:popupBackground="@drawable/bg_inner_panel"
+                android:textColor="@android:color/transparent"
+                android:padding="8dp"
+                android:spinnerMode="dropdown" />
+
+            <!-- Filter Spinner (Right-Aligned) -->
+
+            <Spinner
+                android:id="@+id/spinner_filter"
+                android:layout_width="120dp"
+                android:layout_height="45dp"
+                android:layout_gravity="end"
+                android:background="@drawable/bg_filter"
+                android:popupBackground="@drawable/bg_inner_panel"
+                android:textColor="@android:color/transparent"
+                android:padding="8dp"
+                android:spinnerMode="dropdown" />
+
+            <ImageButton
+                android:id="@+id/imbLegend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/icon_help" />
+
+        </FrameLayout>
+
+        <!-- RecyclerView for quests -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recView_quests"
             android:layout_width="315dp"
-            android:layout_height="500dp"
+            android:layout_height="456dp"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
             android:background="@drawable/bg_inner_panel"
             android:padding="15dp" />
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

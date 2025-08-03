@@ -13,6 +13,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/bg_quest_item_normal"
         android:backgroundTintMode="src_in"
+        android:elevation="50dp"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
@@ -48,14 +49,14 @@
 
         <ImageButton
             android:id="@+id/imbQuestAction"
-            android:layout_width="38dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_margin="5dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/log_icon"
             android:scaleType="fitCenter"
-            android:visibility="gone"
+            android:visibility="visible"
             app:srcCompat="@android:color/transparent" />
 
     </LinearLayout>

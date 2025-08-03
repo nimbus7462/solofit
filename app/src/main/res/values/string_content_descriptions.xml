@@ -7,4 +7,5 @@
     <string name="go_back_btn">Go Back Button</string>
     <string name="confirm_btn">Confirm Button</string>
     <string name="settings_btn">Settings Button</string>
+    <string name="toggle_calc_info_btn">Toggle Calc Info Button</string>
 </resources>

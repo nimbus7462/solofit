@@ -5,8 +5,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.model.Quest
 
-
-
 class QuestBoardViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bindData(quest: Quest) {
         binding.txvQuestName.text = quest.questName
@@ -25,8 +23,14 @@ class QuestBoardViewHolder(val binding: QuestItemLayoutBinding) : RecyclerView.V
             10f,
             0f,
             0f,
-            ContextCompat.getColor(binding.root.context, colorResId))
+            ContextCompat.getColor(binding.root.context, colorResId)
+        )
     }
 
-
+    // Added this method to set the actual text color (e.g. white)
+    fun setQuestNameTextColor(colorResId: Int) {
+        binding.txvQuestName.setTextColor(
+            ContextCompat.getColor(binding.root.context, colorResId)
+        )
+    }
 }
