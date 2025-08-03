@@ -9,8 +9,12 @@ import com.example.solofit.model.Quest
 import com.example.solofit.model.Quote
 import com.example.solofit.model.User
 import com.example.solofit.model.UserQuestActivity
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
+import com.example.solofit.utilities.Extras
 
 class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     context, DbReferences.DATABASE_NAME, null, DbReferences.DATABASE_VERSION
@@ -480,6 +484,30 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         cursor.close()
         database.close()
         return result
+    }
+
+    fun generateTodayQuestsIfNeeded(context: Context) {
+        val prefs = context.getSharedPreferences("QuestPrefs", Context.MODE_PRIVATE)
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val lastQuestDate = prefs.getString("lastQuestDate", null)
+
+        val existingCreatedQuests = getUserQuestsByStatusDateAndUserID("CREATED", today, Extras.DEFAULT_USER_ID)
+
+        if (lastQuestDate != today && existingCreatedQuests.isEmpty()) {
+            val randomQuests = getRandomQuests(5)
+            for (quest in randomQuests) {
+                val uqa = UserQuestActivity(
+                    questStatus = "CREATED",
+                    userLogs = "",
+                    dateCreated = today,
+                    questID = quest.id,
+                    quoteID = 0,
+                    userID = Extras.DEFAULT_USER_ID
+                )
+                insertUserQuestActivity(uqa)
+            }
+            prefs.edit().putString("lastQuestDate", today).apply()
+        }
     }
 
 

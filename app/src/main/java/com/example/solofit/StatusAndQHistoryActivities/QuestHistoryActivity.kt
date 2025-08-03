@@ -13,6 +13,9 @@ import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.PopupLegendBinding
 import com.example.solofit.databinding.QuestHistoryBinding
 import com.example.solofit.model.UserQuestActivity
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class QuestHistoryActivity : AppCompatActivity() {
     private lateinit var viewBinding: QuestHistoryBinding
@@ -91,6 +94,15 @@ class QuestHistoryActivity : AppCompatActivity() {
     }
 
     private fun loadCompletedAndCancelledQuests() {
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        // 1. Generate today's quests if not yet done
+        dbHelper.generateTodayQuestsIfNeeded(this)
+
+        // 2. Abort old unfinished quests
+        dbHelper.autoCancelOldUnfinishedQuests(today)
+
+        // 3. Load completed and aborted quests
         fullUQAList = dbHelper.getAllUserQuestActivities()
             .filter { it.questStatus.equals("COMPLETED", true) || it.questStatus.equals("ABORTED", true) }
         applySortAndFilter()
@@ -109,4 +121,5 @@ class QuestHistoryActivity : AppCompatActivity() {
             rootView.removeView(popupBinding.root)
         }
     }
+
 }
