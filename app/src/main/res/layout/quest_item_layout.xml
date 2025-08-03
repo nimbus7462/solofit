@@ -39,13 +39,14 @@
             android:layout_gravity="center"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:fontFamily="@font/inclusive_sans"
+            android:fontFamily="@font/schibsted_grotesk"
             android:gravity="center"
-            android:shadowColor="@color/cyan"
+            android:paddingBottom="5dp"
+            android:shadowColor="@color/light_gray"
             android:shadowRadius="10"
             android:text="TextView"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="13sp" />
 
 
         <ImageButton
