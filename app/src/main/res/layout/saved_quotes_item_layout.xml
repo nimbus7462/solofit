@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/lloQuoteSumm"
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:background="@drawable/bg_quote_preview"

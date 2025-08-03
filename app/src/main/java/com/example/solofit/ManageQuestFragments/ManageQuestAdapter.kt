@@ -32,7 +32,7 @@ class ManageQuestAdapter(
             onItemClick(questItem)
         }
 
-        // Switch case for background colors based on difficulty
+        // Background color by difficulty
         when (questItem.difficulty) {
             "Easy" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_easy)
@@ -51,21 +51,21 @@ class ManageQuestAdapter(
                 holder.setQuestNameTextShadow(R.color.bright_purple)
             }
         }
-        // Switch case for icon
+
+        // Icon by questType
         when (questItem.questType) {
             "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
             "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)
             "Vitality" -> holder.setQuestIcon(R.drawable.icon_vit)
         }
 
-        holder.setActionBtnVisibility(isVisible = true)
+        holder.setActionBtnVisibility(true)
         holder.setActionBtnIcon(R.drawable.icon_delete)
+
+        // Only trigger confirmation dialog; no direct delete here!
         holder.setActionBtnClickListenerAsDelete {
             onDeleteClick(questItem)
-            questList.removeAt(position)
-            notifyItemRemoved(position)
         }
-
     }
 
     override fun getItemCount(): Int = questList.size

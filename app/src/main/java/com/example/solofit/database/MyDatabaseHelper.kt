@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.solofit.QuoteActivities.QuoteActivity
 import com.example.solofit.model.Quest
 import com.example.solofit.model.Quote
 import com.example.solofit.model.User
@@ -177,8 +178,19 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
             Quest("3 x 10 Pull-ups", "Do 3 sets of 10 pull-ups for upper body power.", "Strength", "Back, Biceps", "Hard", 80, 1),
             Quest("60s Plank", "Hold a plank for 60 seconds for core strength.", "Vitality", "Core, Balance", "Normal", 60, 2),
             Quest("10km Jog", "Jog 10 kilometers to build endurance and stamina.", "Endurance", "Cardio, Stamina", "Hard", 120, 3),
-            Quest("3 x 30 Jumping Jacks", "Do 3 sets of 30 jumping jacks to warm up and activate full body.", "Endurance", "Warm-up, Cardio", "Easy", 30, 1)
+            Quest("3 x 30 Jumping Jacks", "Do 3 sets of 30 jumping jacks to warm up and activate full body.", "Endurance", "Warm-up, Cardio", "Easy", 30, 1),
+            Quest("5 Min Wall Sit", "Hold a wall sit position for 5 minutes to improve lower body endurance.", "Vitality", "Legs, Core", "Hard", 90, 2),
+            Quest("3 x 20 Bodyweight Squats", "Perform 3 sets of 20 bodyweight squats for leg strength.", "Strength", "Legs, Glutes", "Normal", 60, 1),
+            Quest("5 x 1 Min Jump Rope", "Jump rope for 1 minute, 5 rounds, to improve cardio and coordination.", "Endurance", "Cardio, Footwork", "Normal", 45, 2),
+            Quest("3 x 20 Mountain Climbers", "Do 3 sets of 20 mountain climbers to work your core and agility.", "Vitality", "Core, Full Body", "Normal", 55, 1),
+            Quest("1 Min High Knees", "Do high knees for 1 minute to elevate heart rate and warm up.", "Endurance", "Legs, Cardio", "Easy", 20, 1),
+            Quest("3 x 15 Dips", "Use parallel bars or a bench to perform dips for triceps and chest.", "Strength", "Triceps, Chest", "Normal", 60, 1),
+            Quest("10 Min Yoga Flow", "Perform a 10-minute yoga session to improve flexibility and balance.", "Vitality", "Flexibility, Balance", "Easy", 40, 1),
+            Quest("3 x 12 Lunges", "Alternate legs for 3 sets of 12 lunges to strengthen lower body.", "Strength", "Legs, Glutes", "Normal", 55, 1),
+            Quest("3 x 10 Burpees", "Do 3 sets of 10 burpees for full body explosive movement.", "Endurance", "Full Body, Cardio", "Hard", 90, 2),
+            Quest("15 Min Walk", "Take a 15-minute brisk walk to stay active and refreshed.", "Endurance", "Cardio, Light Activity", "Easy", 15, 1)
         )
+
 
         for (q in quests) {
             val values = ContentValues().apply {
@@ -215,10 +227,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
 
-
-
-    // CRUD FOR QUEST
-    /* 🟢 Read: Returns all quests in a list */
     fun getAllQuests(): ArrayList<Quest> {
         val database = this.readableDatabase
         val c = database.query(
@@ -254,7 +262,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         return quests
     }
 
-    /* 🟢 Insert: Adds a new quest to the DB and returns success */
     @Synchronized
     fun insertQuest(q: Quest): Long {
         val database = this.writableDatabase
@@ -274,9 +281,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         return id
     }
 
-
-    /* 🟡 Update: Modify an existing quest */
-    /* 🟡 Update: Modify an existing quest and return number of rows updated */
     fun updateQuest(q: Quest): Int {
         val database = this.writableDatabase
 
@@ -298,7 +302,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
         return rowsUpdated
     }
-
 
 
     fun deleteQuest(id: Int) {
@@ -801,6 +804,58 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.delete(DbReferences.TABLE_UQA, selection, selectionArgs)
         database.close()
     }
+    fun getAllSavedQuotes(): ArrayList<Quote> {
+        val quotes = ArrayList<Quote>()
+        val database = this.readableDatabase
 
+        val cursor = database.query(
+            DbReferences.TABLE_QUOTE,
+            null,
+            "${DbReferences.COLUMN_IS_SAVED} = ?",
+            arrayOf("1"),
+            null,
+            null,
+            null
+        )
+
+        while (cursor.moveToNext()) {
+            quotes.add(
+                Quote(
+                    quoteID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_ID)),
+                    quoteText = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_TEXT)),
+                    quoteAuthor = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_AUTHOR)),
+                    isSaved = true
+                )
+            )
+        }
+
+        cursor.close()
+        database.close()
+        return quotes
+    }
+    fun getQuoteById(id: Int): Quote? {
+        val database = this.readableDatabase
+        val cursor = database.query(
+            DbReferences.TABLE_QUOTE,
+            null,
+            "${DbReferences.COLUMN_QUOTE_ID} = ?",
+            arrayOf(id.toString()),
+            null,
+            null,
+            null
+        )
+        var quote: Quote? = null
+        if (cursor.moveToFirst()) {
+            quote = Quote(
+                quoteID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_ID)),
+                quoteText = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_TEXT)),
+                quoteAuthor = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_AUTHOR)),
+                isSaved = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_IS_SAVED)) == 1
+            )
+        }
+        cursor.close()
+        database.close()
+        return quote
+    }
 }
 

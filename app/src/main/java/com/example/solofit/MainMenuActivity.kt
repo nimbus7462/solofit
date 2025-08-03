@@ -1,7 +1,6 @@
 package com.example.solofit
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -11,10 +10,10 @@ import com.example.solofit.StatusAndQHistoryActivities.StatusActivity
 import com.example.solofit.QuestboardActivities.QuestBoardActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.MainMenuBinding
-import com.example.solofit.model.User
 import com.example.solofit.utilities.Extras
 import androidx.core.net.toUri
 import com.example.solofit.SettingsActivities.SettingsActivity
+import com.example.solofit.QuoteActivities.QuoteActivity
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -49,7 +48,7 @@ class MainMenuActivity : AppCompatActivity() {
         }
 
         binding.btnQuotes.setOnClickListener{
-            val intent = Intent(this, QuotesActivity::class.java)
+            val intent = Intent(this, QuoteActivity::class.java)
             startActivity(intent)
         }
 

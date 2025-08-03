@@ -28,7 +28,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
     private lateinit var viewBinding: AbortCompleteQuestBinding
     private var isSaved = false
 
-
+    // commit test
     // Store the selected quote for use when saving to UQA
     private var selectedQuote: Quote? = null
 
