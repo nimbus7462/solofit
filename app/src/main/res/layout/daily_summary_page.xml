@@ -178,35 +178,35 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/llolevel"
+                        android:id="@+id/lloDailyQuote"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
                         android:layout_weight="1"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/txvDailySummLevel"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/schibsted_grotesk"
-                            android:gravity="center_horizontal"
-                            android:shadowColor="@color/cyan"
-                            android:shadowRadius="10"
-                            android:text="@string/level"
-                            android:textColor="@color/white"
-                            android:textSize="16sp" />
+                        <ImageButton
+                            android:id="@+id/imbDailyQuote"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/icon_book" />
 
                         <TextView
-                            android:id="@+id/txvDailySummLevelValue"
-                            android:layout_width="match_parent"
+                            android:id="@+id/txvViewQotd"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/schibsted_grotesk"
                             android:gravity="center_horizontal"
                             android:shadowColor="@color/cyan"
                             android:shadowRadius="10"
-                            android:text="30"
+                            android:text="@string/view_daily_quote"
                             android:textColor="@color/white"
-                            android:textSize="24sp" />
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
