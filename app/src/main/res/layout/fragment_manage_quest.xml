@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/txvManageQuestTitle"
-        android:layout_width="315dp"
+        android:layout_width="325dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
@@ -29,44 +29,49 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        
         android:id="@+id/recView_ManageQuest"
-        android:layout_width="311dp"
-        android:scrollbars="vertical"
-        android:layout_height="wrap_content"
+        android:layout_width="325dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/bg_inner_panel"
+        android:fadeScrollbars="false"
         android:padding="15dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txvManageQuestTitle"
         app:layout_constraintVertical_bias="0.0">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddQuest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+    <ImageView
+        android:id="@+id/ib_add_quest"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:contentDescription="add quest"
-        android:scaleType="centerCrop"
-        android:src="@drawable/iconplussign"
-        app:backgroundTint="@color/dark_blue"
-        app:fabCustomSize="90dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="Add Quest"
+        android:focusable="true"
+        android:paddingBottom="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bg_add_quest"
+        app:layout_constraintBottom_toBottomOf="@+id/recView_ManageQuest"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="50dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recView_ManageQuest" />
 
     <View
         android:id="@+id/viewBackgroundBlocker"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#D308133A"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,11 +81,13 @@
         android:id="@+id/cloConfirmation"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="wrap_content"
