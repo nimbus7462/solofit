@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_screen_btn">Continue Button</string>
+    <string name="profile_pic">Profile Picture</string>
+    <string name="log_icon">Log Icon</string>
+    <string name="save_quote_icon">Save Quote Icon</string>
+    <string name="go_back_btn">Go Back Button</string>
+    <string name="confirm_btn">Confirm Button</string>
+    <string name="settings_btn">Settings Button</string>
+</resources>

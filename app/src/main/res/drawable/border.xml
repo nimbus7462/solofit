@@ -1,0 +1,25 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Outer glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="2dp" />
+            <stroke
+                android:width="2dp"
+                android:color="#72F6FF" /> <!-- semi-transparent cyan glow -->
+        </shape>
+    </item>
+
+    <!-- Inner white border -->
+    <item android:left="1dp" android:right="1dp" android:top="1dp" android:bottom="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="3dp" />
+            <stroke
+                android:width="1dp"
+                android:color="#FFFFFFFF" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_main">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="650dp"
+        android:background="@drawable/bg_sidepage_frame"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_page_title"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/txvLoggingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/schibsted_grotesk"
+                android:gravity="center"
+                android:paddingBottom="8dp"
+                android:shadowColor="@color/cyan"
+                android:shadowRadius="10"
+                android:text="@string/logging"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txvLoggingQuestName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/play"
+            android:gravity="center"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="Quest Name Here"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/edtLog"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_logging_edit"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/play"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:padding="20dp"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="Pushed till failure for the last set"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txvLoggingQuestStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inclusive_sans"
+            android:gravity="center"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="@string/completed"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/txvLoggingCompletedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/inclusive_sans"
+            android:gravity="center"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="06/29/25"
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/btnEditLog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_edit_log_btn"
+            android:fontFamily="@font/play"
+            android:paddingBottom="4dp"
+            android:shadowColor="@color/cyan"
+            android:shadowRadius="10"
+            android:text="@string/edit_log"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/lloHideIfNotSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btnCancelLog"
+                android:layout_width="115dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="35dp"
+                android:background="@drawable/bg_add_quest_cancel"
+                android:fontFamily="@font/play"
+                android:shadowColor="#C6C6C6"
+                android:shadowRadius="10"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnSaveLog"
+                android:layout_width="115dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="35dp"
+                android:background="@drawable/bg_add_quest_save"
+                android:fontFamily="@font/play"
+                android:shadowColor="@color/bright_green"
+                android:shadowRadius="10"
+                android:text="@string/save_quest"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

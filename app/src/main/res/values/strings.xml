@@ -1,5 +1,90 @@
 <resources>
     <string name="app_name">solofit</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="quests">QUESTS</string>
+    <string name="add_quest">ADD QUEST</string>
+    <string name="add_quest_outer">Add Quest</string>
+    <string name="edit_quest">EDIT QUEST</string>
+    <string name="continue_button">Continue</string>
+    <string name="welcome">Welcome to SoloFit</string>
+    <string name="welcome_subtitle">Start your improvement journey now,\nMonarch</string>
+    <string name="hint_questName">Insert Quest Name Here</string>
+    <string name="questtype">Quest Type:</string>
+    <string name="difficulty">Difficulty:</string>
+    <string name="additional_tags">Additional Tags:</string>
+    <string name="hint_extraTags">(Enter custom user \ntags here)</string>
+    <string name="exp_reward">EXP Reward:</string>
+    <string name="hint_expReward">(Numerical Vals. Only)</string>
+    <string name="stat_reward">Stat Reward:</string>
+    <string name="add_desc">Add Description:</string>
+    <string name="edit_desc">Edit Description:</string>
+    <string name="hint_addDesc">(Add Quest Desc. Here)</string>
+    <string name="save_quest">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="questboard">QUESTBOARD</string>
+    <string name="manage_quests">MANAGE QUESTS</string>
+    <string name="status">STATUS</string>
+    <string name="daily_summary">DAILY SUMMARY</string>
+    <string name="quotes">QUOTES</string>
+    <string name="quest_history_button">View Quest History</string>
+    <string name="quest_summary_button">View Quest Summary</string>
+    <string name="level">LEVEL</string>
+    <string name="exp">EXP</string>
+    <string name="title">TITLE:</string>
+    <string name="days">DAYS</string>
+    <string name="current_streak">CURRENT\nSTREAK</string>
+    <string name="longest_streak">LONGEST\nSTREAK</string>
+    <string name="str">STR:</string>
+    <string name="end">END:</string>
+    <string name="vit">VIT:</string>
+    <string name="completed_quests">COMPLETED QUESTS:</string>
+    <string name="aborted_quests">ABORTED QUESTS:</string>
+    <string name="exp_gained">EXP EARNED ON</string>
+    <string name="quest_info">QUEST INFO</string>
+    <string name="completed">Completed</string>
+    <string name="quest_history">QUEST HISTORY</string>
+    <string name="logging">LOGGING</string>
+    <string name="edit_log">Edit Log</string>
+    <string name="saved_quotes">SAVED QUOTES</string>
+    <string name="complete_quest">Complete</string>
+    <string name="abort">Abort</string>
+    <string name="log_thoughts">Log Thoughts</string>
+    <string name="finish_logging">Finish Logging</string>
+    <string name="quest_completed">QUEST COMPLETED</string>
+    <string name="quest_aborted">QUEST ABORTED</string>
+    <string name="return_quest">RETURN</string>
+    <string name="quest_summary">QUEST SUMMARY</string>
+    <string name="aborted">Aborted</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
+    <string name="error">ERROR:</string>
+    <string name="close">CLOSE</string>
+    <string name="settings">SETTINGS</string>
+    <string name="change_pfp">Change PFP</string>
+    <string name="change_ign">Change IGN</string>
+    <string name="back">Back</string>
+    <string name="hint_changeIgn">Input IGN Here</string>
+    <string name="hint_inputlog">Input Personal Log Here</string>
+    <string name="total_exp_gained">Total Exp Gained</string>
+    <string name="streak_multiplier">Streak Multipler</string>
+    <string name="total_exp_penalty">Total Exp Penalty</string>
+    <string name="total_net_exp">Total Net Exp</string>
+    <string name="change_title">Change Title</string>
+    <string name="user_title">Title:</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="done">Done</string>
+    <string name="view_titles">View Titles</string>
+    <string-array name="quest_difficulties">
+        <item />
+        <item>Easy</item>
+        <item>Normal</item>
+        <item>Hard</item>
+        <item>Extreme</item>
+    </string-array>
+
+    <string-array name="quest_types">
+        <item />
+        <item>Strength</item>
+        <item>Endurance</item>
+        <item>Vitality</item>
+    </string-array>
 </resources>
