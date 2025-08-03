@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.FragmentManageQuestBinding
+import com.example.solofit.databinding.PopupLegendBinding
 import com.example.solofit.model.Quest
 
 
@@ -44,7 +45,9 @@ class ManageQuest : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         originalQuestList = dbHelper.getAllQuests()
-
+        binding.imbLegend.setOnClickListener {
+            showDifficultyLegendPopup()
+        }
         adapter = ManageQuestAdapter(
             originalQuestList.toMutableList(),
             onItemClick = { quest ->
@@ -83,6 +86,7 @@ class ManageQuest : Fragment() {
                         applySortAndFilter()
                     }
 
+
                     binding.cloConfirmation.visibility = View.INVISIBLE
                     binding.viewBackgroundBlocker.visibility = View.INVISIBLE
                     questPendingDelete = null
@@ -103,7 +107,7 @@ class ManageQuest : Fragment() {
     }
 
     private fun setupSpinners() {
-        val sortOptions = listOf("Easy->Extreme", "Extreme->Easy")
+        val sortOptions = listOf("Easiest First", "Hardest First")
         val filterOptions = listOf("All", "Easy", "Normal", "Hard", "Extreme", "Strength", "Endurance", "Vitality")
 
         val sortAdapter = ArrayAdapter(requireContext(), R.layout.spinner_selected_blank, sortOptions)
@@ -152,10 +156,10 @@ class ManageQuest : Fragment() {
         // Apply sort
         val difficultyOrder = listOf("Easy", "Normal", "Hard", "Extreme")
         filteredList = when (selectedSort) {
-            "Easy->Extreme" -> {
+            "Easiest First" -> {
                 filteredList.sortedBy { difficultyOrder.indexOf(it.difficulty) }
             }
-            "Extreme->Easy" -> {
+            "Hardest First" -> {
                 filteredList.sortedByDescending { difficultyOrder.indexOf(it.difficulty) }
             }
             else -> filteredList
@@ -173,5 +177,16 @@ class ManageQuest : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         viewBinding = null
+    }
+
+
+    private fun showDifficultyLegendPopup() {
+        val popupBinding = PopupLegendBinding.inflate(layoutInflater)
+        val rootView = requireActivity().findViewById<ViewGroup>(android.R.id.content)
+        rootView.addView(popupBinding.root)
+
+        popupBinding.btnGoBack.setOnClickListener {
+            rootView.removeView(popupBinding.root)
+        }
     }
 }

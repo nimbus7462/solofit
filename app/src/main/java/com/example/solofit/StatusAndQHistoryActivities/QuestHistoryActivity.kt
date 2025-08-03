@@ -2,6 +2,7 @@ package com.example.solofit.StatusAndQHistoryActivities
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
+import com.example.solofit.databinding.PopupLegendBinding
 import com.example.solofit.databinding.QuestHistoryBinding
 import com.example.solofit.model.UserQuestActivity
 import java.text.SimpleDateFormat
@@ -33,6 +35,9 @@ class QuestHistoryActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         setupSpinners()
+        viewBinding.imbLegend.setOnClickListener {
+            showQHistLegendPopup()
+        }
     }
 
     override fun onResume() {
@@ -41,7 +46,7 @@ class QuestHistoryActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners() {
-        val sortOptions = listOf("Easy->Extreme", "Extreme->Easy")
+        val sortOptions = listOf("Easiest First", "Hardest First")
         val filterOptions = listOf("All", "Easy", "Normal", "Hard", "Extreme", "Strength", "Endurance", "Vitality")
 
         val sortAdapter = ArrayAdapter(this, R.layout.spinner_selected_blank, sortOptions)
@@ -79,7 +84,7 @@ class QuestHistoryActivity : AppCompatActivity() {
             else -> filtered
         }
 
-        filtered = if (sortOption == "Easy->Extreme") {
+        filtered = if (sortOption == "Easiest First") {
             filtered.sortedBy { dbHelper.getQuestById(it.questID)?.questName ?: "" }
         } else {
             filtered.sortedByDescending { dbHelper.getQuestById(it.questID)?.questName ?: "" }
@@ -99,13 +104,22 @@ class QuestHistoryActivity : AppCompatActivity() {
 
         // 3. Load completed and aborted quests
         fullUQAList = dbHelper.getAllUserQuestActivities()
-            .filter {
-                it.questStatus.equals("COMPLETED", true) ||
-                        it.questStatus.equals("ABORTED", true)
-            }
-
-        // 4. Apply sort & filter on result
+            .filter { it.questStatus.equals("COMPLETED", true) || it.questStatus.equals("ABORTED", true) }
         applySortAndFilter()
+    }
+
+    private fun showQHistLegendPopup() {
+        val popupBinding = PopupLegendBinding.inflate(layoutInflater)
+        val rootView = findViewById<ViewGroup>(android.R.id.content)
+        rootView.addView(popupBinding.root)
+
+        popupBinding.txvDiffLegendHeader.text = getString(R.string.qhist_legend)
+        popupBinding.lloShowIfQuestHist.visibility = View.VISIBLE
+        popupBinding.lloDiffRow1.visibility = View.GONE
+        popupBinding.lloDiffRow2.visibility = View.GONE
+        popupBinding.btnGoBack.setOnClickListener {
+            rootView.removeView(popupBinding.root)
+        }
     }
 
 }

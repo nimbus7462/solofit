@@ -79,6 +79,9 @@
     <string name="hard">Hard</string>
     <string name="extreme">Extreme</string>
     <string name="available_titles">Available Titles</string>
+    <string name="qhist_legend">Quest History Legend</string>
+    <string name="view_daily_quote">VIEW DAILY QUOTE</string>
+    <string name="qotd">Quote for :</string>
     <string-array name="quest_difficulties">
         <item />
         <item>Easy</item>

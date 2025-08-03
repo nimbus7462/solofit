@@ -3,10 +3,13 @@ package com.example.solofit.DailySummaryActivities
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.DailySummaryPageBinding
+import com.example.solofit.databinding.PopupDailyQuoteBinding
+import com.example.solofit.databinding.PopupLegendBinding
 import com.example.solofit.utilities.Extras
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -15,6 +18,7 @@ import java.util.Locale
 class DailySummaryActivity: AppCompatActivity() {
     private lateinit var viewBinding: DailySummaryPageBinding
     val dbHelper = MyDatabaseHelper.getInstance(this)!!
+    private var isSaved = false
     val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +75,10 @@ class DailySummaryActivity: AppCompatActivity() {
             }
         }
 
+        viewBinding.imbDailyQuote.setOnClickListener {
+            showDailyQuotePopUp()
+        }
+
 
         val base = if (streakCount >= 3) 0.02 else 0.0
         val stepBonus = (streakCount / 5) * 0.05
@@ -93,5 +101,22 @@ class DailySummaryActivity: AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    private fun showDailyQuotePopUp() {
+        val popupBinding = PopupDailyQuoteBinding.inflate(layoutInflater)
+        val rootView = findViewById<ViewGroup>(android.R.id.content)
+        rootView.addView(popupBinding.root)
+
+        popupBinding.txvQuoteDateToday.text = today
+        popupBinding.imbSaveQuote.setOnClickListener {
+            isSaved = !isSaved
+            val updatedIcon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
+            popupBinding.imbSaveQuote.setImageResource(updatedIcon)
+            //TODO: Add quote logic here
+        }
+        popupBinding.btnGoBack.setOnClickListener {
+            rootView.removeView(popupBinding.root)
+        }
     }
 }

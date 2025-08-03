@@ -60,6 +60,14 @@
             android:textColor="@android:color/transparent"
             android:padding="8dp"
             android:spinnerMode="dropdown" />
+
+        <ImageButton
+            android:id="@+id/imbLegend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/icon_help" />
     </FrameLayout>
 
 
@@ -81,7 +89,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameSpinnerContainer"
         app:layout_constraintVertical_bias="0.0" />
@@ -90,11 +98,10 @@
         android:id="@+id/ib_add_quest"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@android:color/transparent"
         android:clickable="true"
         android:contentDescription="Add Quest"
         android:focusable="true"
-        android:paddingBottom="15dp"
         android:scaleType="fitCenter"
         android:src="@drawable/bg_add_quest"
         app:layout_constraintBottom_toBottomOf="@+id/recView_ManageQuest"
@@ -136,10 +143,8 @@
             android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.933">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/txvConfirmationMsg"
