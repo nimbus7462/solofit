@@ -12,7 +12,7 @@ class UserQuestActivity : Parcelable {
     var quoteID: Int
     var userID: Int
 
-    // Constructor without ID
+
     constructor(
         questStatus: String,
         userLogs: String,
@@ -29,7 +29,7 @@ class UserQuestActivity : Parcelable {
         this.userID = userID
     }
 
-    // Constructor with ID
+
     constructor(
         userQuestActID: Int,
         questStatus: String,
@@ -48,7 +48,7 @@ class UserQuestActivity : Parcelable {
         this.userID = userID
     }
 
-    // Constructor for Parcel
+
     private constructor(parcel: Parcel) {
         userQuestActID = parcel.readInt()
         questStatus = parcel.readString() ?: ""

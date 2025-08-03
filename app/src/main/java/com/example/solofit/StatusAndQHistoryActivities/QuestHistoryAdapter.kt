@@ -8,7 +8,6 @@ import com.example.solofit.QuestInfoViewOnlyActivity
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestItemLayoutBinding
-import com.example.solofit.model.Quest
 import com.example.solofit.model.UserQuestActivity
 import com.example.solofit.utilities.Extras
 
@@ -37,7 +36,7 @@ class QuestHistoryAdapter(private val allUQAList: ArrayList<UserQuestActivity>, 
         holder.setActionBtnVisibility(isVisible = true)
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, QuestInfoViewOnlyActivity::class.java).apply {
-                // From Quest
+
                 putExtra(Extras.EXTRA_QUEST_TITLE, questItem.questName)
                 putExtra(Extras.EXTRA_DESC, questItem.description)
                 putExtra(Extras.EXTRA_QUEST_TYPE, questItem.questType)
@@ -46,8 +45,6 @@ class QuestHistoryAdapter(private val allUQAList: ArrayList<UserQuestActivity>, 
                 putExtra(Extras.EXTRA_XP_REWARD, questItem.xpReward)
                 putExtra(Extras.EXTRA_STAT_REWARD, questItem.statReward)
 
-
-                // From UQA
                 putExtra(Extras.EXTRA_DATE_COMPLETED, uqaItem.dateCreated)
                 putExtra(Extras.EXTRA_QUEST_STATUS, uqaItem.questStatus)
 
@@ -56,8 +53,6 @@ class QuestHistoryAdapter(private val allUQAList: ArrayList<UserQuestActivity>, 
             holder.itemView.context.startActivity(intent)
         }
 
-
-        // Set icon based on tag
         when (questItem.questType) {
             "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
             "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)

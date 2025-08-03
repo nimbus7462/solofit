@@ -17,7 +17,6 @@ import com.example.solofit.model.Quote
 import com.example.solofit.model.UserQuestActivity
 import com.example.solofit.utilities.Extras
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import com.example.solofit.SettingsActivities.SettingsActivity
 import com.example.solofit.databinding.PopupCongratsBinding
 import com.example.solofit.model.User
@@ -28,8 +27,6 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
     private lateinit var viewBinding: AbortCompleteQuestBinding
     private var isSaved = false
 
-    // commit test
-    // Store the selected quote for use when saving to UQA
     private var selectedQuote: Quote? = null
 
     val dbHelper = MyDatabaseHelper.getInstance(this)!!
@@ -37,7 +34,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
     private var questStatus: String? = null
     private lateinit var quest: Quest
     private lateinit var user: User
-    private var hasSavedStatus = false // Track if save was already done
+    private var hasSavedStatus = false
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +55,12 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
             return
         }
 
-        // Get quest info from intent
+
         questStatus = intent.getStringExtra(Extras.EXTRA_QUEST_STATUS)
 
 
         if (uqa.questID == -1 || questStatus == null) {
-            finish() // invalid id, exit early
+            finish()
             return
         } else {
             this.todaysSelectedUQA = uqa
@@ -91,7 +88,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
             return
         }
 
-        // Quest name shown at the top
+
         viewBinding.txvQStatusQuestName.text = quest.questName
 
         viewBinding.txvTotalUserExp.text = user.currentExp.toString()
@@ -99,8 +96,6 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         viewBinding.txvEndValHere.text = user.endurancePts.toString()
         viewBinding.txvVitValHere.text = user.vitalityPts.toString()
 
-
-        // Display completion or abortion visuals
         when (questStatus) {
             Extras.STATUS_COMPLETED -> {
                 viewBinding.lloQuestHeader.setBackgroundResource(R.drawable.bg_quest_complete)
@@ -151,7 +146,6 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
             }
         }
 
-        // Log thoughts button
         viewBinding.btnLogThoughts.setOnClickListener {
             saveQuestStatusAndQuote(todaysSelectedUQA)
             updateUserStatsAndLevel {
@@ -163,7 +157,6 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
             }
         }
 
-        // Finish Quest button — Save status + quote
         viewBinding.btnFinishQuest.setOnClickListener {
             saveQuestStatusAndQuote(todaysSelectedUQA)
             updateUserStatsAndLevel {
@@ -173,7 +166,6 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         }
     }
 
-    // Load a random quote and update UI
     private fun loadAndDisplayQuote(){
         val quote = dbHelper.getRandomQuote()
         if (quote == null) {
@@ -356,8 +348,6 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         }
     }
 
-
-    // Optionally: if you want to double-check saving before destruction
     override fun onDestroy() {
         saveQuestStatusAndQuote(todaysSelectedUQA)
         super.onDestroy()

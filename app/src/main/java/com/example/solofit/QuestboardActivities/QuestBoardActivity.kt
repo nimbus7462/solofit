@@ -25,32 +25,27 @@ class QuestBoardActivity : AppCompatActivity() {
         viewBinding = QuestBoardActivityBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        // Initialize SharedPreferences
         prefs = getSharedPreferences("QuestPrefs", MODE_PRIVATE)
 
-        // Initialize RecyclerView
         recyclerView = viewBinding.recViewQuests
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onResume() {
         super.onResume()
-        loadTodayCreatedQuests() // Refresh list when returning to activity
+        loadTodayCreatedQuests()
     }
 
     private fun loadTodayCreatedQuests() {
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val lastQuestDate = prefs.getString("lastQuestDate", null)
 
-        // CANCEL OLD QUESTS 
         dbHelper.autoCancelOldUnfinishedQuests(today)
 
-        // CHECK IF WE ALREADY HAVE 5 CREATED QUESTS FOR TODAY
         val existingCreatedQuests = dbHelper.getUserQuestsByStatusDateAndUserID(
             "CREATED", today, Extras.DEFAULT_USER_ID
         )
 
-        // IF IT'S A NEW DAY AND NO QUESTS EXIST YET, GENERATE
         if (lastQuestDate != today && existingCreatedQuests.isEmpty()) {
             val randomQuests = dbHelper.getRandomQuests(5)
             for (quest in randomQuests) {
@@ -65,11 +60,9 @@ class QuestBoardActivity : AppCompatActivity() {
                 dbHelper.insertUserQuestActivity(uqa)
             }
 
-            // Save new quest date
             prefs.edit().putString("lastQuestDate", today).apply()
         }
 
-        // LOAD AND DISPLAY TODAY'S QUESTS
         val updatedCreatedQuests = dbHelper.getUserQuestsByStatusDateAndUserID(
             "CREATED", today, Extras.DEFAULT_USER_ID
         )

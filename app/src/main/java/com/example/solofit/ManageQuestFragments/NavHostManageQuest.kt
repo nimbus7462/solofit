@@ -2,7 +2,6 @@ package com.example.solofit.ManageQuestFragments
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.solofit.databinding.DailySummaryPageBinding
 import com.example.solofit.databinding.NavhostManageQuestBinding
 
 class NavHostManageQuest : AppCompatActivity() {

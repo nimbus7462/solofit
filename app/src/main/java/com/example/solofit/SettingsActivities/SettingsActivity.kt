@@ -36,16 +36,13 @@ class SettingsActivity : AppCompatActivity() {
         if (result.resultCode == RESULT_OK && result.data != null) {
             imageUri = result.data!!.data
 
-            // Persist permission to access image
             contentResolver.takePersistableUriPermission(
                 imageUri!!,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
 
-            // Load image into the ImageView (assumes you have an ImageView in layout)
             viewBinding.imvSettingsPfp.setImageURI(imageUri)
 
-            // Optionally: Save image URI to the database
             val user = dbHelper.getUserById(Extras.DEFAULT_USER_ID)
             user?.pfpUri = imageUri.toString()
             dbHelper.updateUser(user!!)
@@ -64,7 +61,7 @@ class SettingsActivity : AppCompatActivity() {
         viewBinding.edtSettingsIgn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f)
         if (currentUser.selectedTitle.isNullOrBlank()) {
             viewBinding.txvUserTitle.text = "[No Title Selected]"
-            viewBinding.txvUserTitle.setTextColor(ContextCompat.getColor(this, R.color.gray)) // or use a color resource
+            viewBinding.txvUserTitle.setTextColor(ContextCompat.getColor(this, R.color.gray))
         } else {
             viewBinding.txvUserTitle.text = currentUser.selectedTitle
         }

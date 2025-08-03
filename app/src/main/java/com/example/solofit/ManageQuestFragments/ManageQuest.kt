@@ -24,7 +24,6 @@ class ManageQuest : Fragment() {
     private lateinit var adapter: ManageQuestAdapter
     private lateinit var dbHelper: MyDatabaseHelper
 
-    // Store the quest pending deletion (to know which quest to delete when confirmed)
     private var questPendingDelete: Quest? = null
 
     override fun onCreateView(
@@ -58,7 +57,6 @@ class ManageQuest : Fragment() {
                 findNavController().navigate(action)
             },
             onDeleteClick = { quest ->
-                // Save quest for deletion on confirmation
                 questPendingDelete = quest
 
                 binding.txvConfirmationMsg.text = "Are you sure you want to delete ${quest.questName}?"
@@ -67,14 +65,12 @@ class ManageQuest : Fragment() {
                 binding.viewBackgroundBlocker.visibility = View.VISIBLE
                 binding.cloConfirmation.visibility = View.VISIBLE
 
-                // Cancel button - hide confirmation dialog
                 binding.btnGoBack.setOnClickListener {
                     binding.cloConfirmation.visibility = View.INVISIBLE
                     binding.viewBackgroundBlocker.visibility = View.INVISIBLE
                     questPendingDelete = null
                 }
 
-                // Confirm delete button
                 binding.btnConfirm.setOnClickListener {
                     questPendingDelete?.let {
                         dbHelper.deleteQuest(it.id)

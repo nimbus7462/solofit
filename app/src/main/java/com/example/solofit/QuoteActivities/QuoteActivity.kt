@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solofit.database.MyDatabaseHelper
-import com.example.solofit.databinding.QuestBoardActivityBinding
 import com.example.solofit.databinding.SavedQuotesPageBinding
-import com.example.solofit.model.Quest
 import com.example.solofit.model.Quote
 import java.util.ArrayList
 
@@ -19,8 +17,6 @@ class QuoteActivity: AppCompatActivity() {
     private lateinit var quoteAdapter: QuoteAdapter
     private lateinit var dbHelper: MyDatabaseHelper
 
-
-    private lateinit var binding: SavedQuotesPageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

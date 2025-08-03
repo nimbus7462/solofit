@@ -8,9 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestSummaryBinding
-import com.example.solofit.datahelpers.QuestDataHelper
-import com.example.solofit.datahelpers.UserQuestActivityDataHelper
-import com.example.solofit.model.Quest
 import com.example.solofit.model.UserQuestActivity
 
 class QuestSummaryActivity : AppCompatActivity() {
@@ -26,7 +23,6 @@ class QuestSummaryActivity : AppCompatActivity() {
 
         this.recyclerView = viewBinding.recViewQuestSummary
 
-        // Just getting the UQAList from the previous activity
         todaysUQAList = when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
                 intent.getParcelableArrayListExtra("uqaList", UserQuestActivity::class.java)

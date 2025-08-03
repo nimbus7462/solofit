@@ -22,11 +22,9 @@ class MainMenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inflate the ViewBinding
         binding = MainMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Button click now starts a new Activity instead of navigating fragments
         binding.btnManageQuests.setOnClickListener {
             val intent = Intent(this, NavHostManageQuest::class.java)
             startActivity(intent)
@@ -61,7 +59,6 @@ class MainMenuActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-       // dbHelper.logAllUsers()
         val currentUser = dbHelper.getUserById(Extras.DEFAULT_USER_ID)!! // Default User
         val displayName = if (currentUser.username.isNullOrBlank()) "Player" else currentUser.username
         binding.txvIgn.text = displayName

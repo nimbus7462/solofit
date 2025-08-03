@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.solofit.R
-import com.example.solofit.StatusAndQHistoryActivities.EditLogActivity
 import com.example.solofit.QuestInfoViewOnlyActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestSummaryItemLayoutBinding
-import com.example.solofit.model.Quest
 import com.example.solofit.model.UserQuestActivity
 import com.example.solofit.utilities.Extras
 
@@ -33,9 +31,8 @@ class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity
         holder.bindData(questItem)
 
         holder.binding.lloQuestSumm.setOnClickListener {
-            // Find the UQA first, then match the quest to it
             val intent = Intent(holder.itemView.context, QuestInfoViewOnlyActivity::class.java).apply {
-                // From Quest
+
                 putExtra(Extras.EXTRA_QUEST_TITLE, questItem.questName)
                 putExtra(Extras.EXTRA_DESC, questItem.description)
                 putExtra(Extras.EXTRA_QUEST_TYPE, questItem.questType)
@@ -45,7 +42,6 @@ class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity
                 putExtra(Extras.EXTRA_STAT_REWARD, questItem.statReward)
 
 
-                // From UQA
                 putExtra(Extras.EXTRA_DATE_COMPLETED, uqaItem.dateCreated)
                 putExtra(Extras.EXTRA_QUEST_STATUS, uqaItem.questStatus)
             }
@@ -53,7 +49,6 @@ class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity
 
         }
 
-        // Switch case for background colors based on difficulty
         when (questItem.difficulty) {
             "Easy" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_easy)
@@ -72,7 +67,8 @@ class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity
                 holder.setQuestNameTextShadow(R.color.bright_purple)
             }
         }
-        // Switch case for icon
+
+
         when (questItem.questType) {
             "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
             "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)

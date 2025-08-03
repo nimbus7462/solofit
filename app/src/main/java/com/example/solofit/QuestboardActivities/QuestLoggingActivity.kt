@@ -33,7 +33,6 @@ class QuestLoggingActivity : AppCompatActivity() {
             }
         })
 
-        // Step 1: Get Quest ID from intent
         val todaysSelectedUQA = when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
                 intent.getParcelableExtra(Extras.EXTRA_UQA, UserQuestActivity::class.java)
@@ -43,19 +42,17 @@ class QuestLoggingActivity : AppCompatActivity() {
         } ?: UserQuestActivity()
 
         if (todaysSelectedUQA.questID == -1) {
-            finish() // invalid quest
+            finish()
             return
         }
 
-        // Step 2: Load Quest and DB Helper
         val quest = dbHelper.getQuestById(todaysSelectedUQA.questID) ?: run {
-            finish() // quest not found
+            finish()
             return
         }
 
         this.uqa = todaysSelectedUQA
 
-        // Step 3: Display quest name and today's date
         viewBinding.txvInitLoggingQuestName.text = quest.questName
         val currentDate = SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(Date())
         viewBinding.txvInitLoggingCompletedDate.text = currentDate
@@ -67,7 +64,6 @@ class QuestLoggingActivity : AppCompatActivity() {
         }
         viewBinding.txvInitLoggingQuestStatus.text = statusText
 
-        // Step 4: Enable logging input and fetch UQA Data
         val logEditText = viewBinding.addLog
         val finishButton = viewBinding.btnFinishLog
         logEditText.isEnabled = true
@@ -75,14 +71,11 @@ class QuestLoggingActivity : AppCompatActivity() {
         logEditText.setText(todaysSelectedUQA.userLogs ?: "")
         finishButton.isEnabled = todaysSelectedUQA.userLogs.isNotBlank()
 
-        // Step 5: TextWatcher to enable/disable Finish button
-        // Must type smth first to click
         logEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val isBlank = s.isNullOrBlank()
                 finishButton.isEnabled = !isBlank
 
-                // Log content checker
                 if (isBlank && logEditText.hasFocus()) {
                     Toast.makeText(this@QuestLoggingActivity, "Log cannot be empty!", Toast.LENGTH_SHORT).show()
                 }
@@ -91,8 +84,6 @@ class QuestLoggingActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // Step 6: Save logs on button click
-        // - if the finish logging button is clicked, save the log text to the userLogs UserQuestActivity attribute
         finishButton.setOnClickListener {
             val logText = logEditText.text.toString().trim()
                 val updatedUQA = UserQuestActivity(

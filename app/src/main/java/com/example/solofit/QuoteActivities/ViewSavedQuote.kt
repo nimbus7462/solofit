@@ -21,7 +21,7 @@ class ViewSavedQuote : AppCompatActivity(){
         setContentView(viewBinding.root)
         val quoteId = intent.getIntExtra(Extras.QUOTE_ID, -1)
         if (quoteId == -1) {
-            finish() // Invalid ID, exit early
+            finish()
             return
         }
         val dbHelper = MyDatabaseHelper.getInstance(this)!!

@@ -1,14 +1,10 @@
 package com.example.solofit.StatusAndQHistoryActivities
 
-import android.os.Build
 import android.os.Bundle
-import android.text.Editable
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import com.example.solofit.QuestboardActivities.QuestAbortCompleteActivity
-import com.example.solofit.StatusAndQHistoryActivities.EditLogActivity
 import com.example.solofit.databinding.EditLogBinding
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
@@ -17,7 +13,6 @@ import com.example.solofit.utilities.Extras
 
 class EditLogActivity : AppCompatActivity() {
 
-    // Instance variable not constant
     private lateinit var viewBinding: EditLogBinding
     private lateinit var originalLog: String
     private lateinit var uqa: UserQuestActivity
@@ -28,7 +23,6 @@ class EditLogActivity : AppCompatActivity() {
         this.viewBinding = EditLogBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        // passed quest title from the quest board
         val questTitle = intent.getStringExtra(Extras.EXTRA_QUEST_TITLE)
         viewBinding.txvLoggingQuestName.text = questTitle
 
@@ -63,7 +57,6 @@ class EditLogActivity : AppCompatActivity() {
             getString(R.string.completed)
         }
 
-        // date
         val dateCompleted = intent.getStringExtra(Extras.EXTRA_DATE_COMPLETED)
         viewBinding.txvLoggingCompletedDate.text = dateCompleted
         viewBinding.txvLoggingQuestStatus.text = statusText
