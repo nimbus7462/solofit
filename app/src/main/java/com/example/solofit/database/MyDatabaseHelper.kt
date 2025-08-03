@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.solofit.QuoteActivities.QuoteActivity
 import com.example.solofit.model.Quest
 import com.example.solofit.model.Quote
 import com.example.solofit.model.User
@@ -729,6 +730,58 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         database.delete(DbReferences.TABLE_UQA, selection, selectionArgs)
         database.close()
     }
+    fun getAllSavedQuotes(): ArrayList<Quote> {
+        val quotes = ArrayList<Quote>()
+        val database = this.readableDatabase
 
+        val cursor = database.query(
+            DbReferences.TABLE_QUOTE,
+            null,
+            "${DbReferences.COLUMN_IS_SAVED} = ?",
+            arrayOf("1"),
+            null,
+            null,
+            null
+        )
+
+        while (cursor.moveToNext()) {
+            quotes.add(
+                Quote(
+                    quoteID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_ID)),
+                    quoteText = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_TEXT)),
+                    quoteAuthor = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_AUTHOR)),
+                    isSaved = true
+                )
+            )
+        }
+
+        cursor.close()
+        database.close()
+        return quotes
+    }
+    fun getQuoteById(id: Int): Quote? {
+        val database = this.readableDatabase
+        val cursor = database.query(
+            DbReferences.TABLE_QUOTE,
+            null,
+            "${DbReferences.COLUMN_QUOTE_ID} = ?",
+            arrayOf(id.toString()),
+            null,
+            null,
+            null
+        )
+        var quote: Quote? = null
+        if (cursor.moveToFirst()) {
+            quote = Quote(
+                quoteID = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_ID)),
+                quoteText = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_TEXT)),
+                quoteAuthor = cursor.getString(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_QUOTE_AUTHOR)),
+                isSaved = cursor.getInt(cursor.getColumnIndexOrThrow(DbReferences.COLUMN_IS_SAVED)) == 1
+            )
+        }
+        cursor.close()
+        database.close()
+        return quote
+    }
 }
 

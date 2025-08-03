@@ -6,7 +6,7 @@ object Extras {
         const val EXTRA_USER_LOG = "USER_LOG_KEY"
         const val EXTRA_QUEST_STATUS = "QUEST_STATUS_KEY"
         const val EXTRA_UQA_ID = "USER_QUEST_ACT_ID"
-
+        const val QUOTE_ID = "QUOTE_ID"
         const val EXTRA_QUEST_TYPE = "QUEST_TAG_KEY"
         const val EXTRA_EXTRA_TAGS = "QUEST_ADD_ON_TAGS_KEY"
         const val EXTRA_DESC = "QUEST_DESC_KEY"
@@ -15,7 +15,6 @@ object Extras {
         const val EXTRA_STAT_REWARD = "QUEST_STAT_REWARD_KEY"
 
         const val EXTRA_UQA = "USER_QUEST_ACT"
-        const val QUEST_ID_KEY = "quest_id"
         const val STATUS_COMPLETED = "COMPLETED"
         const val STATUS_ABORTED = "ABORTED"
 
