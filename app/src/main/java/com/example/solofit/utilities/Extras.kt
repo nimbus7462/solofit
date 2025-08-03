@@ -18,6 +18,5 @@ object Extras {
         const val STATUS_COMPLETED = "COMPLETED"
         const val STATUS_ABORTED = "ABORTED"
         const val SHOULD_OPEN_TITLE_POPUP = "OPEN_TITLE_POP_UP"
-
         const val DEFAULT_USER_ID = 1
 }

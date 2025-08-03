@@ -74,10 +74,11 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 saveQuestStatusAndQuote(todaysSelectedUQA)
-                updateUserStatsAndLevel {
+                updateUserStatsAndLevel({
                     setResult(RESULT_OK)
                     finish()
-                }
+                })
+
             }
         })
 
@@ -148,21 +149,24 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
 
         viewBinding.btnLogThoughts.setOnClickListener {
             saveQuestStatusAndQuote(todaysSelectedUQA)
-            updateUserStatsAndLevel {
+            updateUserStatsAndLevel(onDone = {
                 setResult(RESULT_OK)
                 val intent = Intent(applicationContext, QuestLoggingActivity::class.java)
                 intent.putExtra(Extras.EXTRA_UQA, todaysSelectedUQA)
                 startActivity(intent)
                 finish()
-            }
+            }, shouldShowViewTitlesButton = false)
         }
+
+
 
         viewBinding.btnFinishQuest.setOnClickListener {
             saveQuestStatusAndQuote(todaysSelectedUQA)
-            updateUserStatsAndLevel {
+            updateUserStatsAndLevel({
                 setResult(RESULT_OK)
                 finish()
-            }
+            })
+
         }
     }
 
@@ -181,7 +185,6 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         }
     }
 
-    // Reusable method that updates the quest status and saves the quote ID into the UQA
     private fun saveQuestStatusAndQuote(userQuestActivity: UserQuestActivity) {
         if (hasSavedStatus) return // Don't save multiple times
         hasSavedStatus = true
@@ -214,7 +217,8 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUserStatsAndLevel(onDone: () -> Unit) {
+    private fun updateUserStatsAndLevel(onDone: () -> Unit,
+                                            shouldShowViewTitlesButton: Boolean = true) {
         val oldLevel = user.level
         calculateUserExpGainAndStatsGain(user, quest, todaysSelectedUQA)
 
@@ -234,7 +238,8 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
                 oldLevel = oldLevel,
                 newLevel = newLevel,
                 unlockedTitles = unlockedTitles,
-                onDone = onDone
+                onDone = onDone,
+                shouldShowViewTitlesButton = shouldShowViewTitlesButton
             )
         } else {
             onDone()
@@ -285,13 +290,15 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
         newLevel: Int,
         unlockedTitles: List<String>,
         onDone: () -> Unit,
+        shouldShowViewTitlesButton: Boolean = true
     ) {
         fun showCongratsPopup(
             upperMsg: String,
             lowerMsg: String,
             isAboutTitles: Boolean,
+            shouldShowViewTitlesButton: Boolean = true,
             onPopupDone: () -> Unit
-        ) {
+        ){
             val popupBinding = PopupCongratsBinding.inflate(LayoutInflater.from(this))
 
             popupBinding.txvUpperMsg.text = upperMsg
@@ -300,7 +307,7 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
             val rootView = findViewById<ViewGroup>(android.R.id.content)
             rootView.addView(popupBinding.root)
 
-            if (isAboutTitles) {
+            if (isAboutTitles && shouldShowViewTitlesButton) {
                 popupBinding.btnViewTitles.visibility = View.VISIBLE
                 popupBinding.btnViewTitles.setOnClickListener {
                     val intent = Intent(this, SettingsActivity::class.java)
@@ -308,7 +315,10 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
+            } else {
+                popupBinding.btnViewTitles.visibility = View.GONE
             }
+
 
             popupBinding.btnDone.setOnClickListener {
                 rootView.removeView(popupBinding.root)
@@ -321,11 +331,13 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
                 upperMsg = "You leveled up!",
                 lowerMsg = "LEVEL $oldLevel -> $newLevel",
                 isAboutTitles = false,
+                shouldShowViewTitlesButton = shouldShowViewTitlesButton,
                 onPopupDone = {
                     showCongratsPopup(
                         upperMsg = "You unlocked new title(s)!",
                         lowerMsg = unlockedTitles.joinToString("\n"),
                         isAboutTitles = true,
+                        shouldShowViewTitlesButton = shouldShowViewTitlesButton,
                         onPopupDone = onDone
                     )
                 },
@@ -342,8 +354,9 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
             showCongratsPopup(
                 upperMsg = "You unlocked new title(s)!",
                 lowerMsg = unlockedTitles.joinToString("\n"),
-                onPopupDone = onDone,
-                isAboutTitles = true
+                isAboutTitles = true,
+                shouldShowViewTitlesButton = shouldShowViewTitlesButton,
+                onPopupDone = onDone
             )
         }
     }

@@ -11,6 +11,7 @@
         android:background="@drawable/bg_sidepage_frame"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +55,7 @@
             android:shadowRadius="10"
             android:text="Quest Name Here"
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/addLog"

@@ -39,7 +39,10 @@ class QuestSummaryActivity : AppCompatActivity() {
         } ?: arrayListOf()
 
         // Only show completed/cancelled quests, not fresh CREATED
-        fullUQAList = rawList.filterNot { it.questStatus.equals("CREATED", ignoreCase = true) }
+        fullUQAList = rawList.filterNot {
+            it.questStatus.equals("CREATED", ignoreCase = true) ||
+                    it.questStatus.equals("DELETED", ignoreCase = true)
+        }
 
         adapter = QuestSummaryAdapter(fullUQAList, dbHelper)
         recyclerView.adapter = adapter
@@ -102,12 +105,36 @@ class QuestSummaryActivity : AppCompatActivity() {
 
 
     private fun showDifficultyLegendPopup() {
+        hidepanel()
         val popupBinding = PopupLegendBinding.inflate(layoutInflater)
         val rootView = findViewById<ViewGroup>(android.R.id.content)
         rootView.addView(popupBinding.root)
 
         popupBinding.btnGoBack.setOnClickListener {
+            showpanel()
             rootView.removeView(popupBinding.root)
+        }
+    }
+    private fun hidepanel()
+    {
+        with(viewBinding) {
+            txvQuestSummaryTitle.visibility = View.INVISIBLE
+            spinnerSort.visibility = View.INVISIBLE
+            spinnerFilter.visibility = View.INVISIBLE
+            imbLegend.visibility = View.INVISIBLE
+            recViewQuestSummary.visibility = View.INVISIBLE
+            lllquestSummary.visibility = View.INVISIBLE
+        }
+    }
+    private fun showpanel()
+    {
+        with(viewBinding) {
+            txvQuestSummaryTitle.visibility = View.VISIBLE
+            spinnerSort.visibility = View.VISIBLE
+            spinnerFilter.visibility = View.VISIBLE
+            imbLegend.visibility = View.VISIBLE
+            recViewQuestSummary.visibility = View.VISIBLE
+            lllquestSummary.visibility = View.VISIBLE
         }
     }
 }

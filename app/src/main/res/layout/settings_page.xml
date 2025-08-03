@@ -64,8 +64,8 @@
 
             <Button
                 android:id="@+id/btnEditIgn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="135dp"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/icon_custom_btn"
                 android:fontFamily="@font/play"
@@ -152,8 +152,8 @@
 
             <Button
                 android:id="@+id/btnEditTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="135dp"
+                android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/icon_custom_btn"
                 android:fontFamily="@font/play"
@@ -183,8 +183,8 @@
 
             <Button
                 android:id="@+id/btnChangePfp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="135dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/icon_custom_btn"

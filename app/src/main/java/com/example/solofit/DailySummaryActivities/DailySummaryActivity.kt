@@ -14,6 +14,7 @@ import com.example.solofit.utilities.Extras
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.solofit.model.Quote
 
 class DailySummaryActivity: AppCompatActivity() {
     private lateinit var viewBinding: DailySummaryPageBinding
@@ -104,19 +105,53 @@ class DailySummaryActivity: AppCompatActivity() {
     }
 
     private fun showDailyQuotePopUp() {
+        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val savedQuoteId = prefs.getInt("daily_quote_id_$today", -1)
+
         val popupBinding = PopupDailyQuoteBinding.inflate(layoutInflater)
         val rootView = findViewById<ViewGroup>(android.R.id.content)
         rootView.addView(popupBinding.root)
 
-        popupBinding.txvQuoteDateToday.text = today
-        popupBinding.imbSaveQuote.setOnClickListener {
-            isSaved = !isSaved
-            val updatedIcon = if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
-            popupBinding.imbSaveQuote.setImageResource(updatedIcon)
-            //TODO: Add quote logic here
+        val quote: Quote? = if (savedQuoteId != -1) {
+            dbHelper.getQuoteById(savedQuoteId)
+        } else {
+            val newQuote = dbHelper.getRandomQuote()
+            newQuote?.let {
+                prefs.edit().putInt("daily_quote_id_$today", it.quoteID).apply()
+            }
+            newQuote
         }
+
+        var isSaved = quote?.isSaved ?: false
+
+        if (quote != null) {
+            popupBinding.tvQuoteContent.text = "“${quote.quoteText}”"
+            popupBinding.tvQuoteAuthor.text = "- ${quote.quoteAuthor}"
+            popupBinding.imbSaveQuote.visibility = View.VISIBLE
+            popupBinding.imbSaveQuote.setImageResource(
+                if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
+            )
+        } else {
+            popupBinding.tvQuoteContent.text = "No available quotes."
+            popupBinding.tvQuoteAuthor.text = ""
+            popupBinding.imbSaveQuote.visibility = View.GONE
+        }
+
+        popupBinding.txvQuoteDateToday.text = today
+
+        popupBinding.imbSaveQuote.setOnClickListener {
+            if (quote != null) {
+                isSaved = !isSaved
+                dbHelper.updateQuoteSaveStatus(quote.quoteID, isSaved)
+                popupBinding.imbSaveQuote.setImageResource(
+                    if (isSaved) R.drawable.icon_saved_quote else R.drawable.icon_save_quote
+                )
+            }
+        }
+
         popupBinding.btnGoBack.setOnClickListener {
             rootView.removeView(popupBinding.root)
         }
     }
+
 }

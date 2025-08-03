@@ -26,7 +26,7 @@ object ZenQuotesFetcher {
 
             if (!response.isNullOrEmpty()) {
                 val dbHelper = MyDatabaseHelper.getInstance(context)!!
-                val distinctQuotes = response.distinctBy { it.q to it.a }.take(10)
+                val distinctQuotes = response.distinctBy { it.q to it.a }.take(100)
 
                 for (quote in distinctQuotes) {
                     val quoteObj = Quote(

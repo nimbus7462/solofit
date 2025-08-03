@@ -104,11 +104,15 @@ class QuestHistoryActivity : AppCompatActivity() {
 
         // 3. Load completed and aborted quests
         fullUQAList = dbHelper.getAllUserQuestActivities()
-            .filter { it.questStatus.equals("COMPLETED", true) || it.questStatus.equals("ABORTED", true) }
+            .filter {
+                (it.questStatus.equals("COMPLETED", true) || it.questStatus.equals("ABORTED", true)) &&
+                        !it.questStatus.equals("DELETED", true)
+            }
         applySortAndFilter()
     }
 
     private fun showQHistLegendPopup() {
+        hidepanel()
         val popupBinding = PopupLegendBinding.inflate(layoutInflater)
         val rootView = findViewById<ViewGroup>(android.R.id.content)
         rootView.addView(popupBinding.root)
@@ -118,7 +122,30 @@ class QuestHistoryActivity : AppCompatActivity() {
         popupBinding.lloDiffRow1.visibility = View.GONE
         popupBinding.lloDiffRow2.visibility = View.GONE
         popupBinding.btnGoBack.setOnClickListener {
+            showpanel()
             rootView.removeView(popupBinding.root)
+        }
+    }
+    private fun hidepanel(){
+        with(viewBinding)
+        {
+            txvQuestHistoryTitle.visibility = View.INVISIBLE
+            spinnerSort.visibility = View.INVISIBLE
+            spinnerFilter.visibility = View.INVISIBLE
+            imbLegend.visibility = View.INVISIBLE
+            recViewQuestHistory.visibility = View.INVISIBLE
+            llQuestHistory.visibility = View.INVISIBLE
+        }
+    }
+    private fun showpanel(){
+        with(viewBinding)
+        {
+            txvQuestHistoryTitle.visibility = View.VISIBLE
+            spinnerSort.visibility = View.VISIBLE
+            spinnerFilter.visibility = View.VISIBLE
+            imbLegend.visibility = View.VISIBLE
+            recViewQuestHistory.visibility = View.VISIBLE
+            llQuestHistory.visibility = View.VISIBLE
         }
     }
 

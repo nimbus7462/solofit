@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,14 @@ import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.FragmentManageQuestBinding
 import com.example.solofit.databinding.PopupLegendBinding
 import com.example.solofit.model.Quest
+import com.example.solofit.model.UserQuestActivity
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
+import android.util.Log
+import com.example.solofit.utilities.Extras
 
 
 class ManageQuest : Fragment() {
@@ -44,53 +53,52 @@ class ManageQuest : Fragment() {
         dbHelper = MyDatabaseHelper(requireContext())
         super.onViewCreated(view, savedInstanceState)
 
-        originalQuestList = dbHelper.getAllQuests()
-        binding.imbLegend.setOnClickListener {
-            showDifficultyLegendPopup()
+        // Setup main delete panel listeners ONCE
+        binding.btnGoBack.setOnClickListener {
+            showpanels()
+            binding.cloConfirmation.visibility = View.INVISIBLE
+            binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+            questPendingDelete = null
         }
-        adapter = ManageQuestAdapter(
-            originalQuestList.toMutableList(),
-            onItemClick = { quest ->
-                val action = ManageQuestDirections.actionManageQuestToAddEditQuest(
-                    quest.id,
-                    "EDIT QUEST",
-                    quest.questName,
-                    quest.description,
-                    quest.questType,
-                    quest.difficulty,
-                    quest.extraTags,
-                    quest.xpReward,
-                    quest.statReward
-                )
-                findNavController().navigate(action)
-            },
-            onDeleteClick = { quest ->
-                questPendingDelete = quest
 
-                binding.txvConfirmationMsg.text = "Are you sure you want to delete ${quest.questName}?"
-                binding.btnGoBack.text = NO
-                binding.btnConfirm.text = YES
-                binding.viewBackgroundBlocker.visibility = View.VISIBLE
-                binding.cloConfirmation.visibility = View.VISIBLE
-
-                binding.btnGoBack.setOnClickListener {
-                    binding.cloConfirmation.visibility = View.INVISIBLE
-                    binding.viewBackgroundBlocker.visibility = View.INVISIBLE
-                    questPendingDelete = null
-                }
-
-                binding.btnConfirm.setOnClickListener {
-                    questPendingDelete?.let {
-                        dbHelper.deleteQuest(it.id)
+        binding.btnConfirm.setOnClickListener {
+            questPendingDelete?.let { quest ->
+                val createdTodayQuestIds = dbHelper.getTodayCreatedQuestIds(Extras.DEFAULT_USER_ID)
+                if (originalQuestList.size > 5) {
+                    if (quest.id in createdTodayQuestIds) {
+                        Toast.makeText(requireContext(), "You can't delete a quest created today.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        dbHelper.deleteQuestAndMarkUQAs(quest.id)
                         originalQuestList = dbHelper.getAllQuests()
                         applySortAndFilter()
                     }
-
-
-                    binding.cloConfirmation.visibility = View.INVISIBLE
-                    binding.viewBackgroundBlocker.visibility = View.INVISIBLE
-                    questPendingDelete = null
+                } else {
+                    Toast.makeText(requireContext(), "At least 5 quests must remain.", Toast.LENGTH_SHORT).show()
                 }
+
+                showpanels()
+                binding.cloConfirmation.visibility = View.INVISIBLE
+                binding.viewBackgroundBlocker.visibility = View.INVISIBLE
+                questPendingDelete = null
+            }
+        }
+
+        originalQuestList = dbHelper.getAllQuests()
+
+        // Set up delete and edit logic
+        adapter = ManageQuestAdapter(
+            originalQuestList.toMutableList(),
+            onItemClick = { quest -> /* unchanged */ },
+            onDeleteClick = { quest ->
+                questPendingDelete = quest
+
+                binding.txvConfirmationMsg.text =
+                    "Are you sure you want to delete ${quest.questName}? All user records with this quest will be deleted as well."
+                binding.btnGoBack.text = NO
+                binding.btnConfirm.text = YES
+                hidepanels()
+                binding.viewBackgroundBlocker.visibility = View.VISIBLE
+                binding.cloConfirmation.visibility = View.VISIBLE
             }
         )
 
@@ -183,10 +191,29 @@ class ManageQuest : Fragment() {
     private fun showDifficultyLegendPopup() {
         val popupBinding = PopupLegendBinding.inflate(layoutInflater)
         val rootView = requireActivity().findViewById<ViewGroup>(android.R.id.content)
+        hidepanels()
         rootView.addView(popupBinding.root)
 
         popupBinding.btnGoBack.setOnClickListener {
+            showpanels()
             rootView.removeView(popupBinding.root)
+
         }
+    }
+    private fun hidepanels(){
+        binding.txvManageQuestTitle.visibility = View.INVISIBLE
+        binding.frameSpinnerContainer.visibility = View.INVISIBLE
+        binding.recViewManageQuest.visibility = View.INVISIBLE
+        binding.ibAddQuest.visibility = View.INVISIBLE
+
+
+    }
+    private fun showpanels(){
+        binding.txvManageQuestTitle.visibility = View.VISIBLE
+        binding.frameSpinnerContainer.visibility = View.VISIBLE
+        binding.recViewManageQuest.visibility = View.VISIBLE
+        binding.ibAddQuest.visibility = View.VISIBLE
+
+
     }
 }
