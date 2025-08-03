@@ -2,7 +2,9 @@ package com.example.solofit.DailySummaryActivities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.DailySummaryPageBinding
 import com.example.solofit.utilities.Extras
@@ -53,6 +55,21 @@ class DailySummaryActivity: AppCompatActivity() {
         viewBinding.txvSummGainedStr.text = if (strGain != 0) "( +$strGain From Today )" else ""
         viewBinding.txvSummGainedEnd.text = if (endGain != 0) "( +$endGain From Today )" else ""
         viewBinding.txvSummGainedVit.text = if (vitGain != 0) "( +$vitGain From Today )" else ""
+        viewBinding.imbShowHideCalcInfo.setOnClickListener {
+            val isShowing = viewBinding.imbShowHideCalcInfo.tag == "show"
+
+            if (isShowing) {
+                // Currently showing → Hide now
+                viewBinding.imbShowHideCalcInfo.setImageResource(R.drawable.icon_hide)
+                viewBinding.imbShowHideCalcInfo.tag = "hide"
+                viewBinding.lloCalcInfo.visibility = View.GONE
+            } else {
+                // Currently hidden → Show now
+                viewBinding.imbShowHideCalcInfo.setImageResource(R.drawable.icon_show)
+                viewBinding.imbShowHideCalcInfo.tag = "show"
+                viewBinding.lloCalcInfo.visibility = View.VISIBLE
+            }
+        }
 
 
         val base = if (streakCount >= 3) 0.02 else 0.0

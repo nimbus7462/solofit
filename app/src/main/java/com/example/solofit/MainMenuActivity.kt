@@ -14,6 +14,8 @@ import com.example.solofit.utilities.Extras
 import androidx.core.net.toUri
 import com.example.solofit.SettingsActivities.SettingsActivity
 import com.example.solofit.QuoteActivities.QuoteActivity
+import com.example.solofit.utilities.getColorForCategory
+import com.example.solofit.utilities.getTitleColorCategory
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -65,7 +67,12 @@ class MainMenuActivity : AppCompatActivity() {
         if (currentUser.selectedTitle.isNullOrBlank()) {
             binding.txvUserTitle.visibility = View.GONE
         } else {
+            binding.txvUserTitle.visibility = View.VISIBLE
             binding.txvUserTitle.text = currentUser.selectedTitle
+            val category = getTitleColorCategory(currentUser.selectedTitle)
+            val color = this.getColorForCategory(category)
+            binding.txvUserTitle.setTextColor(color)
+            binding.txvUserTitle.setShadowLayer(20f, 0f, 0f, R.color.black)
         }
         currentUser.pfpUri?.let {
             binding.imvPfp.setImageURI(it.toUri())

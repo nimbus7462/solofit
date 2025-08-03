@@ -17,25 +17,4 @@ class QuoteViewHolder(private val binding: SavedQuotesItemLayoutBinding) : Recyc
         binding.txvAuthor.text = "-${quote.quoteAuthor}"
     }
 
-    fun setQuoteBackground(bgResId: Int) {
-        binding.lloQuoteSumm.background = ContextCompat.getDrawable(binding.root.context, bgResId)
-    }
-
-    fun setQuotePreviewTextShadow(colorResId: Int) {
-        binding.txvQuotePreview.setShadowLayer(
-            10f,
-            0f,
-            0f,
-            ContextCompat.getColor(binding.root.context, colorResId)
-        )
-    }
-
-    fun setQuoteAuthorTextShadow(colorResId: Int) {
-        binding.txvAuthor.setShadowLayer(
-            10f,
-            0f,
-            0f,
-            ContextCompat.getColor(binding.root.context, colorResId)
-        )
-    }
 }
