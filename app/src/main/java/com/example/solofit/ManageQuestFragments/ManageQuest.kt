@@ -77,7 +77,7 @@ class ManageQuest : Fragment() {
             onDeleteClick = { quest ->
                 questPendingDelete = quest
 
-                binding.txvConfirmationMsg.text = "Are you sure you want to delete ${quest.questName}?"
+                binding.txvConfirmationMsg.text = "Are you sure you want to delete ${quest.questName}? All user records with this quest will be deleted as well."
                 binding.btnGoBack.text = NO
                 binding.btnConfirm.text = YES
                 hidepanels()
@@ -102,7 +102,7 @@ class ManageQuest : Fragment() {
                             if (quest.id in createdTodayQuestIds) {
                                 Toast.makeText(requireContext(), "You can't delete a quest created today.", Toast.LENGTH_SHORT).show()
                             } else {
-                                dbHelper.deleteQuest(quest.id)
+                                dbHelper.deleteQuestAndMarkUQAs(it.id)
                                 originalQuestList = dbHelper.getAllQuests()
                                 applySortAndFilter()
                             }

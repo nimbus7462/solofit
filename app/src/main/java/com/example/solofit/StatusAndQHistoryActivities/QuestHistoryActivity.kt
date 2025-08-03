@@ -104,7 +104,10 @@ class QuestHistoryActivity : AppCompatActivity() {
 
         // 3. Load completed and aborted quests
         fullUQAList = dbHelper.getAllUserQuestActivities()
-            .filter { it.questStatus.equals("COMPLETED", true) || it.questStatus.equals("ABORTED", true) }
+            .filter {
+                (it.questStatus.equals("COMPLETED", true) || it.questStatus.equals("ABORTED", true)) &&
+                        !it.questStatus.equals("DELETED", true)
+            }
         applySortAndFilter()
     }
 

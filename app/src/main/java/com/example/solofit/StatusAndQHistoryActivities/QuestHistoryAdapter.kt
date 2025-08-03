@@ -27,7 +27,6 @@ class QuestHistoryAdapter(
         val questItem = dbHelper.getQuestById(uqaItem.questID) ?: return
 
         holder.bindData(questItem)
-        holder.setActionBtnIcon(R.drawable.icon_log)
         holder.setActionBtnVisibility(true)
 
         when (questItem.questType) {
@@ -40,10 +39,12 @@ class QuestHistoryAdapter(
             "COMPLETED" -> {
                 holder.setQuestBackground(R.drawable.bg_qhist_completed)
                 holder.setQuestNameTextShadow(R.color.bright_green)
+                holder.setActionBtnIcon(R.drawable.icon_log_complete)
             }
             "ABORTED" -> {
                 holder.setQuestBackground(R.drawable.bg_qhist_aborted)
                 holder.setQuestNameTextShadow(R.color.light_gray)
+                holder.setActionBtnIcon(R.drawable.icon_log_abort)
             }
         }
 

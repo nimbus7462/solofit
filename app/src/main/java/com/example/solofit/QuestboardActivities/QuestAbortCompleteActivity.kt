@@ -153,7 +153,6 @@ class QuestAbortCompleteActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, QuestLoggingActivity::class.java)
                 intent.putExtra(Extras.EXTRA_UQA, todaysSelectedUQA)
                 startActivity(intent)
-                finish()
             }
         }
 
