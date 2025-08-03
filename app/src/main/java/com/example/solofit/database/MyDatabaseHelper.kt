@@ -201,8 +201,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
 
 
-    // CRUD FOR QUEST
-    /* 🟢 Read: Returns all quests in a list */
     fun getAllQuests(): ArrayList<Quest> {
         val database = this.readableDatabase
         val c = database.query(
@@ -238,7 +236,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         return quests
     }
 
-    /* 🟢 Insert: Adds a new quest to the DB and returns success */
     @Synchronized
     fun insertQuest(q: Quest): Long {
         val database = this.writableDatabase
@@ -258,9 +255,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         return id
     }
 
-
-    /* 🟡 Update: Modify an existing quest */
-    /* 🟡 Update: Modify an existing quest and return number of rows updated */
     fun updateQuest(q: Quest): Int {
         val database = this.writableDatabase
 
@@ -284,8 +278,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
 
-
-    /* 🔴 Delete: Remove a quest by its ID */
     fun deleteQuest(id: Int) {
         val database = this.writableDatabase
 
