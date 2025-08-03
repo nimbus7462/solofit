@@ -29,36 +29,7 @@ class DailySummaryActivity: AppCompatActivity() {
 
         val completedQuests = completedUQAs.mapNotNull { dbHelper.getQuestById(it.questID) }
         val abortedQuests = abortedUQAs.mapNotNull { dbHelper.getQuestById(it.questID) }
-/*
-        val TAG = "DailySummaryDebug"
 
-// Log UserQuestActivities
-        Log.d(TAG, "---- Today's UQAs ----")
-        todaysUQAs.forEach {
-            Log.d(TAG, it.toString())
-        }
-
-        Log.d(TAG, "---- Completed UQAs ----")
-        completedUQAs.forEach {
-            Log.d(TAG, it.toString())
-        }
-
-        Log.d(TAG, "---- Aborted UQAs ----")
-        abortedUQAs.forEach {
-            Log.d(TAG, it.toString())
-        }
-
-// Log matching Quest objects
-        Log.d(TAG, "---- Completed Quests ----")
-        completedQuests.forEach {
-            Log.d(TAG, it.toString())
-        }
-
-        Log.d(TAG, "---- Aborted Quests ----")
-        abortedQuests.forEach {
-            Log.d(TAG, it.toString())
-        }
-*/
         val statTotals = mutableMapOf("Strength" to 0, "Endurance" to 0, "Vitality" to 0)
         for (quest in completedQuests) {
             statTotals[quest.questType] = statTotals.getOrDefault(quest.questType, 0) + quest.statReward

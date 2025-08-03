@@ -4,11 +4,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.example.solofit.QuestboardActivities.QuestBoardViewHolder
-import com.example.solofit.QuestboardActivities.QuestInfoActivity
 import com.example.solofit.R
 import com.example.solofit.database.MyDatabaseHelper
-import com.example.solofit.databinding.QuestItemLayoutBinding
 import com.example.solofit.databinding.SavedQuotesItemLayoutBinding
 import com.example.solofit.model.Quote
 import com.example.solofit.utilities.Extras
@@ -32,7 +29,7 @@ class QuoteAdapter (private val quotelist: ArrayList<Quote>, private val dbHelpe
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, ViewSavedQuote::class.java).apply {
-                putExtra(Extras.QUOTE_ID, quoteItemList.quoteID) // assuming `id` is the field
+                putExtra(Extras.QUOTE_ID, quoteItemList.quoteID)
             }
             context.startActivity(intent)
         }

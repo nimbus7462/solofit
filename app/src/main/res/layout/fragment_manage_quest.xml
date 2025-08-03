@@ -28,27 +28,64 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/frameSpinnerContainer"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/txvManageQuestTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Sort Spinner (Left-Aligned) -->
+        <Spinner
+            android:id="@+id/spinner_sort"
+            android:layout_width="120dp"
+            android:layout_height="45dp"
+            android:layout_gravity="start"
+            android:background="@drawable/bg_sort"
+            android:popupBackground="@drawable/bg_inner_panel"
+            android:textColor="@android:color/transparent"
+            android:padding="8dp"
+            android:spinnerMode="dropdown" />
+
+        <!-- Filter Spinner (Right-Aligned) -->
+        <Spinner
+            android:id="@+id/spinner_filter"
+            android:layout_width="120dp"
+            android:layout_height="45dp"
+            android:layout_gravity="end"
+            android:background="@drawable/bg_filter"
+            android:popupBackground="@drawable/bg_inner_panel"
+            android:textColor="@android:color/transparent"
+            android:padding="8dp"
+            android:spinnerMode="dropdown" />
+    </FrameLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         
         android:id="@+id/recView_ManageQuest"
-        android:layout_width="325dp"
-        android:layout_height="0dp"
+        android:layout_width="311dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/bg_inner_panel"
         android:fadeScrollbars="false"
         android:padding="15dp"
-        android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txvManageQuestTitle"
-        app:layout_constraintVertical_bias="0.0">
 
-    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+    android:scrollbarThumbVertical="@drawable/scrollbar_thumb"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/frameSpinnerContainer"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.495" />
 
     <ImageView
         android:id="@+id/ib_add_quest"
@@ -87,7 +124,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         app:layout_constraintVertical_bias="0.0">
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -98,8 +137,10 @@
             android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.933">
 
             <TextView
                 android:id="@+id/txvConfirmationMsg"

@@ -29,17 +29,16 @@ class QuestInfoActivity : AppCompatActivity() {
         } ?: UserQuestActivity()
 
         if (todaysSelectedUQA.questID == -1) {
-            finish() // invalid id, exit early
+            finish()
             return
         }
 
         val dbHelper = MyDatabaseHelper.getInstance(this)!!
         val quest: Quest = dbHelper.getQuestById(todaysSelectedUQA.questID) ?: run {
-            finish() // quest not found, exit early
+            finish()
             return
         }
 
-        // Display data
         viewBinding.txvQInfoQuestName.text = quest.questName
         viewBinding.txvQInfoDescription.text = quest.description
 
@@ -73,7 +72,7 @@ class QuestInfoActivity : AppCompatActivity() {
         viewBinding.txvQInfoDifficulty.setShadowLayer(10f, 0f, 0f, ContextCompat.getColor(this, shadowColorRes))
         viewBinding.txvQInfoDifficulty.text = quest.difficulty
 
-        // Button: Abort Quest
+
         viewBinding.btnAbortQuest.setOnClickListener {
             val intentAbortQuest = Intent(applicationContext, QuestAbortCompleteActivity::class.java).apply {
                 putExtra(Extras.EXTRA_QUEST_STATUS, Extras.STATUS_ABORTED)
@@ -83,7 +82,6 @@ class QuestInfoActivity : AppCompatActivity() {
             finish()
         }
 
-        // Button: Complete Quest
         viewBinding.btnCompleteQuest.setOnClickListener {
             val intentCompletedQuest = Intent(applicationContext, QuestAbortCompleteActivity::class.java).apply {
                 putExtra(Extras.EXTRA_QUEST_STATUS, Extras.STATUS_COMPLETED)

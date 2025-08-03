@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import com.example.solofit.QuoteActivities.QuoteActivity
 import com.example.solofit.model.Quest
 import com.example.solofit.model.Quote
 import com.example.solofit.model.User
@@ -18,11 +17,9 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
 ) {
 
     // Singleton instance
-    // The singleton pattern design, step 2
     companion object {
         private var instance: MyDatabaseHelper? = null
 
-        // only opens one db connection
         @Synchronized
         fun getInstance(context: Context): MyDatabaseHelper? {
             if (instance == null) {
@@ -486,8 +483,6 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
 
-
-    // TODO: The other 3 tables' CRUD operations
 
     /* QUOTE TABLE CRUD */
     fun insertQuote(quote: Quote): Long {

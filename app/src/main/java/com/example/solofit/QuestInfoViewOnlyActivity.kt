@@ -16,7 +16,6 @@ class QuestInfoViewOnlyActivity : AppCompatActivity() {
         viewBinding.lloShowIfQHistRow.visibility = View.VISIBLE
         setContentView(viewBinding.root)
 
-// Get data from intent using correct types and defaults
         val title = intent.getStringExtra(Extras.EXTRA_QUEST_TITLE) ?: ""
         val desc = intent.getStringExtra(Extras.EXTRA_DESC) ?: "No Description"
         val questType = intent.getStringExtra(Extras.EXTRA_QUEST_TYPE) ?: ""
@@ -25,8 +24,6 @@ class QuestInfoViewOnlyActivity : AppCompatActivity() {
         val xpReward = intent.getIntExtra(Extras.EXTRA_XP_REWARD, 0)
         val statReward = intent.getIntExtra(Extras.EXTRA_STAT_REWARD, 0)
 
-
-        // Bind data to views
         viewBinding.txvQInfoQuestName.text = title
         viewBinding.txvQInfoDescription.text = desc
         val (mainIcon, extraIcon, statLabel) = when (questType) {
@@ -62,8 +59,6 @@ class QuestInfoViewOnlyActivity : AppCompatActivity() {
 
         viewBinding.txvQInfoStatReward.text = statLabel
 
-
-        // setting the difficulty color schemes
         val (bgRes, shadowColorRes) = when (difficulty) {
             "Easy" -> R.drawable.bg_diff_text_easy to R.color.bright_green
             "Normal" -> R.drawable.bg_diff_text_normal to R.color.cyan
@@ -87,8 +82,6 @@ class QuestInfoViewOnlyActivity : AppCompatActivity() {
             else -> {"INVALID"}
         }
 
-
-        // date
         val dateCompleted = intent.getStringExtra(Extras.EXTRA_DATE_COMPLETED)
         viewBinding.txvQInfoCompletedDate.text = dateCompleted
         viewBinding.txvQInfoQuestStatus.text = statusText

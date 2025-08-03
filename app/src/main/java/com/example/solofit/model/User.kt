@@ -4,7 +4,7 @@ class User {
     var userID: Int = 0
     var username: String
     var pfpUri: String?
-    var selectedTitle: String  // Replaces userTitle
+    var selectedTitle: String
     var level: Int
     var currentExp: Float
     var expCap: Int
@@ -15,7 +15,7 @@ class User {
     var longestStreak: Int
     var lastStreakDate: String?
     var unlockedTitles: String = ""
-    // Constructor without ID
+
     constructor(
         username: String,
         pfpUri: String?,
@@ -46,7 +46,6 @@ class User {
         this.unlockedTitles = unlockedTitles
     }
 
-    // Constructor with ID
     constructor(
         userID: Int,
         username: String,

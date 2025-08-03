@@ -13,9 +13,39 @@ class ManageQuestAdapter(
     private val onDeleteClick: (Quest) -> Unit
 ) : RecyclerView.Adapter<ManageQuestViewHolder>() {
 
+    // Full list of quests to allow filtering
+    private val fullQuestList = mutableListOf<Quest>()
+
+    // Filters
+    private var currentTypeFilter: String = "All"
+    private var currentDifficultyFilter: String = "All"
+
     fun updateList(newList: List<Quest>) {
+        fullQuestList.clear()
+        fullQuestList.addAll(newList)
+
+        // Apply filters immediately
+        val filteredList = fullQuestList.filter { quest ->
+            (currentTypeFilter == "All" || quest.questType == currentTypeFilter) &&
+                    (currentDifficultyFilter == "All" || quest.difficulty == currentDifficultyFilter)
+        }
+
         questList.clear()
-        questList.addAll(newList)
+        questList.addAll(filteredList)
+        notifyDataSetChanged()
+    }
+
+    fun applyFilters(type: String, difficulty: String) {
+        currentTypeFilter = type
+        currentDifficultyFilter = difficulty
+
+        val filteredList = fullQuestList.filter { quest ->
+            (type == "All" || quest.questType == type) &&
+                    (difficulty == "All" || quest.difficulty == difficulty)
+        }
+
+        questList.clear()
+        questList.addAll(filteredList)
         notifyDataSetChanged()
     }
 
@@ -32,7 +62,6 @@ class ManageQuestAdapter(
             onItemClick(questItem)
         }
 
-        // Background color by difficulty
         when (questItem.difficulty) {
             "Easy" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_easy)
@@ -52,17 +81,16 @@ class ManageQuestAdapter(
             }
         }
 
-        // Icon by questType
         when (questItem.questType) {
             "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
             "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)
             "Vitality" -> holder.setQuestIcon(R.drawable.icon_vit)
         }
 
+        holder.setQuestNameTextColor(R.color.white)
+
         holder.setActionBtnVisibility(true)
         holder.setActionBtnIcon(R.drawable.icon_delete)
-
-        // Only trigger confirmation dialog; no direct delete here!
         holder.setActionBtnClickListenerAsDelete {
             onDeleteClick(questItem)
         }

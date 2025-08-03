@@ -3,39 +3,36 @@ package com.example.solofit.DailySummaryActivities
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.solofit.R
-import com.example.solofit.StatusAndQHistoryActivities.EditLogActivity
 import com.example.solofit.QuestInfoViewOnlyActivity
 import com.example.solofit.database.MyDatabaseHelper
 import com.example.solofit.databinding.QuestSummaryItemLayoutBinding
-import com.example.solofit.model.Quest
 import com.example.solofit.model.UserQuestActivity
 import com.example.solofit.utilities.Extras
 
-class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity>, private val dbHelper: MyDatabaseHelper): Adapter<QuestSummaryViewHolder>(){
+class QuestSummaryAdapter(
+    private var uqaList: List<UserQuestActivity>,
+    private val dbHelper: MyDatabaseHelper
+) : RecyclerView.Adapter<QuestSummaryViewHolder>() {
 
-    private val reversedUQAList = todaysUQAList.asReversed()
-    private val todaysQuestList = reversedUQAList.mapNotNull { dbHelper.getQuestById(it.questID) }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestSummaryViewHolder {
-        val itemViewBinding: QuestSummaryItemLayoutBinding = QuestSummaryItemLayoutBinding.inflate(
+        val binding = QuestSummaryItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return QuestSummaryViewHolder(itemViewBinding)
+        return QuestSummaryViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: QuestSummaryViewHolder, position: Int) {
+        val uqaItem = uqaList[position]
+        val questItem = dbHelper.getQuestById(uqaItem.questID) ?: return
 
-        val uqaItem = reversedUQAList[position]
-        val questItem = todaysQuestList[position]
         holder.bindData(questItem)
 
         holder.binding.lloQuestSumm.setOnClickListener {
-            // Find the UQA first, then match the quest to it
             val intent = Intent(holder.itemView.context, QuestInfoViewOnlyActivity::class.java).apply {
-                // From Quest
                 putExtra(Extras.EXTRA_QUEST_TITLE, questItem.questName)
                 putExtra(Extras.EXTRA_DESC, questItem.description)
                 putExtra(Extras.EXTRA_QUEST_TYPE, questItem.questType)
@@ -43,17 +40,13 @@ class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity
                 putExtra(Extras.EXTRA_DIFFICULTY, questItem.difficulty)
                 putExtra(Extras.EXTRA_XP_REWARD, questItem.xpReward)
                 putExtra(Extras.EXTRA_STAT_REWARD, questItem.statReward)
-
-
-                // From UQA
                 putExtra(Extras.EXTRA_DATE_COMPLETED, uqaItem.dateCreated)
                 putExtra(Extras.EXTRA_QUEST_STATUS, uqaItem.questStatus)
             }
             holder.itemView.context.startActivity(intent)
-
         }
 
-        // Switch case for background colors based on difficulty
+        // Set background and shadow based on difficulty
         when (questItem.difficulty) {
             "Easy" -> {
                 holder.setQuestBackground(R.drawable.bg_quest_item_easy)
@@ -72,34 +65,38 @@ class QuestSummaryAdapter(private val todaysUQAList: ArrayList<UserQuestActivity
                 holder.setQuestNameTextShadow(R.color.bright_purple)
             }
         }
-        // Switch case for icon
+
+        // Set quest type icon
         when (questItem.questType) {
             "Strength" -> holder.setQuestIcon(R.drawable.icon_str)
             "Endurance" -> holder.setQuestIcon(R.drawable.icon_end)
             "Vitality" -> holder.setQuestIcon(R.drawable.icon_vit)
         }
 
+        // EXP/Stat display logic
         val xpValue = questItem.xpReward.toString()
         val statValue = questItem.statReward.toString()
         val questType = questItem.questType.take(3).uppercase()
+
         when (uqaItem.questStatus) {
             "COMPLETED" -> {
                 holder.binding.txvQSummExp.text = "+ $xpValue EXP"
                 holder.binding.txvQSummStat.text = "+ $statValue $questType"
-                holder.setExpAndStatTextDisplay(R.color.bright_green, true) // isCompleted
+                holder.setExpAndStatTextDisplay(R.color.bright_green, true)
             }
             "ABORTED" -> {
                 val xpPenalty = questItem.xpReward / 2
                 holder.binding.txvQSummExp.text = "- $xpPenalty EXP"
-                holder.setExpAndStatTextDisplay(R.color.bright_red, false) // isCompleted
+                holder.binding.txvQSummStat.text = ""
+                holder.setExpAndStatTextDisplay(R.color.bright_red, false)
             }
         }
-
     }
 
+    override fun getItemCount(): Int = uqaList.size
 
-    override fun getItemCount(): Int {
-        return todaysQuestList.size
+    fun updateData(newUqaList: List<UserQuestActivity>) {
+        uqaList = newUqaList
+        notifyDataSetChanged()
     }
-
 }
